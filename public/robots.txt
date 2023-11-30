@@ -1,0 +1,5 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+Disallow: /manager/
+Sitemap: https://mago1004.com/sitemap.xml
