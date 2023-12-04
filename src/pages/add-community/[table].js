@@ -4,12 +4,12 @@ import { Title, Wrappers } from "src/components/elements/UserContentTemplete";
 import { backUrl, communityCategoryList } from "src/data/Data";
 import $ from 'jquery'
 import styled from "styled-components";
-import { commarNumber, getViewerMarginByNumber, categoryToNumber  } from "src/functions/utils";
+import { commarNumber, getViewerMarginByNumber, categoryToNumber } from "src/functions/utils";
 import { Input } from "src/components/elements/ManagerTemplete";
 import dynamic from 'next/dynamic';
 const ReactQuill = dynamic(() => import('react-quill'), {
-  ssr: false,
-  loading: () => <p>Loading ...</p>,
+    ssr: false,
+    loading: () => <p>Loading ...</p>,
 })
 import AddButton from "src/components/elements/button/AddButton";
 import UserLayout from "src/layouts/UserLayout";
@@ -42,7 +42,7 @@ const AddCommunity = () => {
             ],
         },
     }), [])
-   
+
     useEffect(() => {
         async function isUser() {
             const { data: response } = await axios.get('/api/auth', {
@@ -57,33 +57,33 @@ const AddCommunity = () => {
                 alert('로그인 후 이용 가능합니다.');
                 router.push('/login');
             }
-            if(params?.table.includes('shop_')){
-                if(!router.query?.shop_pk){
+            if (params?.table.includes('shop_')) {
+                if (!router.query?.shop_pk) {
                     alert("잘못된 접근입니다.");
                     router.push('/home');
-                }else{
+                } else {
                     setShop(router.query);
                 }
             }
         }
         isUser();
-        
+
     }, [])
     const onSave = async () => {
         if (window.confirm("정말로 저장 하시겠습니까?")) {
             let obj = {
                 title: $('.title').val(),
                 note: note,
-                table:params?.table
+                table: params?.table
             }
-            if(shop?.shop_pk){
+            if (shop?.shop_pk) {
                 obj['shop_pk'] = shop?.shop_pk;
             }
             const { data: response } = await axios.post('/api/additembyuser', obj)
-            if(response?.result>0){
+            if (response?.result > 0) {
                 alert('성공적으로 저장 되었습니다.');
                 router.back();
-            }else{
+            } else {
                 alert(response?.message);
             }
         }
@@ -91,16 +91,16 @@ const AddCommunity = () => {
     return (
         <>
             <Wrappers className="post-container">
-                {shop?.shop_name?
-                <>
-                <Title style={{marginBottom:'0'}}>{shop?.shop_name}</Title>
-                </>
-                :
-                <>
-                </>}
+                {shop?.shop_name ?
+                    <>
+                        <Title style={{ marginBottom: '0' }}>{shop?.shop_name}</Title>
+                    </>
+                    :
+                    <>
+                    </>}
                 <Title>{communityCategoryList[categoryToNumber(params?.table)].name} 작성</Title>
-                <Input style={{ width: '98%', margin: '1rem auto 1rem 0', padding: '0.75rem 1%', maxWidth:'1157px'  }} placeholder="제목을 입력해 주세요." className="title" />
-                <div id='editor' style={{ width: '100%', margin: '1rem auto'}}>
+                <Input style={{ width: '98%', margin: '1rem auto 1rem 0', padding: '0.75rem 1%', maxWidth: '1157px' }} placeholder="제목을 입력해 주세요." className="title" />
+                <div id='editor' style={{ width: '100%', margin: '1rem auto' }}>
                     <ReactQuill
                         modules={modules}
                         theme="snow"
@@ -120,7 +120,7 @@ const AddCommunity = () => {
                                             let formData = new FormData();
                                             await formData.append('note', img_src);
                                             const { data: response } = await axios.post('/api/addimageitems', formData);
-                                            note = await note.replace(base64, `${backUrl + response?.data[0]?.filename}`)
+                                            note = await note.replace(base64, `${response?.data[0]?.filename}`)
                                         }
                                     }
                                 }

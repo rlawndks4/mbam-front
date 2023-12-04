@@ -47,7 +47,7 @@ const ResignCard = () => {
     useEffect(() => {
         let auth = JSON.parse(localStorage.getItem('auth'))
         if (auth.profile_img) {
-            setUrl(auth.profile_img.substring(0, 4) == "http" ? auth.profile_img : backUrl + auth.profile_img)
+            setUrl(auth.profile_img.substring(0, 4) == "http" ? auth.profile_img : auth.profile_img)
         }
         setMyId(auth.id);
         setAuth(auth);
@@ -88,10 +88,10 @@ const ResignCard = () => {
         }
     }
 
-    
-    
+
+
     const onResign = async () => {
-        if(!window.confirm("정말 탈퇴하시겠습니까?")){
+        if (!window.confirm("정말 탈퇴하시겠습니까?")) {
             return;
         }
         let str = '/api/resign';

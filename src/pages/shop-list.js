@@ -129,12 +129,12 @@ export const Merchandise = (props) => {
                         </div>
                         {item?.country_list && item?.country_list.map((item, idx) => (
                             <>
-                                <img src={backUrl + item?.img_src} style={{ height: '1rem', marginLeft: '0.5rem' }} alt="#" />
+                                <img src={item?.img_src} style={{ height: '1rem', marginLeft: '0.5rem' }} alt="#" />
                             </>
                         ))}
                     </Font4>
                 </MerchandiseExplain>
-                <MerchandiseImg src={backUrl + item?.img_src} alt={item?.img_src_alt} />
+                <MerchandiseImg src={item?.img_src} alt={item?.img_src_alt} />
             </motion.a>
         </>
     )

@@ -53,7 +53,7 @@ const App = (props) => {
         <meta name="keywords" content={head_data?.meta_keywords || headData?.meta_keywords} />
         <meta name="description" property="og:description" content={head_data?.meta_description || headData?.meta_description} />
         <meta name="google" content="notranslate" />
-        <meta property="og:site_name" content={"마사지고수"} />
+        <meta property="og:site_name" content={"마사지밤"} />
         <meta name="image" property="og:image" content={head_data?.og_image || headData?.og_image || "/assets/images/test/ogimage.png"} />
         <meta name="google-site-verification" content="FTUivJR1xukVHHU2LMvDbn22cgE2ftcR1-DxRPhjJ1A" />
         <meta name="naver-site-verification" content="3f056655e3a151c86be45c4a31dce9b02368ec8d" />
@@ -64,8 +64,8 @@ const App = (props) => {
           {{
             "@context": "https://schema.org",
             "@type": "WebSite",
-            "name": "마사지고수",
-            "url": "https://mago1004.com/"
+            "name": "마사지밤",
+            "url": "https://msgbam.com/"
           }}
         </Script>
         <Script

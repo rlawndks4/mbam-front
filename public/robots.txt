@@ -2,4 +2,4 @@
 User-agent: *
 Allow: /
 Disallow: /manager/
-Sitemap: https://mago1004.com/sitemap.xml
+Sitemap: https://msgbam.com/sitemap.xml

@@ -94,11 +94,11 @@ const AcademySubCard = (props) => {
                 <ContentContainer onClick={() => { navigate(`/academy/${item?.pk}`) }} style={{ flexDirection: `${(column && window.innerWidth <= 550) ? 'column' : ''}`, borderBottom: `${not_price ? 'none' : ''}`, borderRight: `${not_price ? 'none' : ''}` }}>
                     {is_detail ?
                         <>
-                            <img src={backUrl + item?.main_img} style={{ height: '120px', width: '160px', margin: `${(column && window.innerWidth <= 550) ? '0px auto 24px 12px' : ''}` }} />
+                            <img src={item?.main_img} style={{ height: '120px', width: '160px', margin: `${(column && window.innerWidth <= 550) ? '0px auto 24px 12px' : ''}` }} />
                         </>
                         :
                         <>
-                            <img src={backUrl + item?.sub_img} style={{ height: '120px', width: '90px', margin: `${(column && window.innerWidth <= 550) ? '0px auto 24px 12px' : ''}` }} />
+                            <img src={item?.sub_img} style={{ height: '120px', width: '90px', margin: `${(column && window.innerWidth <= 550) ? '0px auto 24px 12px' : ''}` }} />
                         </>}
                     <div style={{ display: 'flex', flexDirection: 'column', paddingRight: '12px', width: 'auto' }}>
                         {is_detail ?

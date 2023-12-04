@@ -122,12 +122,13 @@ const Home = () => {
         async function fetchPost() {
             setLoading(true)
             const { data: response } = await axios.get('/api/gethomecontent')
+            console.log(response?.data)
             setSetting(response?.data?.banner ?? {})
             let banner_list = [];
             let banner_link_list = [];
             for (var i = 1; i <= 5; i++) {
                 if (response?.data?.banner[`home_banner_img_${i}`]) {
-                    await banner_list.push(`${backUrl + response?.data?.banner[`home_banner_img_${i}`]}`);
+                    await banner_list.push(`${response?.data?.banner[`home_banner_img_${i}`]}`);
                     await banner_link_list.push(`${response?.data?.banner[`home_banner_link_${i}`]}`);
 
                 }
@@ -210,7 +211,7 @@ const Home = () => {
                         <RowContent style={{ flexWrap: 'wrap' }}>
                             {cityList && cityList.map((item, idx) => (
                                 <>
-                                    <CityCard src={backUrl + item?.img_src} idx={idx} onClick={() => {
+                                    <CityCard src={item?.img_src} idx={idx} onClick={() => {
                                         router.push(`/shop-list?city=${item?.pk}`)
                                     }} />
                                 </>
@@ -223,7 +224,7 @@ const Home = () => {
                                 }}>
                                     <div style={{ display: 'flex', flexDirection: 'column', width: '50%' }}>
                                         <div style={{ margin: 'auto auto 0.5rem auto' }}>
-                                            마고 어플 출시!!
+                                            마사지밤 어플 출시!!
 
                                         </div>
                                         <div style={{ margin: '0.5rem auto auto auto' }}>

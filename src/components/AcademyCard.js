@@ -82,7 +82,7 @@ const AcademyCard = (props) => {
     return (
         <>
             <AcademyContainer style={{ margin: getMarginByIndex(idx) }} onClick={() => { navigate(link ? link : `/academy/${item?.pk}`) }}>
-                <AcademyImg src={backUrl + item?.main_img} />
+                <AcademyImg src={item?.main_img} />
                 <AcademyTextContainer>
                     <MainText style={{ margin: '0 0 auto 0', color: theme.color.blue, fontWeight: 'bold' }}>{item.user_nickname}</MainText>
                     <MainText style={{ margin: '4px 0 auto 0', color: theme.color.font1, }}>{item.title}</MainText>

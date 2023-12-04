@@ -70,7 +70,7 @@ const ThemeCard = (props) => {
                 <LazyLoadImage
                     alt={"#"}
                     effect="blur"
-                    src={backUrl + `${needTwoImage.includes(props.category) ? props.item?.second_img : props.item?.main_img}`}
+                    src={`${needTwoImage.includes(props.category) ? props.item?.second_img : props.item?.main_img}`}
                     className='theme-img' />
                 <TextContainer>
                     <Title> {props.item?.title ?? ""}</Title>

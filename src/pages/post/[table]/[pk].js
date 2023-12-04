@@ -11,8 +11,8 @@ import CommentComponent from "../../../components/CommentComponent";
 import Loading from '../../../components/Loading'
 import dynamic from 'next/dynamic';
 const ReactQuill = dynamic(() => import('react-quill'), {
-  ssr: false,
-  loading: () => <p>Loading ...</p>,
+    ssr: false,
+    loading: () => <p>Loading ...</p>,
 })
 import UserLayout from "src/layouts/UserLayout";
 import { useRouter } from "next/router";
@@ -51,9 +51,9 @@ const Post = (props) => {
     const [loadingText, setLoadingText] = useState("");
     const viewerRef = useRef();
     const returnTitle = (ttl) => {
-    
-        return "마고";
-        
+
+        return "마사지밤";
+
     }
     useEffect(() => {
         async function isLogined() {
@@ -92,9 +92,9 @@ const Post = (props) => {
                         router.back();
                     }
                 }
-                
+
                 let obj = response.data ?? {};
-                
+
                 if (obj?.note && (typeof obj?.note == 'string')) {
                     obj.note = obj?.note.replaceAll('youtube.com/embed', 'youtube-nocookie.com/embed');
                     obj.note = obj?.note.replaceAll('<p><br></p>', '<br>');
@@ -216,7 +216,7 @@ const Post = (props) => {
             alert(response.message)
         }
     }
-   
+
     useEffect(() => {
     }, [viewerRef.current])
     return (
@@ -231,7 +231,7 @@ const Post = (props) => {
 
                         {/* {post?.main_img?
                         <>
-                        <img src={backUrl + post?.main_img} style={{ width: '100%', margin: '16px 0' }} alt="#" />
+                        <img src={ post?.main_img} style={{ width: '100%', margin: '16px 0' }} alt="#" />
                         </>
                         :
                         <>
@@ -247,9 +247,9 @@ const Post = (props) => {
                         <div style={{ fontSize: `${theme.size.font4}`, color: `${theme.color.font2}` }}>{post.hash}</div>
                         {post?.pdf_img ?
                             <>
-                            <a href={backUrl+post?.pdf} download={backUrl+post?.pdf} >
-                            <img src={backUrl + post?.pdf_img} style={{ width: '100%', margin: '16px auto', cursor: 'pointer' }} />
-                            </a>
+                                <a href={post?.pdf} download={post?.pdf} >
+                                    <img src={post?.pdf_img} style={{ width: '100%', margin: '16px auto', cursor: 'pointer' }} />
+                                </a>
                             </>
                             :
                             <>

@@ -26,8 +26,8 @@ export const localization = {
     locale: 'ko',
 }
 export const zBottomMenu = [
-    { name: `마고 ▼`, link: '/', icon: <img src={logoSrc} className='menu-icon' alt="#" style={{ width: 'auto' }} />, activeIcon: <img src={logoSrc} className='menu-icon' alt="#" style={{ width: 'auto' }} />, className: 'master-dropdown-btn', allowList: ['/'] },
-    { name: '내주변', link: '/shop-list?is_around=1', icon: <Icon icon='mdi:map-marker-check-outline' className='menu-icon' />, activeIcon: <Icon icon='mdi:map-marker-check-outline' color={theme.color.background1} className='menu-icon' />, className: '', allowList: ['/shop-list?is_around=1'], is_location_href:true },
+    { name: `마사지밤 ▼`, link: '/', icon: <img src={logoSrc} className='menu-icon' alt="#" style={{ width: 'auto' }} />, activeIcon: <img src={logoSrc} className='menu-icon' alt="#" style={{ width: 'auto' }} />, className: 'master-dropdown-btn', allowList: ['/'] },
+    { name: '내주변', link: '/shop-list?is_around=1', icon: <Icon icon='mdi:map-marker-check-outline' className='menu-icon' />, activeIcon: <Icon icon='mdi:map-marker-check-outline' color={theme.color.background1} className='menu-icon' />, className: '', allowList: ['/shop-list?is_around=1'], is_location_href: true },
     { name: '커뮤니티', link: '/community-list/freeboard', icon: <Icon icon='clarity:chat-bubble-line' className='menu-icon' />, activeIcon: <Icon icon='clarity:chat-bubble-line' color={theme.color.background1} className='menu-icon' />, className: '', allowList: ['/community-list'] },
     { name: '제휴문의', link: '/add-shop', icon: <Icon icon='mdi:comment-question-outline' className='menu-icon' />, activeIcon: <Icon icon='mdi:comment-question-outline' color={theme.color.background1} className='menu-icon' />, className: '', allowList: ['/add-shop'] },
     { name: '고객센터', link: '/add-community/request', icon: <Icon icon='ph:siren' className='menu-icon' />, activeIcon: <Icon icon='ph:siren' color={theme.color.background1} className='menu-icon' />, className: 'service-dropdown-btn', allowList: ['/add-community/request'] },
@@ -100,7 +100,7 @@ export const objHistoryListContent = {
             columnObjFormat('제목', '', 'text', 'title'),
             columnObjFormat('작성인', '', 'text', 'nickname'),
             columnObjFormat('등록일', '', 'date', 'date'),
-           
+
         ]
     },
     question: {
@@ -109,7 +109,7 @@ export const objHistoryListContent = {
             columnObjFormat('제목', '', 'text', 'title'),
             columnObjFormat('작성인', '', 'text', 'nickname'),
             columnObjFormat('등록일', '', 'date', 'date'),
-           
+
         ]
     },
     humor: {
@@ -118,7 +118,7 @@ export const objHistoryListContent = {
             columnObjFormat('제목', '', 'text', 'title'),
             columnObjFormat('작성인', '', 'text', 'nickname'),
             columnObjFormat('등록일', '', 'date', 'date'),
-           
+
         ]
     },
     news: {
@@ -127,7 +127,7 @@ export const objHistoryListContent = {
             columnObjFormat('제목', '', 'text', 'title'),
             columnObjFormat('작성인', '', 'text', 'nickname'),
             columnObjFormat('등록일', '', 'date', 'date'),
-           
+
         ]
     },
     party: {
@@ -136,7 +136,7 @@ export const objHistoryListContent = {
             columnObjFormat('제목', '', 'text', 'title'),
             columnObjFormat('작성인', '', 'text', 'nickname'),
             columnObjFormat('등록일', '', 'date', 'date'),
-           
+
         ]
     },
     shop_review: {
@@ -146,7 +146,7 @@ export const objHistoryListContent = {
             columnObjFormat('업체명', '', 'text', 'shop_name'),
             columnObjFormat('작성인', '', 'text', 'nickname'),
             columnObjFormat('등록일', '', 'date', 'date'),
-           
+
         ]
     },
     s_review: {
@@ -155,7 +155,7 @@ export const objHistoryListContent = {
             columnObjFormat('제목', '', 'text', 'title'),
             columnObjFormat('작성인', '', 'text', 'nickname'),
             columnObjFormat('등록일', '', 'date', 'date'),
-           
+
         ]
     },
     shop_event: {
@@ -165,7 +165,7 @@ export const objHistoryListContent = {
             columnObjFormat('업체명', '', 'text', 'shop_name'),
             columnObjFormat('작성인', '', 'text', 'nickname'),
             columnObjFormat('등록일', '', 'date', 'date'),
-           
+
         ]
     },
     s_event: {
@@ -174,7 +174,7 @@ export const objHistoryListContent = {
             columnObjFormat('제목', '', 'text', 'title'),
             columnObjFormat('작성인', '', 'text', 'nickname'),
             columnObjFormat('등록일', '', 'date', 'date'),
-           
+
         ]
     },
     notice: {
@@ -183,7 +183,7 @@ export const objHistoryListContent = {
             columnObjFormat('제목', '', 'text', 'title'),
             columnObjFormat('작성인', '', 'text', 'nickname'),
             columnObjFormat('등록일', '', 'date', 'date'),
-           
+
         ]
     },
     faq: {
@@ -192,7 +192,7 @@ export const objHistoryListContent = {
             columnObjFormat('제목', '', 'text', 'title'),
             columnObjFormat('작성인', '', 'text', 'nickname'),
             columnObjFormat('등록일', '', 'date', 'date'),
-           
+
         ]
     },
     request: {

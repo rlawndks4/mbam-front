@@ -114,7 +114,7 @@ const MItemEditComponent = (props) => {
                     let content = objManagerEditContent[schema].columns[i][j];
                     if (content.type == 'img' || content.type == 'pdf') {
                         if (item[`${content.class_name}`]) {
-                            url_list_obj[`${content.class_name}`] = backUrl + item[`${content.class_name}`];
+                            url_list_obj[`${content.class_name}`] = item[`${content.class_name}`];
                         }
                     }
                     if (content.type == 'select') {
@@ -137,7 +137,7 @@ const MItemEditComponent = (props) => {
                     }
                     if (content.type == 'editor') {
 
-                        item[`${content.class_name}`] = (item[`${content.class_name}`]??"").replaceAll('https://1st-academy.kr:8443', backUrl);
+                        item[`${content.class_name}`] = (item[`${content.class_name}`] ?? "").replaceAll('https://1st-academy.kr:8443', backUrl);
                         editor_list_obj[`${content.class_name}`] = item[`${content.class_name}`];
                     }
                 }
@@ -386,7 +386,7 @@ const MItemEditComponent = (props) => {
                                                                                     let formData = new FormData();
                                                                                     await formData.append('note', img_src);
                                                                                     const { data: response } = await axios.post('/api/addimageitems', formData);
-                                                                                    note = await note.replace(base64, `${backUrl + response?.data[0]?.filename}`)
+                                                                                    note = await note.replace(base64, `${response?.data[0]?.filename}`)
                                                                                 }
                                                                             }
                                                                         }

@@ -9,8 +9,8 @@ import Loading from "src/components/Loading";
 import { Input } from "src/components/elements/ManagerTemplete";
 import dynamic from 'next/dynamic';
 const ReactQuill = dynamic(() => import('react-quill'), {
-  ssr: false,
-  loading: () => <p>Loading ...</p>,
+    ssr: false,
+    loading: () => <p>Loading ...</p>,
 })
 
 import AddButton from "src/components/elements/button/AddButton";
@@ -46,7 +46,7 @@ const AddShop = () => {
             ],
         },
     }), [])
-   
+
 
     useEffect(() => {
         async function isUser() {
@@ -125,7 +125,7 @@ const AddShop = () => {
                                                     let formData = new FormData();
                                                     await formData.append('note', img_src);
                                                     const { data: response } = await axios.post('/api/addimageitems', formData);
-                                                    note = await note.replace(base64, `${backUrl + response?.data[0]?.filename}`)
+                                                    note = await note.replace(base64, `${response?.data[0]?.filename}`)
                                                 }
                                             }
                                         }

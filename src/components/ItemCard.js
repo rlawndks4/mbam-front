@@ -57,7 +57,7 @@ const ItemCard = (props) => {
         <>
             <Container>
                 <ContentContainer onClick={() => { navigate(link) }}>
-                    <img src={backUrl + item?.main_img} style={{ height: '120px', width: '160px' }} />
+                    <img src={item?.main_img} style={{ height: '120px', width: '160px' }} />
                     <div style={{ display: 'flex', flexDirection: 'column', paddingRight: '12px', width: 'auto' }}>
                         <div style={{ fontSize: theme.size.font3, margin: '0 auto 16px 12px', fontWeight: 'bold' }}>{item?.title}</div>
                         <div style={{ fontSize: theme.size.font5, margin: 'auto auto 0 12px' }}>{item?.nickname} / {(item?.date ?? "0000-00-00").substring(0, 10)}</div>

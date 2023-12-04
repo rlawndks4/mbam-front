@@ -54,7 +54,7 @@ const VideoCard = (props) => {
                     src={`https://img.youtube.com/vi/${props.item.link}/0.jpg`}
                     className='video-img'
                     /> */}
-                 <Img style={{ backgroundImage: `url(${`https://img.youtube.com/vi/${props.item.link}/0.jpg`})` }} alt="#" /> 
+                <Img style={{ backgroundImage: `url(${`https://img.youtube.com/vi/${props.item.link}/0.jpg`})` }} alt="#" />
                 {/* <iframe style={{ width: '100%', height: 'auto', height: '80vw', maxHeight: '450px' }} src={`https://www.youtube.com/embed/${videos.link}`} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> */}
                 <TextContainer style={{ padding: `${isImgPadding ? '0 20px' : '20px'}` }}>
                     <div style={{ fontSize: `${theme.size.font3}` }}>{props?.item?.title}</div>
@@ -62,7 +62,7 @@ const VideoCard = (props) => {
                         <>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <div style={{ display: 'flex', alignItems: 'center' }}><AiFillHeart style={{ fontSize: '18px', color: `${theme.color.font3}` }} /><p style={{ margin: '0', marginLeft: '6px' }}>{'2'}</p></div>
-                                <img src={backUrl + props.channelImg} style={{ width: '28px', height: '28px', borderRadius: '50%' }} alt="#" />
+                                <img src={props.channelImg} style={{ width: '28px', height: '28px', borderRadius: '50%' }} alt="#" />
                             </div>
                         </>
                         :

@@ -173,7 +173,7 @@ const LoginCard = () => {
 
 
                         <CategoryName style={{ marginTop: '12px', fontSize: '11px' }}>
-                            아직 마고 회원이 아니라면?<strong style={{ textDecoration: 'underline', cursor: 'pointer', marginLeft: '12px' }} onClick={() => { router.push('/signup') }}>회원가입</strong>
+                            아직 마사지밤 회원이 아니라면?<strong style={{ textDecoration: 'underline', cursor: 'pointer', marginLeft: '12px' }} onClick={() => { router.push('/signup') }}>회원가입</strong>
                         </CategoryName>
                         {isWebView ?
                             <>

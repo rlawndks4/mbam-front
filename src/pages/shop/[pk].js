@@ -182,7 +182,7 @@ const Shop = () => {
                                             <CardContent>
                                                 <RowContent>
                                                     <Content>
-                                                        <img src={backUrl + data?.shop?.img_src} style={{ width: '100%', borderRadius: '16px' }} alt={data?.shop?.img_src_alt} />
+                                                        <img src={data?.shop?.img_src} style={{ width: '100%', borderRadius: '16px' }} alt={data?.shop?.img_src_alt} />
                                                     </Content>
                                                     <Content>
                                                         <div style={{ fontSize: theme.size.font2_5 }}>{data?.shop?.name}</div>
@@ -203,7 +203,7 @@ const Shop = () => {
                                                                         <Icon icon="fluent:call-32-regular" />
                                                                     </IconButton>
                                                                 </a>
-                                                                <a href={`sms:${data?.shop?.phone}${navigator.userAgent.includes('Android') ? '?' : '&'}body=마고에서 보고 연락 드립니다.`}>
+                                                                <a href={`sms:${data?.shop?.phone}${navigator.userAgent.includes('Android') ? '?' : '&'}body=마사지밤에서 보고 연락 드립니다.`}>
                                                                     <IconButton>
                                                                         <Icon icon="ep:message" />
                                                                     </IconButton>
@@ -214,7 +214,7 @@ const Shop = () => {
                                                             {data?.shop?.option_list && (data?.shop?.option_list ?? []).map((item, idx) => (
                                                                 <>
                                                                     <Row style={{ width: '50%', marginTop: '0.5rem', alignItems: 'center' }}>
-                                                                        <img src={backUrl + item?.img_src} style={{ width: '16px', height: '16px' }} />
+                                                                        <img src={item?.img_src} style={{ width: '16px', height: '16px' }} />
                                                                         <div style={{ marginLeft: '0.5rem' }}>{item?.name}</div>
                                                                     </Row>
                                                                 </>
@@ -280,7 +280,7 @@ const Shop = () => {
                                                         { lat: data?.shop?.lat, lng: data?.shop?.lng, }
                                                     ]}
                                                 />
-                                                <img src={backUrl + data?.shop?.price_img} alt={data?.shop?.price_img_alt} style={{ width: '100%', height: 'auto', marginTop: '1rem' }} />
+                                                <img src={data?.shop?.price_img} alt={data?.shop?.price_img_alt} style={{ width: '100%', height: 'auto', marginTop: '1rem' }} />
                                             </CardContent>
                                         </Card>
                                     </Grid>
@@ -411,7 +411,7 @@ const Shop = () => {
                 </CallButton>
             </div>
             <div style={{ position: 'fixed', right: '1rem', bottom: '9rem', display: 'flex', alignItems: 'center' }}>
-                <CallButton href={`sms:${data?.shop?.phone}${navigator.userAgent.includes('Android') ? '?' : '&'}body=마고에서 보고 연락 드립니다.`} >
+                <CallButton href={`sms:${data?.shop?.phone}${navigator.userAgent.includes('Android') ? '?' : '&'}body=마사지밤에서 보고 연락 드립니다.`} >
                     <AiTwotoneMessage />
                 </CallButton>
             </div>
