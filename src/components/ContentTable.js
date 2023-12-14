@@ -151,7 +151,7 @@ const ContentTable = (props) => {
                 <>
                     <div className='subtype-container' style={{ overflowX: 'auto', display: 'flex', width: '100%', margin: '8px auto', marginBottom: marginBottom }} >
                         <Table style={{ fontSize: `${fontSize ? fontSize : ''}` }}>
-                            <Tr style={{ fontWeight: `${columnsBold ? 'bold' : ''}` }}>
+                            <Tr style={{ fontWeight: `${columnsBold ? 'bold' : ''}`, background: theme.color.background4, fontWeight: 'bold', fontSize: theme.size.font4 }}>
                                 {columns && columns.map((item, idx) => (
                                     <>
                                         <Td style={{ width: item.width }}>{item.name}</Td>
