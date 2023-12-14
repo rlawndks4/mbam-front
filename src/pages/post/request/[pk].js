@@ -83,7 +83,7 @@ const Post = (props) => {
             setPostTable(params.table || post_table)
             try {
                 setLoadingText("콘텐츠를 불러오는 중입니다...");
-                const { data: response } = await axiosInstance.get(`/api/item?table=${params.table}&pk=${params.pk}&views=1`);
+                const { data: response } = await axiosInstance.get(`/api/item?table=request&pk=${params.pk}&views=1`);
                 if (response.result < 0) {
                     alert(response.message);
                     if (response.result == -150) {
@@ -136,10 +136,8 @@ const Post = (props) => {
             }
 
         }
-        if ((params.table || post_table) != 'notice') {
-        }
+
         fetchPost();
-        fetchComments();
         $('.lazy-load-image-background').addClass('comment-img');
         // window.addEventListener('scroll', function (el) {
         //     let per = Math.floor(($(window).scrollTop() / ($(document).height() - $(window).height())) * 100);
@@ -171,48 +169,8 @@ const Post = (props) => {
             //alert(response.message);
         }
     }
-    const fetchComments = async () => {
-        const { data: response } = await axios.get(`/api/getcommnets?post_pk=${router.query?.pk}&post_table=${router.query?.table}`);
-        setComments(response.data);
-    }
 
-    const addComment = async (parent_pk) => {
-        if (!$(`.comment-${parent_pk ?? 0}`).val()) {
-            alert('필수 값을 입력해 주세요.');
-            return;
 
-        }
-        const { data: response } = await axios.post('/api/addcomment', {
-            parentPk: parent_pk ?? 0,
-            note: $(`.comment-${parent_pk ?? 0}`).val(),
-            post_table: router.query?.table,
-            post_pk: router.query?.pk,
-            post_title: post?.title
-        })
-
-        if (response.result > 0) {
-            $(`.comment-${parent_pk ?? 0}`).val("")
-            fetchComments();
-        } else {
-            alert(response.message)
-        }
-    }
-    const updateComment = async (pk) => {
-        if (!$(`.update-comment-${pk ?? 0}`).val()) {
-            alert('필수 값을 입력해 주세요.');
-        }
-        const { data: response } = await axios.post('/api/updatecomment', {
-            pk: pk,
-            note: $(`.update-comment-${pk ?? 0}`).val(),
-        })
-
-        if (response.result > 0) {
-            $(`.update-comment-${pk ?? 0}`).val("")
-            fetchComments();
-        } else {
-            alert(response.message)
-        }
-    }
 
     useEffect(() => {
     }, [viewerRef.current])
@@ -237,8 +195,7 @@ const Post = (props) => {
                         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'end', fontSize: `${theme.size.font4}` }}>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                 {/* <div style={{ margin: '0 4px' }}>{post.nickname}</div> / */}
-                                <div style={{ margin: '0 4px' }}>{post?.date?.substring(0, 10)}</div> /
-                                <div style={{ margin: '0 8px 0 4px' }}>조회수 {commarNumber(post?.views ?? 0)}</div>
+                                <div style={{ margin: '0 4px' }}>{post?.date?.substring(0, 10)}</div>
                             </div>
                         </div>
                         <div style={{ fontSize: `${theme.size.font4}`, color: `${theme.color.font2}` }}>{post.hash}</div>
@@ -253,6 +210,7 @@ const Post = (props) => {
                             </>}
                         <ViewerContainer className="viewer" style={{ margin: `${getViewerMarginByNumber(post?.note_align)}` }}>
                             {/* <Viewer initialValue={post?.note ?? `<body></body>`} /> */}
+                            <div style={{ padding: '1rem 0 0 1rem', fontWeight: 'bold' }}>문의내용</div>
                             <ReactQuill
                                 value={post?.note ?? `<body></body>`}
                                 readOnly={true}
@@ -261,8 +219,21 @@ const Post = (props) => {
                                 ref={viewerRef}
                             />
                         </ViewerContainer>
+                        {post?.reply_note &&
+                            <>
+                                <div style={{ padding: '1rem 0 0 1rem', fontWeight: 'bold' }}>답변</div>
+                                <ViewerContainer className="viewer" style={{ margin: `${getViewerMarginByNumber(post?.note_align)}` }}>
+                                    {/* <Viewer initialValue={post?.note ?? `<body></body>`} /> */}
+                                    <ReactQuill
+                                        value={post?.reply_note ?? `<body></body>`}
+                                        readOnly={true}
+                                        theme={"bubble"}
+                                        bounds={'.app'}
+                                        ref={viewerRef}
+                                    />
+                                </ViewerContainer>
+                            </>}
                         {/* <ZoomButton/> */}
-                        <CommentComponent addComment={addComment} data={comments} fetchComments={fetchComments} updateComment={updateComment} auth={auth} />
 
                     </>}
 

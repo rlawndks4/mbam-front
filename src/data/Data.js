@@ -62,6 +62,7 @@ export const communityCategoryList = [
     { table: 'education', name: '창업교육', is_write: true },
 
     { table: 'shop_review', name: '방문후기', },
+    { table: 'shop_event', name: '업체이벤트', },
     { table: 'shop_offer', name: '구인구직', },
     { table: 'shop_trade', name: '샵매매', },
 

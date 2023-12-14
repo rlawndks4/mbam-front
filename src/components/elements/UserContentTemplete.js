@@ -3,6 +3,7 @@ import styled from "styled-components";
 import $ from 'jquery'
 import { useRouter } from "next/router";
 import theme from "src/styles/theme";
+import { styled as muiStyled } from '@mui/material/styles'
 export const WrappersStyle = styled.div`
 position:relative;
 display:flex;

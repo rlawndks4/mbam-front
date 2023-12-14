@@ -75,7 +75,7 @@ const ScrollToTopButton = () => {
     }
     return (
         <>
-            <div style={{position:'fixed',right:'1rem',bottom:'6rem',display:'flex',alignItems:'center'}}>
+            <div style={{ position: 'fixed', right: '1rem', bottom: '6rem', display: 'flex', alignItems: 'center' }}>
                 {/* <KakaoImg src={kakaoFotterIcon} style={{ display: `flex` }} onClick={() => window.open('http://pf.kakao.com/_xgKMUb/chat')} /> */}
                 <Button onClick={scrollToTop} style={{ bottom: `${isPost ? '6rem' : '8rem'}`, display: `${display}`, color: '#fff' }}>
                     <AiOutlineUp />

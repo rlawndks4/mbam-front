@@ -26,9 +26,11 @@ justify-content:space-between;
 padding:12px 8px;
 font-size:${props => props.theme.size.font3};
 border-bottom:1px solid ${props => props.theme.color.font3};
+margin-bottom: 1px;
 cursor:pointer;
 &:hover{  
     font-weight:bold;
+    margin-bottom: 0;
     border-bottom:2px solid ${props => props.theme.color.font1};
 }
 @media screen and (max-width:700px) {
@@ -70,7 +72,7 @@ const SideSelectTypeComponent = (props) => {
             <Container style={containerStyle} className="none-scroll">
                 {data && data.map((item, idx) => (
                     <>
-                        <Content onClick={() => { onClickCategory(item?.table) }} style={{ fontWeight: `${category == item?.table ? 'bold' : ''}`, borderBottom: `${category == item?.table ? `2px solid ${theme.color.font1}` : ''}` }}>
+                        <Content onClick={() => { onClickCategory(item?.table) }} style={{ fontWeight: `${category == item?.table ? 'bold' : ''}`, borderBottom: `${category == item?.table ? `2px solid ${theme.color.font1}` : ''}`, marginBottom: `${category == item?.table ? `0` : ''}` }}>
                             <div>{item?.name}</div>
                         </Content>
                     </>

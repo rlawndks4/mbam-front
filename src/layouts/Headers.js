@@ -12,12 +12,13 @@ import $ from 'jquery';
 import { getLocation, onClickExternalLink, returnMoment } from '../functions/utils';
 import { IoMdClose } from 'react-icons/io'
 import { IoCloseCircleOutline } from 'react-icons/io5';
-import { TextButton } from '../components/elements/UserContentTemplete';
+import { RowContent, TextButton } from '../components/elements/UserContentTemplete';
 const logoTextColorImg = '/assets/images/test/logo_test_color.png'
 import { useRouter } from 'next/router';
-import { CardContent } from '@mui/material';
+import { Button, CardContent, Drawer, IconButton, Typography } from '@mui/material';
 import { Icon } from '@iconify/react';
 import { Font4 } from 'src/components/elements/ManagerTemplete';
+import DialogSearch from 'src/components/DialogSearch';
 const Header = styled.header`
 position:fixed;
 height:6rem;
@@ -123,7 +124,69 @@ cursor:pointer;
   font-size:${props => props.theme.size.font4};
 }
 `
+const NoneShowMobile = styled.div`
+display: flex;
+font-size: ${theme.size.font5};
+justify-content: space-between ;
+position: relative;
+@media screen and (max-width:1050px) { 
+  display: none;
+}
+`
+const ShowMobile = styled.div`
+display: none;
+@media screen and (max-width:1050px) { 
+  display: flex;
+}
+`
+const ColumnMenuContainer = styled.div`
+        width: 400px;
+        padding:0 2rem 4rem 2rem;
+        height:100vh;
+        overflow-y:auto;
+        display:flex;
+        flex-direction:column;
+        @media (max-width:800px){
+          width: 70vw;
+        padding:0 5vw 4rem 5vw;
+        row-gap: 0.1rem;
+}
+        `
 const Headers = () => {
+  const authList = [
+    {
+      name: '마이페이지',
+      link_key: '/mypage',
+      icon: 'material-symbols:person',
+    },
+    {
+      name: '제휴문의',
+      link_key: '/add-shop',
+      icon: 'eos-icons:pull-request',
+    },
+    {
+      name: '제휴업체관리',
+      link_key: '/my-shop/list',
+      icon: 'fluent-mdl2:manager-self-service',
+    },
+    {
+      name: '상점',
+      link_key: '/store/list',
+      icon: 'ic:sharp-store',
+    },
+  ]
+  const noneAuthList = [
+    {
+      name: '로그인',
+      link_key: '/login',
+      icon: 'material-symbols:lock',
+    },
+    {
+      name: '회원가입',
+      link_key: '/signup',
+      icon: 'ic:sharp-person-add',
+    },
+  ]
   const router = useRouter();
   const [display, setDisplay] = useState('flex');
   const [isPost, setIsPost] = useState(false);
@@ -132,8 +195,13 @@ const Headers = () => {
 
   const [popupList, setPopupList] = useState([]);
   const [themeList, setThemeList] = useState([]);
+  const [cityList, setCityList] = useState([]);
   const [myAddress, setMyAddress] = useState("");
   const [auth, setAuth] = useState({});
+  const [sideMenuOpen, setSideMenuOpen] = useState(false);
+  const [dialogOpenObj, setDialogOpenObj] = useState({
+    search: false
+  })
   useEffect(() => {
 
     if (router.pathname.substring(0, 6) == '/post/' || router.pathname.substring(0, 7) == '/video/' || router.pathname == '/appsetting') {
@@ -191,6 +259,7 @@ const Headers = () => {
     const { data: response } = await axios.get('/api/getheadercontent')
     setPopupList(response?.data?.popup ?? []);
     setThemeList(response?.data?.theme);
+    setCityList(response?.data?.city ?? [])
   }
 
   useEffect(() => {
@@ -216,46 +285,10 @@ const Headers = () => {
     }
     setPopupList(popup_list);
   }
-  // setInterval(() => {
-  //   if (window.flutter_inappwebview) {
-  //     window.flutter_inappwebview.callHandler('native_get_alarm_count', {}).then(async function (result) {
-  //       //result = "{'code':100, 'message':'success', 'data':{'login_type':1, 'id': 1000000}}"
-  //       let ans = JSON.parse(result)
-  //       if (ans['data']['alarm_cnt'] == 0 && ans['data']['notice_cnt'] == 0) {
-  //         localStorage.setItem('is_alarm', 'false');
-  //         setIsAlarm(false);
-  //       } else {
-  //         localStorage.setItem('is_alarm', 'true');
-  //         setIsAlarm(true);
-  //       }
-  //     });
-  //   }
-  // }, 2000);
 
 
-  const onKeyPress = (e) => {
-    if (e.key == 'Enter') {
-      if ($('.search').val().length < 2) {
-        alert('두 글자 이상 입력해주세요.');
-      } else {
-        setIsSearch(false);
-        router.push('/search', { query: $('.search').val() });
-      }
-    }
-  }
-  const onKeyPressPc = (e) => {
-    if (e.key == 'Enter') {
-      if ($('.search-pc').val().length < 2) {
-        alert('두 글자 이상 입력해주세요.');
-      } else {
-        setIsSearch(false);
-        router.push('/search', { query: $('.search-pc').val() });
-      }
-    }
-  }
-  const onClickNavigateBefore = () => {
-    router.back();
-  }
+
+
   const onLogout = async () => {
     if (window.confirm("정말 로그아웃 하시겠습니까?")) {
       if (window && window.flutter_inappwebview) {
@@ -276,14 +309,25 @@ const Headers = () => {
   const onClickServiceCenter = (num) => {
     router.push(`/servicecenter/${num}`);
   }
+  const handleDialogClose = () => {
+    let obj = { ...dialogOpenObj };
+    for (let key in obj) {
+      obj[key] = false
+    }
+    setDialogOpenObj(obj);
+  }
   return (
     <>
-
+      <DialogSearch
+        open={dialogOpenObj.search}
+        handleClose={handleDialogClose}
+        root_path={'shop-list?keyword='}
+      />
+      {console.log(router.asPath)}
       <Header style={{ display: `${display}` }} className='header'>
-        {popupList.length > 0 && (router.pathname == '/' || router.pathname == '/home') ?
+        {popupList.length > 0 && (router.asPath == '/' || router.asPath == '/home/') ?
           <>
             <PopupContainer>
-
               {popupList && popupList.map((item, idx) => (
                 <>
                   {localStorage.getItem(`not_see_popup_${item?.pk}_${returnMoment().substring(0, 10).replaceAll('-', '_')}`) ?
@@ -320,26 +364,117 @@ const Headers = () => {
             <Icon icon='ion:navigate' style={{ color: theme.color.red, margin: 'auto 0.5rem auto auto' }} />
             <Font4 style={{ margin: 'auto auto auto 0.5rem' }}>{myAddress}</Font4>
           </CardContent>
-          <div style={{ display: 'flex', width: '180px', fontSize: theme.size.font5, justifyContent: 'space-between', position: 'relative' }}>
+          <NoneShowMobile>
             {/* <AiOutlineBell onClick={onClickBell} style={{ width: '2rem', height: '1.5rem', cursor: 'pointer' }} />
             <AiOutlineSearch onClick={changeSearchModal} style={{ width: '2rem', height: '1.5rem', cursor: 'pointer' }} /> */}
             {auth?.pk > 0 ?
               <>
-                <TextButton onClick={onLogout} style={{ marginRight: '8px' }}>로그아웃</TextButton>
-                <TextButton onClick={() => router.push('/mypage')}>마이페이지</TextButton>
+                <Button variant='outlined' size='small' onClick={onLogout} style={{ marginRight: '8px', width: '90px' }}>로그아웃</Button>
+                <Button variant='outlined' size='small' onClick={() => router.push('/mypage')} style={{ width: '90px' }}>마이페이지</Button>
               </>
               :
               <>
-                <TextButton onClick={() => router.push('/login')} style={{ marginRight: '8px' }}>로그인</TextButton>
-                <TextButton onClick={() => router.push('/signup')}>회원가입</TextButton>
+                <Button variant='outlined' size='small' onClick={() => router.push('/login')} style={{ marginRight: '8px', width: '90px' }}>로그인</Button>
+                <Button variant='outlined' size='small' onClick={() => router.push('/signup')} style={{ width: '90px' }}>회원가입</Button>
               </>}
-
-
-          </div>
+          </NoneShowMobile>
+          <ShowMobile>
+            <IconButton onClick={() => {
+              setDialogOpenObj({
+                ...dialogOpenObj,
+                ['search']: true
+              })
+            }}>
+              <Icon icon='ion:search' />
+            </IconButton>
+            <IconButton onClick={() => {
+              setSideMenuOpen(true);
+            }}>
+              <Icon icon='ion:menu' style={{ fontSize: '1.8rem' }} />
+            </IconButton>
+          </ShowMobile>
         </HeaderMenuContainer>
       </Header>
+      <Drawer
+        anchor={'right'}
+        open={sideMenuOpen}
+        onClose={() => {
+          setSideMenuOpen(false);
+        }}
+        style={{
+        }}
+      >
+        <ColumnMenuContainer>
+          {auth?.pk > 0 ?
+            <>
+              <ColumnMenuTitle style={{ borderBottom: '1px solid #ccc', paddingBlock: '1rem' }}>{auth?.nickname}님, 환영합니다.</ColumnMenuTitle>
+            </>
+            :
+            <>
+              <ColumnMenuTitle style={{ borderBottom: '1px solid #ccc', paddingBlock: '1rem' }}>로그인을 해주세요.</ColumnMenuTitle>
+            </>}
+          {auth?.pk > 0 ?
+            <>
+              {authList.map((item, idx) => (
+                <>
+                  <RowContent style={{ alignItems: 'center', cursor: 'pointer' }} onClick={() => {
+                    router.push(`${item.link_key}`);
+                    setSideMenuOpen(false);
+                  }}>
+                    <Icon icon={item.icon} style={{ color: theme.color.background1 }} />
+                    <Typography style={{ padding: '0.3rem', }} variant="subtitle2">{item.name}</Typography>
+                  </RowContent>
 
+                </>
+              ))}
+              <RowContent style={{ alignItems: 'center', cursor: 'pointer' }} onClick={() => {
+                onLogout();
+                setSideMenuOpen(false);
+              }}>
+                <Icon icon={'ri:logout-circle-r-line'} style={{ color: theme.color.background1 }} />
+                <Typography style={{ padding: '0.3rem', }} variant="subtitle2">로그아웃</Typography>
+              </RowContent>
+            </>
+            :
+            <>
+              {noneAuthList.map((item, idx) => (
+                <>
+                  <RowContent style={{ alignItems: 'center', cursor: 'pointer' }} onClick={() => {
+                    router.push(`${item.link_key}`);
+                    setSideMenuOpen(false);
+                  }}>
+                    <Icon icon={item.icon} style={{ color: theme.color.background1 }} />
+                    <Typography style={{ padding: '0.3rem', }} variant="subtitle2">{item.name}</Typography>
+                  </RowContent>
+                </>
+              ))}
+            </>}
+          <ColumnMenuTitle>지역별샵</ColumnMenuTitle>
+          {cityList && cityList.map(item => (
+            <>
+              <Typography onClick={() => {
+                router.push(`/shop-list?city=${item?.pk}`)
+                setSideMenuOpen(false);
+              }} style={{ padding: '0.3rem', cursor: 'pointer' }} variant="subtitle2">{item.name}</Typography>
+            </>
+          ))}
+          <ColumnMenuTitle>테마별삽</ColumnMenuTitle>
+          {themeList && themeList.map(item => (
+            <>
+              <Typography onClick={() => {
+                router.push(`/shop-list?theme=${item?.pk}`)
+                setSideMenuOpen(false);
+              }} style={{ padding: '0.3rem', cursor: 'pointer' }} variant="subtitle2">{item.name}</Typography>
+            </>
+          ))}
+        </ColumnMenuContainer>
+      </Drawer>
     </>
   )
 }
+const ColumnMenuTitle = styled.div`
+        margin: 2rem 0 0.5rem 0;
+        font-weight: bold;
+
+`
 export default Headers;
