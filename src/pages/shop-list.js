@@ -81,6 +81,9 @@ export const Merchandise = (props) => {
             >
                 <MerchandiseImg src={item?.img_src} alt={item?.img_src_alt} />
                 <MerchandiseExplain>
+                    <Font5 style={{ display: 'flex', alignItems: 'center', margin: '0 0 auto 0' }}>
+                        <div>댓글 {item?.comment_count} | 리뷰 {item?.review_count}</div>
+                    </Font5>
                     <Font4 style={{ margin: 'auto 0' }}>{item?.name}</Font4>
                     <Font5 style={{ display: 'flex', alignItems: 'center', margin: 'auto 0' }}>
                         <h3 style={{ margin: '0' }}>{item?.theme_name}</h3>
