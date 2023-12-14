@@ -9,12 +9,15 @@ import { MdNavigateBefore } from 'react-icons/md';
 import theme from '../styles/theme';
 import { IoMdArrowBack } from 'react-icons/io';
 import $ from 'jquery';
-import { onClickExternalLink, returnMoment } from '../functions/utils';
+import { getLocation, onClickExternalLink, returnMoment } from '../functions/utils';
 import { IoMdClose } from 'react-icons/io'
 import { IoCloseCircleOutline } from 'react-icons/io5';
 import { TextButton } from '../components/elements/UserContentTemplete';
 const logoTextColorImg = '/assets/images/test/logo_test_color.png'
 import { useRouter } from 'next/router';
+import { CardContent } from '@mui/material';
+import { Icon } from '@iconify/react';
+import { Font4 } from 'src/components/elements/ManagerTemplete';
 const Header = styled.header`
 position:fixed;
 height:6rem;
@@ -30,7 +33,7 @@ background:#fff;
 const HeaderContainer = styled.div`
 width:90%;
 position:relative;
-max-width:1000px;
+max-width:1150px;
 margin:0 auto;
 display:none;
 align-items:center;
@@ -41,7 +44,7 @@ justify-content: space-between;
 `
 const HeaderMenuContainer = styled.div`
 width:90%;
-max-width:1000px;
+max-width:1150px;
 position:relative;
 margin:0 auto;
 display:flex;
@@ -49,7 +52,6 @@ align-items:center;
 justify-content: space-between;
 
 @media screen and (max-width:1050px) { 
-  display:none;
 }
 `
 const HeaderMenu = styled.div`
@@ -130,7 +132,7 @@ const Headers = () => {
 
   const [popupList, setPopupList] = useState([]);
   const [themeList, setThemeList] = useState([]);
-
+  const [myAddress, setMyAddress] = useState("");
   const [auth, setAuth] = useState({});
   useEffect(() => {
 
@@ -183,6 +185,9 @@ const Headers = () => {
     })
   }, [])//hover 관련
   async function getHeaderContent() {
+    let locate = await getLocation();
+    const { data: res_locate } = await axios.post('/api/getaddressbylocation', locate);
+    setMyAddress(res_locate?.data);
     const { data: response } = await axios.get('/api/getheadercontent')
     setPopupList(response?.data?.popup ?? []);
     setThemeList(response?.data?.theme);
@@ -305,95 +310,16 @@ const Headers = () => {
           :
           <>
           </>}
-        <HeaderContainer>{/*모바일 */}
-          {isSearch ?
-            <>
-              <IoMdArrowBack style={{ fontSize: '24px' }} onClick={() => setIsSearch(false)} />
-              <SearchInput type={'text'} placeholder='두 글자 이상 입력해주세요.' className='search' onKeyPress={onKeyPress} />
-              <AiOutlineSearch style={{ fontSize: '24px' }} onClick={() => {
-                if ($('.search').val().length < 2) {
-                  alert('두 글자 이상 입력해주세요.');
-                } else {
-                  setIsSearch(false);
-                  router.push('/search', { query: $('.search').val() });
-                }
-              }} />
-            </>
-            :
-            <>
-              <div>
-                {isPost ?
-                  <>
-                    <MdNavigateBefore style={{ fontSize: '30px', marginLeft: '-7px' }} onClick={onClickNavigateBefore} />
-                  </>
-                  :
-                  <>
-                    <div style={{ display: 'flex' }}>
-                      <img src={logoSrc} alt="홈으로" style={{ height: '2rem', marginTop: '0.25rem' }} onClick={() => { router.push('/') }} />
-                      <img src={logoTextColorImg} alt="홈으로" style={{ height: '1.5rem', marginTop: '0.5rem', marginLeft: '0.2rem' }} onClick={() => { router.push('/') }} />
-                    </div>
-                  </>}
-              </div>
-              <div style={{ display: 'flex', width: '180px', fontSize: theme.size.font5, justifyContent: 'space-between', position: 'relative' }}>
-                {/* <AiOutlineBell onClick={onClickBell} style={{ width: '2rem', height: '1.5rem', cursor: 'pointer' }} />
-                <AiOutlineSearch onClick={changeSearchModal} style={{ width: '2rem', height: '1.5rem', cursor: 'pointer' }} /> */}
-                {auth?.pk > 0 ?
-                  <>
-                    <TextButton onClick={onLogout} style={{ marginRight: '8px' }}>로그아웃</TextButton>
-                    <TextButton onClick={() => router.push('/mypage')}>마이페이지</TextButton>
-                  </>
-                  :
-                  <>
-                    <TextButton onClick={() => router.push('/login')} style={{ marginRight: '8px' }}>로그인</TextButton>
-                    <TextButton onClick={() => router.push('/signup')}>회원가입</TextButton>
-                  </>}
-                {/* <AiOutlineSetting onClick={myAuth} style={{ width: '2rem', height: '1.5rem', cursor: 'pointer' }} /> */}
-                {/* {isAlarm ?
-                  <>
-                    <div style={{ width: '10px', height: '10px', background: 'red', position: 'absolute', top: '2px', left: '17px', borderRadius: '50%' }} />
-                  </>
-                  :
-                  <>
-                  </>} */}
-              </div>
-            </>
-          }
 
-        </HeaderContainer>
         <HeaderMenuContainer>{/* pc */}
-          <div style={{ display: 'flex' }}>
+          <div style={{ display: 'flex', cursor: 'pointer' }}>
             <img src={logoSrc} alt="홈으로" style={{ height: '3rem', cursor: 'pointer' }} onClick={() => { router.push('/') }} />
             <img src={logoTextColorImg} alt="홈으로" style={{ height: '2rem', marginTop: '0.5rem', marginLeft: '0.2rem' }} onClick={() => { router.push('/') }} />
           </div>
-          <div style={{ display: 'flex', position: 'relative' }}>
-            {zBottomMenu.map((item, idx) => (
-              <>
-                <HeaderMenu key={idx} className={item?.className} style={{ color: `${item.allowList.includes(router.pathname) ? theme.color.background1 : ''}` }}>
-                  <div onClick={() => {
-                    if (item?.is_location_href) {
-                      window.location.href = item.link;
-                    } else {
-                      router.push(item.link)
-                    }
-                  }}>{item.name}</div>
-                  {item?.className == 'service-dropdown-btn' ?
-                    <>
-                      <div className="service-dropdown-content">
-                        <div style={{ display: 'flex', flexDirection: 'column', margin: '0 auto', alignItems: 'flex-start', textAlign: 'left' }}>
-                          <div onClick={() => router.push('/community-list/notice')}>공지사항</div>
-                          <div onClick={() => router.push('/community-list/faq')}>자주묻는질문</div>
-                          <div onClick={() => router.push('/community-list/request')}>문의하기</div>
-                        </div>
-                      </div>
-                    </>
-                    :
-                    <>
-                    </>}
-                </HeaderMenu>
-
-              </>
-            ))}
-          </div>
+          <CardContent style={{ textAlign: 'center', display: 'flex', alignItems: 'center' }}>
+            <Icon icon='ion:navigate' style={{ color: theme.color.red, margin: 'auto 0.5rem auto auto' }} />
+            <Font4 style={{ margin: 'auto auto auto 0.5rem' }}>{myAddress}</Font4>
+          </CardContent>
           <div style={{ display: 'flex', width: '180px', fontSize: theme.size.font5, justifyContent: 'space-between', position: 'relative' }}>
             {/* <AiOutlineBell onClick={onClickBell} style={{ width: '2rem', height: '1.5rem', cursor: 'pointer' }} />
             <AiOutlineSearch onClick={changeSearchModal} style={{ width: '2rem', height: '1.5rem', cursor: 'pointer' }} /> */}

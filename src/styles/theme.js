@@ -20,6 +20,7 @@ const theme = {
     background1: "#3250d2",
     background2: "#FECC2F",
     background3: "#F4F4F4",
+    background4: "#f4f6f8",
     font1: "#2E2D2D",
     font2: "#707070",
     font3: "#9A9A9A",

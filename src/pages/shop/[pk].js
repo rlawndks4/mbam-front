@@ -1,12 +1,12 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { Wrappers, ViewerContainer, SelectType } from "src/components/elements/UserContentTemplete";
+import { Wrappers, ViewerContainer, SelectType, twoOfThreeButtonStyle } from "src/components/elements/UserContentTemplete";
 import { backUrl } from "src/data/Data";
 import theme from "src/styles/theme";
 import styled from "styled-components";
 import { commarNumber, getLocation, makeMaxPage, range } from "src/functions/utils";
 import Loading from "src/components/Loading";
-import { Card, CardContent, Grid, IconButton } from "@mui/material";
+import { Button, Card, CardContent, Grid, IconButton } from "@mui/material";
 import { Icon } from "@iconify/react";
 import ContentTable from "src/components/ContentTable";
 import MBottomContent from "src/components/elements/MBottomContent";
@@ -15,6 +15,8 @@ import PageContainer from "src/components/elements/pagination/PageContainer";
 import PageButton from "src/components/elements/pagination/PageButton";
 import { getLocalStorage } from "src/functions/LocalStorage";
 import { AiTwotonePhone, AiTwotoneMessage } from 'react-icons/ai'
+import $ from 'jquery';
+
 const ReactQuill = dynamic(() => import('react-quill'), {
     ssr: false,
     loading: () => <p>Loading ...</p>,
@@ -24,6 +26,7 @@ import UserLayout from "src/layouts/UserLayout";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import NaverMap from "src/components/NaverMap";
+import CommentComponent from "src/components/CommentComponent";
 const CallButton = styled.a`
 
 background:${props => props.theme.color.background1};
@@ -106,7 +109,11 @@ const Shop = () => {
     const [eventPageList, setEventPageList] = useState([]);
     const [reviewPageList, setReviewPageList] = useState([]);
     const [user, setUser] = useState({});
+    const [comments, setComments] = useState([]);
+    const [auth, setAuth] = useState({})
+
     useEffect(() => {
+        setAuth(JSON.parse(localStorage.getItem('auth')));
         getShop(1, 1);
     }, [])
 
@@ -137,12 +144,52 @@ const Shop = () => {
 
         setTypeNum(num)
     }
+    const fetchComments = async () => {
+        const { data: response } = await axios.get(`/api/getcommnets?shop_pk=${router.query?.pk}`);
+        setComments(response.data);
+    }
+
     const shareCopy = () => {
         let copyText = document.getElementById("share-link");
         copyText.select();
         copyText.setSelectionRange(0, 99999); // For mobile devices
         navigator.clipboard.writeText(copyText.value);
         alert("주소가 복사 되었습니다.");
+    }
+    const addComment = async (parent_pk) => {
+        if (!$(`.comment-${parent_pk ?? 0}`).val()) {
+            alert('필수 값을 입력해 주세요.');
+            return;
+
+        }
+        const { data: response } = await axios.post('/api/addcomment', {
+            parentPk: parent_pk ?? 0,
+            note: $(`.comment-${parent_pk ?? 0}`).val(),
+            shop_pk: router.query?.pk
+        })
+
+        if (response.result > 0) {
+            $(`.comment-${parent_pk ?? 0}`).val("")
+            fetchComments();
+        } else {
+            alert(response.message)
+        }
+    }
+    const updateComment = async (pk) => {
+        if (!$(`.update-comment-${pk ?? 0}`).val()) {
+            alert('필수 값을 입력해 주세요.');
+        }
+        const { data: response } = await axios.post('/api/updatecomment', {
+            pk: pk,
+            note: $(`.update-comment-${pk ?? 0}`).val(),
+        })
+
+        if (response.result > 0) {
+            $(`.update-comment-${pk ?? 0}`).val("")
+            fetchComments();
+        } else {
+            alert(response.message)
+        }
     }
     return (
         <>
@@ -285,6 +332,8 @@ const Shop = () => {
                                         </Card>
                                     </Grid>
                                 </Grid>
+                                <CommentComponent addComment={addComment} data={comments} fetchComments={fetchComments} updateComment={updateComment} auth={auth} />
+
                             </>
                             :
                             <>
@@ -298,29 +347,21 @@ const Shop = () => {
                                 />
 
                                 <MBottomContent>
-                                    {user?.pk == data?.shop?.user_pk ?
-                                        <>
-                                            <div style={{ width: '92px' }} />
-
-                                        </>
-                                        :
-                                        <>
-                                            <div />
-                                        </>}
+                                    <div />
                                     {eventPageList.length > 0 ?
                                         <>
                                             <PageContainer>
-                                                <PageButton onClick={() => getShop(1, reviewPage)}>
+                                                <PageButton onClick={() => getShop(1, reviewPage)} style={{ color: '#000', background: '#fff', border: '1px solid #ccc' }}>
                                                     처음
                                                 </PageButton>
                                                 {eventPageList.map((item, index) => (
                                                     <>
-                                                        <PageButton onClick={() => getShop(item, reviewPage)} style={{ color: `${eventPage == item ? '#fff' : ''}`, background: `${eventPage == item ? theme.color.background1 : ''}`, display: `${Math.abs(index + 1 - eventPage) > 4 ? 'none' : ''}` }}>
+                                                        <PageButton onClick={() => getShop(item, reviewPage)} style={{ color: `${eventPage == item ? '#000' : ''}`, background: `${eventPage == item ? theme.color.background1 : ''}`, display: `${Math.abs(index + 1 - eventPage) > 4 ? 'none' : ''}` }}>
                                                             {item}
                                                         </PageButton>
                                                     </>
                                                 ))}
-                                                <PageButton onClick={() => getShop(eventPageList.length ?? 1, reviewPage)}>
+                                                <PageButton onClick={() => getShop(eventPageList.length ?? 1, reviewPage)} style={{ color: '#000', background: '#fff', border: '1px solid #ccc' }}>
                                                     마지막
                                                 </PageButton>
                                             </PageContainer>
@@ -329,26 +370,20 @@ const Shop = () => {
                                         <>
                                         </>
                                     }
-                                    {user?.pk == data?.shop?.user_pk ?
-                                        <>
-                                            <AddButton style={{ width: '92px' }} onClick={() => {
-                                                router.push(`/add-community/shop_event`, {
-                                                    query: {
-                                                        shop_pk: data?.shop?.pk,
-                                                        shop_name: data?.shop?.name
-                                                    }
-                                                })
-                                            }}>+ 작성하기</AddButton>
+                                    <div />
 
-                                        </>
-                                        :
-                                        <>
-                                            <div />
-                                        </>
-                                    }
                                 </MBottomContent>
-
-
+                                {user?.pk == data?.shop?.user_pk &&
+                                    <>
+                                        <Button variant="text" sx={{ ...twoOfThreeButtonStyle, }} onClick={() => {
+                                            router.push(`/add-community/shop_event`, {
+                                                query: {
+                                                    shop_pk: data?.shop?.pk,
+                                                    shop_name: data?.shop?.name
+                                                }
+                                            })
+                                        }}>작성하기</Button>
+                                    </>}
                             </>
                             :
                             <>
@@ -362,11 +397,11 @@ const Shop = () => {
                                 />
 
                                 <MBottomContent>
-                                    <div style={{ width: '92px' }} />
+                                    <div />
                                     {reviewPageList.length > 0 ?
                                         <>
                                             <PageContainer>
-                                                <PageButton onClick={() => getShop(eventPage, 1)}>
+                                                <PageButton onClick={() => getShop(eventPage, 1)} style={{ color: '#000', background: '#fff', border: '1px solid #ccc' }}>
                                                     처음
                                                 </PageButton>
                                                 {reviewPageList.map((item, index) => (
@@ -376,7 +411,7 @@ const Shop = () => {
                                                         </PageButton>
                                                     </>
                                                 ))}
-                                                <PageButton onClick={() => getShop(eventPage, reviewPageList.length ?? 1)}>
+                                                <PageButton onClick={() => getShop(eventPage, reviewPageList.length ?? 1)} style={{ color: '#000', background: '#fff', border: '1px solid #ccc' }}>
                                                     마지막
                                                 </PageButton>
                                             </PageContainer>
@@ -384,19 +419,11 @@ const Shop = () => {
                                         :
                                         <>
                                         </>}
-
-
-                                    <AddButton style={{ width: '92px' }} onClick={() => {
-                                        router.push(`/add-community/shop_review`, {
-                                            query: {
-                                                shop_pk: data?.shop?.pk,
-                                                shop_name: data?.shop?.name
-                                            }
-                                        })
-                                    }}>+ 작성하기</AddButton>
-
+                                    <div />
                                 </MBottomContent>
-
+                                <Button variant="text" sx={{ ...twoOfThreeButtonStyle, }} onClick={() => {
+                                    router.push(`/add-community/shop_review?shop_pk=${data?.shop?.pk}&shop_name=${data?.shop?.name}`)
+                                }}>작성하기</Button>
                             </>
                             :
                             <>

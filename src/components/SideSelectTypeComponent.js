@@ -7,7 +7,6 @@ const Container = styled.div`
 width:250px;
 margin-right:16px;
 z-index:3;
-position:fixed;
 top: 11rem;
 background:#fff;
 @media screen and (max-width:850px) {
@@ -65,13 +64,13 @@ const makeGuideHeightByWidth = (schema) => {
 const SideSelectTypeComponent = (props) => {
     const { data, category, guide_height, onClickCategory, schema, setTypeNum } = props;
     const [containerStyle, setContainerStyle] = useState({});
-    
+
     return (
         <>
             <Container style={containerStyle} className="none-scroll">
                 {data && data.map((item, idx) => (
                     <>
-                        <Content onClick={() => { onClickCategory(item?.table) }} style={{ fontWeight: `${category == item?.table ? 'bold' : ''}`, borderBottom: `${category == item?.table? `2px solid ${theme.color.font1}` : ''}` }}>
+                        <Content onClick={() => { onClickCategory(item?.table) }} style={{ fontWeight: `${category == item?.table ? 'bold' : ''}`, borderBottom: `${category == item?.table ? `2px solid ${theme.color.font1}` : ''}` }}>
                             <div>{item?.name}</div>
                         </Content>
                     </>

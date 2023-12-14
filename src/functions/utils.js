@@ -30,14 +30,15 @@ export const addItem = async (type, obj) => {
         window.history.back();
     }
 }
-export const overString = (str_, cut_count) =>{
+
+export const overString = (str_, cut_count) => {
     let str = str_;
-    if(!str){
+    if (!str) {
         return "";
     }
-    if(str.length<=cut_count){
+    if (str.length <= cut_count) {
         return str;
-    }else{
+    } else {
         return str.substring(0, cut_count) + '...'
     }
 }
@@ -52,7 +53,7 @@ export const deleteItem = async (type, obj) => {
 
 }
 export const commarNumber = (num) => {
-    if(num > 0 && num < 0.000001){
+    if (num > 0 && num < 0.000001) {
         return "0.00";
     }
     if (!num && num != 0) {
@@ -100,14 +101,14 @@ export const formatPhoneNumber = (input) => {
     return result;
 }
 export const returnMoment = (num, date) => {//num 0: 오늘, num -1: 어제 , date->new Date() 인자로 받음
-    try{
+    try {
         var today = new Date();
         if (num) {
             let new_date = new Date(today.setDate(today.getDate() + num));
             today = new_date;
         }
-        if(date){
-            today = date; 
+        if (date) {
+            today = date;
         }
         var year = today.getFullYear();
         var month = ('0' + (today.getMonth() + 1)).slice(-2);
@@ -119,11 +120,11 @@ export const returnMoment = (num, date) => {//num 0: 오늘, num -1: 어제 , da
         var timeString = hours + ':' + minutes + ':' + seconds;
         let moment = dateString + ' ' + timeString;
         return moment;
-    }catch(err){
+    } catch (err) {
         console.log(err);
         return false;
     }
-    
+
 }
 export const getIframeLinkByLink = (str) => {
     let ans = "";
@@ -139,8 +140,8 @@ export const getIframeLinkByLink = (str) => {
     return ans;
 }
 export const categoryToNumber = (str) => {
-    for(var i = 0;i<communityCategoryList.length;i++){
-        if(str == communityCategoryList[i].table){
+    for (var i = 0; i < communityCategoryList.length; i++) {
+        if (str == communityCategoryList[i].table) {
             break;
         }
     }
@@ -206,14 +207,14 @@ export const makeDiscountPrice = (num, percent) => {
     let result = num * (100 - percent) / 100;
     return result;
 }
-export const makeQueryObj = (query_) =>{
+export const makeQueryObj = (query_) => {
     let obj = {};
-    if(!query_ || query_[0] != '?'){
+    if (!query_ || query_[0] != '?') {
         return obj;
     }
     let query = query_.substring(1, query_.length);
     query = query.split('&');
-    for(var i = 0;i<query.length;i++){
+    for (var i = 0; i < query.length; i++) {
         let content = query[i].split('=');
         obj[content[0]] = content[1];
     }
@@ -279,7 +280,7 @@ export const dateFormat = (date, is_minus) => {//두날짜의 시간차
         } else {
             return `${parseInt(hour)}시간 전`;
         }
-    } else if (day < 7) {
+    } else if (day < 90) {
         if (is_minus) {
             return `${parseInt(day)} Days`;
         } else {
@@ -295,36 +296,36 @@ export const dateFormat = (date, is_minus) => {//두날짜의 시간차
 }
 export function getLocation() {
     if (navigator.geolocation) {
-      
-      // GPS를 지원하면
-      return new Promise(resolve => {
-        navigator.geolocation.getCurrentPosition(
-          function (position) {
-            resolve({
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-            });
-          },
-          function (error) {
-            console.error(error);
-            resolve({
-              latitude: 36.48509,
-              longitude: 127.30035,
-            });
-          },
-          {
-            enableHighAccuracy: false,
-            maximumAge: 0,
-            timeout: Infinity,
-          },
-        );
-      }).then(async coords => {
-        return coords;
-      });
+
+        // GPS를 지원하면
+        return new Promise(resolve => {
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    resolve({
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                    });
+                },
+                function (error) {
+                    console.error(error);
+                    resolve({
+                        latitude: 36.48509,
+                        longitude: 127.30035,
+                    });
+                },
+                {
+                    enableHighAccuracy: false,
+                    maximumAge: 0,
+                    timeout: Infinity,
+                },
+            );
+        }).then(async coords => {
+            return coords;
+        });
     }
     console.info('GPS를 지원하지 않습니다');
     return {
-      latitude: 36.48509,
-      longitude: 127.30035,
+        latitude: 36.48509,
+        longitude: 127.30035,
     };
-  }
+}

@@ -15,10 +15,11 @@ const koreanImg = '/assets/images/banner/korean.jpg'
 const shop1Img = '/assets/images/banner/1shop.jpg'
 const locationGoToImg = '/assets/images/test/loacation_go_to.png'
 const requestGif = '/assets/images/banner/request.gif'
-import { Row } from 'src/components/elements/ManagerTemplete';
+import { Col, Font3, Font4, Font5, Row } from 'src/components/elements/ManagerTemplete';
 import theme from 'src/styles/theme';
 import { useRouter } from 'next/router';
 import UserLayout from 'src/layouts/UserLayout';
+import { dateFormat } from 'src/functions/utils';
 
 const WrappersStyle = styled.div`
 position:relative;
@@ -33,54 +34,87 @@ font-family:${props => props.theme.font.normal};
     margin-top:4rem;
 }
 `
-const MerchandiseContainer = styled.div`
-width: 100%;
+const TopContainer = styled.div`
 display: flex;
-flex-wrap:wrap;
-column-gap: 60px;
-grid-row-gap: 10px;
-row-gap: 30px;
-margin:2rem auto;
-@media (max-width: 1350px) {
-  column-gap: 4.2vw;
-}
-@media (max-width: 650px) {
-    
-}
-@media (max-width: 550px) {
-  column-gap: 4.2vw;
+width: 100%;
+background: ${theme.color.background1};
+`
+const TopContent = styled.div`
+width: 25%;
+padding:1rem 0;
+text-align: center;
+color: #fff;
+font-weight: bold;
+font-size: ${theme.size.font4};
+cursor: pointer;
+`
+const ThemeCardContainer = styled.div`
+display: flex;
+flex-wrap: wrap;
+column-gap: 0.75rem;
+@media screen and (max-width:1050px) { 
+    column-gap: 1.2vw;
 }
 `
-const CityCard = styled.img`
-width: 23%;
-height:66px;
-margin:0.5rem 1%;
+const ThemeCard = styled.img`
+width: 125px;
+height:125px;
+border-radius: 50%;
 cursor:pointer;
 @media screen and (max-width:1050px) { 
-    width: 40vw;
-    height: 10vw;
-    margin:0.5rem 2.5%;
+    width: 17vw;
+    height: 17vw;
 }
 `
-const HalfImg = styled.img`
-width: 100%;
-border-radius:32px;
-box-shadow:${props => props.theme.boxShadow};
-cursor:pointer;
+const CommunityWrappers = styled.div`
+width:250px;
+display: flex;
+flex-direction: column;
+row-gap: 1rem;
+@media screen and (max-width:1050px) { 
+    display: none;
+}
 `
-const ThreeHalfImg = styled.img`
-width: 30%;
-border-radius:16px;
-box-shadow:${props => props.theme.boxShadow};
+const CommunityContainer = styled.div`
+display: flex;
+flex-direction: column;
+border: 1px solid 1px;
+border-radius: 0.5rem;
+min-height: 150px;
+border: 1px solid #ccc;
+
 `
-const Mobile90PercentContainer = styled.div`
+const CommunityHeader = styled.div`
+background: ${theme.color.background4};
+font-size: ${theme.size.font4};
+padding: 0.75rem 0.5rem;
+border-top-right-radius: 0.5rem;
+border-top-left-radius: 0.5rem;
+font-weight: 500;
+`
+const CommunityContent = styled.div`
+cursor: pointer;
+font-size: ${theme.size.font5};
 display: flex;
 justify-content: space-between;
-width: 100%;
-margin: 0 auto;
+
+`
+const ShopOptionWrappers = styled.div`
+width:218px;
+display: flex;
+flex-direction: column;
+background: ${theme.color.background4};
+padding: 1rem;
+row-gap: 0.5rem;
+border-radius: 0.5rem;
 @media screen and (max-width:1050px) { 
-    width: 90%;
+    display: none;
 }
+`
+const ShopOptionContainer = styled.div`
+`
+const ShopOption = styled.div`
+
 `
 const NextArrow = ({ onClick }) => {
     return (
@@ -101,11 +135,20 @@ const Home = () => {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
 
+    const [homeContent, setHomeContent] = useState({});
     const [banners, setBanners] = useState([]);
     const [bannerLinks, setBannerLinks] = useState([]);
     const [cityList, setCityList] = useState([])
+    const [themeList, setThemeList] = useState([])
     const [shopList, setShopList] = useState([])
     const [setting, setSetting] = useState({});
+    const communityList = [
+        { label: '공지사항', table: 'notice' },
+        { label: '공식블로그', table: 'blog' },
+        { label: '방문후기', table: 'shop_review' },
+        { label: '자유게시판', table: 'freeboard' },
+        { label: '가입인사', table: 'greeting' },
+    ]
     const settings = {
         infinite: true,
         speed: 500,
@@ -133,10 +176,12 @@ const Home = () => {
 
                 }
             }
+            setHomeContent(response?.data);
             setCityList(response?.data?.city ?? []);
             setBanners(banner_list);
             setBannerLinks(banner_link_list);
             setShopList(response?.data?.shop ?? []);
+            setThemeList(response?.data?.theme ?? []);
             setLoading(false);
         }
         fetchPost();
@@ -152,6 +197,12 @@ const Home = () => {
                     </>
                     :
                     <>
+                        <TopContainer>
+                            <TopContent onClick={() => { router.push(`/shop-list`) }}>지역별업소</TopContent>
+                            <TopContent onClick={() => { router.push(`/shop-list`) }}>테마별업소</TopContent>
+                            <TopContent onClick={() => { router.push(`/community-list/freeboard`) }}>커뮤니티</TopContent>
+                            <TopContent onClick={() => { router.push(`/add-community/request`) }}>1:1문의</TopContent>
+                        </TopContainer>
                         <Slider {...settings} className='board-container pointer slider1'>
                             {banners.length > 0 && banners.map((item, idx) => (
                                 <>
@@ -169,55 +220,73 @@ const Home = () => {
                         </Slider>
 
                     </>}
-                <h1 style={{ margin: '1rem auto', fontSize: theme.size.font2 }}>{setting?.main_home_title}</h1>
-                <Mobile90PercentContainer style={{ marginTop: '1rem' }}>
-                    <Row style={{ flexDirection: 'column', width: '48.5%' }}>
-                        <HalfImg src={koreanImg} onClick={() => router.push('/shop-list?is_around=1&theme=6')} />
-                        <a style={{ margin: '0 auto', textDecoration: 'none', color: '#000' }} href={`/shop-list?is_around=1&theme=6`}>
-                            <h2>한국인출장</h2>
-                        </a>
-                    </Row>
-                    <Row style={{ flexDirection: 'column', width: '48.5%' }}>
-                        <HalfImg src={homeTaiImg} onClick={() => router.push('/shop-list?is_around=1&theme=4')} />
-                        <a style={{ margin: '0 auto', textDecoration: 'none', color: '#000' }} href={`/shop-list?is_around=1&theme=4`}>
-                            <h2>홈타이</h2>
-                        </a>
-                    </Row>
-                </Mobile90PercentContainer>
-                <Mobile90PercentContainer style={{ marginTop: '1rem' }}>
-                    <Row style={{ flexDirection: 'column', width: '48.5%' }}>
-                        <HalfImg src={shop1Img} onClick={() => router.push('/shop-list?is_around=1&theme=9')} />
-                        <a style={{ margin: '0 auto', textDecoration: 'none', color: '#000' }} href={`/shop-list?is_around=1&theme=9`}>
-                            <h2>1인샵</h2>
-                        </a>
-                    </Row>
-                    <Row style={{ flexDirection: 'column', width: '48.5%' }}>
-                        <HalfImg src={requestGif} onClick={() => router.push('/add-shop')} />
-                        <a style={{ margin: '0 auto', textDecoration: 'none', color: '#000' }} href={`/add-shop`}>
-                            <h2>제휴문의</h2>
-                        </a>
-                    </Row>
-                </Mobile90PercentContainer>
             </WrappersStyle>
-            <Wrappers className='wrappers' style={{ marginTop: '0.5rem' }}>
+            <Wrappers className='wrappers' style={{ marginTop: '2rem', maxWidth: '1150px' }}>
                 {loading ?
                     <>
                     </>
                     :
                     <>
+                        <RowContent style={{ columnGap: '1rem', alignItems: 'flex-start' }}>
+                            <ShopOptionWrappers>
+                                <Font3 style={{ fontWeight: 'bold' }}>지역별샵</Font3>
+                                {cityList && cityList.map((item, idx) => (
+                                    <>
+                                        <Font4 style={{ cursor: 'pointer' }} onClick={() => {
+                                            router.push(`/shop-list?city=${item?.pk}`)
+                                        }}>{item?.name}</Font4>
 
+                                    </>
+                                ))}
+                                <Font3 style={{ fontWeight: 'bold', marginTop: '1rem' }}>테마별샵</Font3>
+                                {themeList && themeList.map((item, idx) => (
+                                    <>
+                                        <Font4 style={{ cursor: 'pointer' }} onClick={() => {
+                                            router.push(`/shop-list?theme=${item?.pk}`)
+                                        }}>{item?.name}</Font4>
+                                    </>
+                                ))}
+                            </ShopOptionWrappers>
+                            <Col>
+                                <ThemeCardContainer>
+                                    {themeList && themeList.map((item, idx) => (
+                                        <>
+                                            <Col style={{ alignItems: 'center' }}>
+                                                <ThemeCard src={item?.img_src || '/assets/images/test/logo.png'} idx={idx} onClick={() => {
+                                                    router.push(`/shop-list?theme=${item?.pk}`)
+                                                }} />
+                                                <Font5 style={{ fontWeight: 'bold', cursor: 'pointer' }} onClick={() => {
+                                                    router.push(`/shop-list?theme=${item?.pk}`)
+                                                }}>{item?.name}</Font5>
+                                            </Col>
+                                        </>
+                                    ))}
+                                </ThemeCardContainer>
+                            </Col>
+                            <CommunityWrappers>
+                                {communityList.map((community) => (
+                                    <>
+                                        <CommunityContainer>
+                                            <CommunityHeader>{community.label}</CommunityHeader>
+                                            <Col style={{ padding: '0.5rem', rowGap: '0.25rem' }}>
+                                                {homeContent[community.table] && homeContent[community.table].map((itm) => (
+                                                    <>
+                                                        <CommunityContent onClick={() => {
+                                                            router.push(`/post/${community.table}/${itm?.pk}`)
+                                                        }}>
+                                                            <div>{itm?.title?.length > 12 ? `${itm?.title.slice(0, 12)}...` : itm?.title}</div>
+                                                            <div style={{ color: '#aaa' }}>{dateFormat(itm?.date)}</div>
+                                                        </CommunityContent>
+                                                    </>
+                                                ))}
+                                            </Col>
 
-                        <img src={locationGoToImg} style={{ width: '90%', margin: '0 auto', maxWidth: '700px' }} />
-                        <RowContent style={{ flexWrap: 'wrap' }}>
-                            {cityList && cityList.map((item, idx) => (
-                                <>
-                                    <CityCard src={item?.img_src} idx={idx} onClick={() => {
-                                        router.push(`/shop-list?city=${item?.pk}`)
-                                    }} />
-                                </>
-                            ))}
+                                        </CommunityContainer>
+                                    </>
+                                ))}
+                            </CommunityWrappers>
                         </RowContent>
-                        {!window?.ReactNativeWebView &&
+                        {/* {!window?.ReactNativeWebView &&
                             <>
                                 <RowContent style={{ margin: '4rem 0 0 0', justifyContent: 'space-between', cursor: 'pointer' }} onClick={() => {
                                     window.location.href = 'https://play.google.com/store/apps/details?id=com.dooseob25.mago';
@@ -225,7 +294,6 @@ const Home = () => {
                                     <div style={{ display: 'flex', flexDirection: 'column', width: '50%' }}>
                                         <div style={{ margin: 'auto auto 0.5rem auto' }}>
                                             마사지밤 어플 출시!!
-
                                         </div>
                                         <div style={{ margin: '0.5rem auto auto auto' }}>
                                             지금 바로 다운 받으세요!!
@@ -233,19 +301,10 @@ const Home = () => {
                                     </div>
                                     <img src={playStoreSrc} style={{ width: '50%', }} alt="#" />
                                 </RowContent>
-                            </>}
+                            </>} */}
 
                     </>}
-                <MerchandiseContainer>
-                    {shopList && shopList.map((item, idx) => (
-                        <>
-                            <Merchandise
-                                router={router}
-                                item={item}
-                            />
-                        </>
-                    ))}
-                </MerchandiseContainer>
+
             </Wrappers>
         </>
     )

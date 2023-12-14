@@ -55,34 +55,20 @@ export const getCommunityCategoryFormat = (en, ko) => {
         ko: ko
     }
 }
-export const objCommunityCategory = {
-    manager: [
-        getCommunityCategoryFormat('request', '문의'),
-        getCommunityCategoryFormat('faq', 'FAQ'),
-        getCommunityCategoryFormat('notice', '공지사항'),
-    ],
-    user: [
-        getCommunityCategoryFormat('freeboard', '자유게시판'),
-        getCommunityCategoryFormat('question', '질문게시판'),
-        getCommunityCategoryFormat('humor', '유머게시판'),
-        getCommunityCategoryFormat('news', '마사지소식'),
-        getCommunityCategoryFormat('party', '파티모집'),
-    ],
-    shop: [
-        getCommunityCategoryFormat('shop_review', '업체후기'),
-        getCommunityCategoryFormat('shop_event', '업체이벤트'),
-    ]
-}
 export const communityCategoryList = [
     { table: 'freeboard', name: '자유게시판', is_write: true },
-    { table: 'question', name: '질문게시판', is_write: true },
-    { table: 'humor', name: '유머게시판', is_write: true },
-    { table: 'news', name: '마사지소식', is_write: true },
-    { table: 'party', name: '파티모집', is_write: true },
-    { table: 'shop_review', name: '업체후기', },
-    { table: 'shop_event', name: '업체이벤트', },
+    { table: 'anonymous', name: '익명게시판', is_write: true },
+    { table: 'greeting', name: '가입인사', is_write: true },
+    { table: 'education', name: '창업교육', is_write: true },
+
+    { table: 'shop_review', name: '방문후기', },
+    { table: 'shop_offer', name: '구인구직', },
+    { table: 'shop_trade', name: '샵매매', },
+
     { table: 'notice', name: '공지사항', },
     { table: 'faq', name: '자주묻는질문', },
+    { table: 'event', name: '이벤트', },
+    { table: 'blog', name: '공식블로그', },
     { table: 'request', name: '문의하기', },
 ]
 export const columnObjFormat = (name, width, type, column) => {
@@ -103,8 +89,8 @@ export const objHistoryListContent = {
 
         ]
     },
-    question: {
-        title: "질문게시판",
+    anonymous: {
+        title: "익명게시판",
         columns: [
             columnObjFormat('제목', '', 'text', 'title'),
             columnObjFormat('작성인', '', 'text', 'nickname'),
@@ -112,8 +98,8 @@ export const objHistoryListContent = {
 
         ]
     },
-    humor: {
-        title: "유머게시판",
+    greeting: {
+        title: "가입인사",
         columns: [
             columnObjFormat('제목', '', 'text', 'title'),
             columnObjFormat('작성인', '', 'text', 'nickname'),
@@ -121,17 +107,8 @@ export const objHistoryListContent = {
 
         ]
     },
-    news: {
-        title: "마사지소식",
-        columns: [
-            columnObjFormat('제목', '', 'text', 'title'),
-            columnObjFormat('작성인', '', 'text', 'nickname'),
-            columnObjFormat('등록일', '', 'date', 'date'),
-
-        ]
-    },
-    party: {
-        title: "파티모집",
+    education: {
+        title: "창업교육",
         columns: [
             columnObjFormat('제목', '', 'text', 'title'),
             columnObjFormat('작성인', '', 'text', 'nickname'),
@@ -140,7 +117,7 @@ export const objHistoryListContent = {
         ]
     },
     shop_review: {
-        title: "업체후기",
+        title: "방문후기",
         columns: [
             columnObjFormat('제목', '', 'text', 'title'),
             columnObjFormat('업체명', '', 'text', 'shop_name'),
@@ -150,7 +127,7 @@ export const objHistoryListContent = {
         ]
     },
     s_review: {
-        title: "업체후기",
+        title: "방문후기",
         columns: [
             columnObjFormat('제목', '', 'text', 'title'),
             columnObjFormat('작성인', '', 'text', 'nickname'),
@@ -158,8 +135,8 @@ export const objHistoryListContent = {
 
         ]
     },
-    shop_event: {
-        title: "업체이벤트",
+    shop_offer: {
+        title: "구인구직",
         columns: [
             columnObjFormat('제목', '', 'text', 'title'),
             columnObjFormat('업체명', '', 'text', 'shop_name'),
@@ -169,7 +146,44 @@ export const objHistoryListContent = {
         ]
     },
     s_event: {
-        title: "업체이벤트",
+        title: "이벤트",
+        columns: [
+            columnObjFormat('제목', '', 'text', 'title'),
+            columnObjFormat('작성인', '', 'text', 'nickname'),
+            columnObjFormat('등록일', '', 'date', 'date'),
+
+        ]
+    },
+    shop_event: {
+        title: "이벤트",
+        columns: [
+            columnObjFormat('제목', '', 'text', 'title'),
+            columnObjFormat('업체명', '', 'text', 'shop_name'),
+            columnObjFormat('작성인', '', 'text', 'nickname'),
+            columnObjFormat('등록일', '', 'date', 'date'),
+        ]
+    },
+    s_offer: {
+        title: "구인구직",
+        columns: [
+            columnObjFormat('제목', '', 'text', 'title'),
+            columnObjFormat('작성인', '', 'text', 'nickname'),
+            columnObjFormat('등록일', '', 'date', 'date'),
+
+        ]
+    },
+    shop_trade: {
+        title: "샵매매",
+        columns: [
+            columnObjFormat('제목', '', 'text', 'title'),
+            columnObjFormat('업체명', '', 'text', 'shop_name'),
+            columnObjFormat('작성인', '', 'text', 'nickname'),
+            columnObjFormat('등록일', '', 'date', 'date'),
+
+        ]
+    },
+    s_trade: {
+        title: "샵매매",
         columns: [
             columnObjFormat('제목', '', 'text', 'title'),
             columnObjFormat('작성인', '', 'text', 'nickname'),
@@ -188,6 +202,24 @@ export const objHistoryListContent = {
     },
     faq: {
         title: "자주묻는질문",
+        columns: [
+            columnObjFormat('제목', '', 'text', 'title'),
+            columnObjFormat('작성인', '', 'text', 'nickname'),
+            columnObjFormat('등록일', '', 'date', 'date'),
+
+        ]
+    },
+    event: {
+        title: "이벤트",
+        columns: [
+            columnObjFormat('제목', '', 'text', 'title'),
+            columnObjFormat('작성인', '', 'text', 'nickname'),
+            columnObjFormat('등록일', '', 'date', 'date'),
+
+        ]
+    },
+    blog: {
+        title: "공식블로그",
         columns: [
             columnObjFormat('제목', '', 'text', 'title'),
             columnObjFormat('작성인', '', 'text', 'nickname'),

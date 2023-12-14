@@ -133,10 +133,10 @@ const MyPage = () => {
         <>
             <Wrappers className="wrapper" style={{ maxWidth: '800px' }}>
                 <Title>마이페이지</Title>
-                <div style={{ margin: '2rem 0 1rem auto', color: `${theme.color.font2}`, fontSize: theme.size.font3, cursor: 'pointer', fontWeight: 'bold', display: 'flex', alignItems: 'center' }} onClick={() => { router.push('/editmyinfo') }}>
+                {/* <div style={{ margin: '2rem 0 1rem auto', color: `${theme.color.font2}`, fontSize: theme.size.font3, cursor: 'pointer', fontWeight: 'bold', display: 'flex', alignItems: 'center' }} onClick={() => { router.push('/editmyinfo') }}>
                     <div style={{ paddingRight: '8px' }}>내정보 수정하기</div>
                     <MdEdit />
-                </div>
+                </div> */}
 
                 <MyCard>
                     <ProfileContainer>

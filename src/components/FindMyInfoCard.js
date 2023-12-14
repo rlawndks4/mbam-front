@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { WrapperForm, CategoryName, Input, Button, FlexBox, SnsLogo, RegularNotice } from './elements/AuthContentTemplete';
-import { Title,SelectType } from "./elements/UserContentTemplete";
+import { Title, SelectType } from "./elements/UserContentTemplete";
 import theme from "../styles/theme";
 import $ from 'jquery';
 import axios from "axios";
@@ -33,6 +33,7 @@ const FindMyInfoCard = () => {
     const [isCoinside, setIsCoinside] = useState(false);
     const [isSendSms, setIsSendSms] = useState(false)
     const [fixPhoneNumber, setFixPhoneNumber] = useState("")
+    const [name, setName] = useState("")
     const sendSms = async () => {
         if (typeNum == 2 && !$('.id').val()) {
             alert("아이디를 입력해 주세요.")
@@ -70,26 +71,21 @@ const FindMyInfoCard = () => {
         }
     }
     const confirmCoincide = async (e) => {
-        if (randNum === $('.phone-check').val()) {
-            alert("인증번호가 일치합니다.");
-            const { data: response } = await axios.post('/api/findidbyphone', {
-                phone: fixPhoneNumber
-            })
-            if (response.result > 0) {
-                if (response.data?.id) {
-                    setMyId(response.data?.id);
-                    setIsCheckPhoneNumber(true);
-                } else {
-
-                }
+        const { data: response } = await axios.post('/api/findidbyphone', {
+            phone: $('.phone').val(),
+            name: $('.name').val()
+        })
+        if (response.result > 0) {
+            if (response.data?.id) {
+                setMyId(response.data?.id);
+                setIsCheckPhoneNumber(true);
             } else {
 
             }
-
         } else {
-            setIsCheckPhoneNumber(false);
-            alert("인증번호가 일차하지 않습니다.");
+
         }
+
     }
     const onKeyPressId = (e) => {
         if (e.key == 'Enter') {
@@ -133,26 +129,22 @@ const FindMyInfoCard = () => {
         }
     }
     const confirmCoincideIdAndPhone = async () => {
-        if (randNum === $('.phone-check').val()) {
-            alert("인증번호가 일치합니다.");
-            const { data: response } = await axios.post('/api/findauthbyidandphone', {
-                id: $('.id').val(),
-                phone: fixPhoneNumber
-            })
-            if (response.result > 0) {
-                $('.pw').val('');
-                $('.pw-check').val('');
-                setMyId($('.id').val())
-                $('.id').val('');
-                $('.phone').val('');
-                setIsCheckIdAndPhone(true);
-            } else {
-                alert(response.message);
-            }
+        const { data: response } = await axios.post('/api/findauthbyidandphone', {
+            id: $('.id').val(),
+            phone: $('.phone').val(),
+            name: $('.name').val(),
+        })
+        if (response.result > 0) {
+            $('.pw').val('');
+            $('.pw-check').val('');
+            setMyId($('.id').val())
+            $('.id').val('');
+            $('.phone').val('');
+            setIsCheckIdAndPhone(true);
         } else {
-            setIsCheckIdAndPhone(false);
-            alert("인증번호가 일차하지 않습니다.");
+            alert(response.message);
         }
+
     }
     const changePassword = async () => {
         if ($('.pw').val() != $('.pw-check').val()) {
@@ -191,14 +183,12 @@ const FindMyInfoCard = () => {
                             </>
                             :
                             <>
+                                <CategoryName>이름</CategoryName>
+                                <Input placeholder='이름을 입력해주세요.' type={'text'} className='name' />
                                 <CategoryName>전화번호</CategoryName>
-                                <Input placeholder='전화번호를 입력해주세요.' type={'text'} className='phone' disabled={isCheckPhoneNumber} onKeyPress={onKeyPressPhone} />
+                                <Input placeholder='전화번호를 입력해주세요.' type={'text'} className='phone' />
                                 <RegularNotice></RegularNotice>
-                                <Button onClick={sendSms} disabled={isCheckPhoneNumber}>인증번호 발송</Button>
-                                <Input style={{ marginTop: '36px' }} placeholder='인증번호를 입력해주세요.' type={'text'} className='phone-check' disabled={isCheckPhoneNumber} onKeyPress={onKeyPressPhoneCheck} />
-                                <RegularNotice></RegularNotice>
-
-                                <Button onClick={confirmCoincide} disabled={isCheckPhoneNumber}>{isCheckPhoneNumber ? '확인완료' : '인증번호 확인'}</Button>
+                                <Button onClick={confirmCoincide} disabled={isCheckPhoneNumber}>아이디찾기</Button>
                             </>
                         }
 
@@ -216,14 +206,13 @@ const FindMyInfoCard = () => {
                             :
                             <>
                                 <CategoryName>아이디</CategoryName>
-                                <Input placeholder='아이디를 입력해주세요.' type={'text'} className='id' disabled={isCheckId} onKeyPress={onKeyPressId} />
+                                <Input placeholder='아이디를 입력해주세요.' type={'text'} className='id' />
                                 <CategoryName>전화번호</CategoryName>
-                                <Input placeholder='전화번호를 입력해주세요.' type={'text'} className='phone' disabled={isCheckIdAndPhone} onKeyPress={onKeyPressPhone} />
+                                <Input placeholder='전화번호를 입력해주세요.' type={'text'} className='phone' />
+                                <CategoryName>이름</CategoryName>
+                                <Input placeholder='이름을 입력해주세요.' type={'text'} className='name' />
                                 <RegularNotice></RegularNotice>
-                                <Button onClick={sendSms} disabled={isCheckIdAndPhone}>인증번호 발송</Button>
-                                <Input style={{ marginTop: '36px' }} placeholder='인증번호를 입력해주세요.' type={'text'} className='phone-check' disabled={isCheckIdAndPhone} onKeyPress={onKeyPressPhoneCheck} />
-                                <RegularNotice></RegularNotice>
-                                <Button onClick={confirmCoincideIdAndPhone} disabled={isCheckIdAndPhone}>{'인증번호 확인'}</Button>
+                                <Button onClick={confirmCoincideIdAndPhone}>{'비밀번호 찾기'}</Button>
                             </>
                         }
 

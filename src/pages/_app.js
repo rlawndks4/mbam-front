@@ -35,7 +35,7 @@ const App = (props) => {
       let post_table = -1;
       let route_list = router.asPath.split('/');
       if (route_list[1] == 'shop') {
-        shop_id = route_list[4];
+        shop_id = route_list[2];
       } else if (route_list[1] == 'post') {
         post_id = route_list[3];
         post_table = route_list[2];
@@ -94,7 +94,7 @@ App.getInitialProps = async (context) => {
     let post_table = "";
     let route_list = uri.split('/');
     if (route_list[1] == 'shop') {
-      shop_id = route_list[4]
+      shop_id = route_list[2]
     } else if (route_list[1] == 'post') {
       post_id = route_list[3];
       post_table = route_list[2];

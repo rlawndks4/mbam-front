@@ -23,26 +23,16 @@ margin:2rem auto;
 @media (max-width: 1350px) {
   column-gap: 4.2vw;
 }
-@media (max-width: 650px) {
-    
-}
-@media (max-width: 550px) {
-  column-gap: 4.2vw;
-}
+
 `
 
 const MerchandiseImg = styled.img`
 width: 100%;
 height: 50%;
 margin:0 auto;
-border-bottom-right-radius:10px;
-border-bottom-left-radius:10px;
-@media (max-width: 650px) {
-    width:30vw;
-    height:18vw;
-    border-radius:10px;
-    margin:auto auto auto 1rem;
-}
+border-top-right-radius:10px;
+border-top-left-radius:10px;
+
 `
 const MerchandiseExplain = styled.div`
 width: 90%;
@@ -52,13 +42,9 @@ display:flex;
 flex-direction:column;
 @media (max-width: 1350px) {
   font-size:${theme.size.font4};
+  height: 45%;
 }
-@media (max-width: 650px) {
-    width:60vw;
-    height: 80%;
-    margin:auto auto auto 0.5rem;
-    padding:2vw;
-}
+
 `
 const OptionContainer = styled.div`
 box-shadow: 4px 12px 30px 6px rgba(0, 0, 0, 0.09);
@@ -93,20 +79,16 @@ export const Merchandise = (props) => {
                 }}
                 className='merchandise-content'
             >
+                <MerchandiseImg src={item?.img_src} alt={item?.img_src_alt} />
                 <MerchandiseExplain>
-                    <Font3 style={{ margin: '0 auto auto 0' }}>{item?.name}</Font3>
+                    <Font4 style={{ margin: 'auto 0' }}>{item?.name}</Font4>
                     <Font5 style={{ display: 'flex', alignItems: 'center', margin: 'auto 0' }}>
-                        <Icon icon='mdi:theme-outline' />
-                        <h3 style={{ margin: '0 0 0 0.5rem' }}>{item?.theme_name}</h3>
+                        <h3 style={{ margin: '0' }}>{item?.theme_name}</h3>
                     </Font5>
                     <Font5 style={{ display: 'flex', alignItems: 'center', margin: 'auto 0' }}>
-                        <Icon icon='mdi:home-city-outline' />
-                        <div style={{ marginLeft: '0.5rem' }}>{item?.city_name}</div>
+                        <div>{item?.city_name} {item?.sub_city_name}</div>
                     </Font5>
-                    <Font5 style={{ display: 'flex', alignItems: 'center', margin: 'auto 0' }}>
-                        <Icon icon='material-symbols:location-on-outline' />
-                        <div style={{ marginLeft: '0.5rem' }}>{item?.address}</div>
-                    </Font5>
+
                     {item?.distance ?
                         <>
                             <Font5 style={{ display: 'flex', alignItems: 'center', margin: 'auto 0' }}>
@@ -119,22 +101,7 @@ export const Merchandise = (props) => {
                         :
                         <>
                         </>}
-                    <Font4 style={{ height: '10%', display: 'flex', alignItems: 'center', margin: 'auto 0 0.5rem auto', width: '100%' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', marginRight: 'auto', marginTop: 'auto' }}>
-                            {item?.option_list && item?.option_list.map((itm, idx) => (
-                                <>
-                                    <Font6 style={{ background: theme.color.background1, color: '#fff', borderRadius: '4px', padding: '2px', marginRight: '2px' }}>{itm?.name}</Font6>
-                                </>
-                            ))}
-                        </div>
-                        {item?.country_list && item?.country_list.map((item, idx) => (
-                            <>
-                                <img src={item?.img_src} style={{ height: '1rem', marginLeft: '0.5rem' }} alt="#" />
-                            </>
-                        ))}
-                    </Font4>
                 </MerchandiseExplain>
-                <MerchandiseImg src={item?.img_src} alt={item?.img_src_alt} />
             </motion.a>
         </>
     )
@@ -175,10 +142,14 @@ const ShopList = () => {
     useEffect(() => {
         let obj = router.query
         if (city == 0 || !city) {
-            delete obj['city'];
-            delete obj['sub_city'];
-            setSubCity(0);
-            setSubCityList([])
+            if (!router.query?.city) {
+                console.log(123)
+                delete obj['city'];
+                delete obj['sub_city'];
+                setSubCity(0);
+                setSubCityList([])
+            }
+
         } else {
             obj['city'] = city;
             getSubCityList(city)

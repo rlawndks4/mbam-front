@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Wrappers, Title } from "src/components/elements/UserContentTemplete";
+import { Wrappers, Title, twoOfThreeButtonStyle } from "src/components/elements/UserContentTemplete";
 import { communityCategoryList } from "src/data/Data";
 import theme from "src/styles/theme";
 import styled from "styled-components";
@@ -14,6 +14,7 @@ import MBottomContent from "src/components/elements/MBottomContent";
 import AddButton from "src/components/elements/button/AddButton";
 import UserLayout from "src/layouts/UserLayout";
 import { useRouter } from "next/router";
+import { Button } from "@mui/material";
 
 const RowContent = styled.div`
 display:flex;
@@ -24,7 +25,7 @@ margin-top:24px;
 }
 `
 const Content = styled.div`
-margin:0 auto 1rem 300px;
+margin:0 auto;
 width:100%;
 font-size:${props => props.theme.size.font3};
 display:flex;
@@ -99,14 +100,7 @@ const CommunityList = () => {
                                 />
                             </>}
                         <MBottomContent>
-                            {communityCategoryList[categoryIdx]?.is_write ?
-                                <>
-                                    <div style={{ width: '92px' }} />
-                                </>
-                                :
-                                <>
-                                    <div />
-                                </>}
+                            <div />
                             {pageList.length > 0 ?
                                 <>
                                     <PageContainer>
@@ -130,17 +124,15 @@ const CommunityList = () => {
                                     <div />
                                 </>}
 
-                            {communityCategoryList[categoryIdx]?.is_write ?
-                                <>
-                                    <AddButton style={{ width: '92px' }} onClick={() => {
-                                        router.push(`/add-community/${category}`)
-                                    }}>+ 작성하기</AddButton>
-                                </>
-                                :
-                                <>
-                                    <div />
-                                </>}
+                            <div />
                         </MBottomContent>
+                        {communityCategoryList[categoryIdx]?.is_write &&
+                            <>
+                                <Button variant="text" sx={{ ...twoOfThreeButtonStyle, marginTop: '8px' }} onClick={() => {
+                                    router.push(`/add-community/${category}`)
+                                }}>작성하기</Button>
+                            </>}
+
                     </Content>
                 </RowContent>
             </Wrappers>

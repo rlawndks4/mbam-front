@@ -48,9 +48,7 @@ const Wrappers = styled.footer`
     font-weight:500;
     padding:32px 120px;
     font-size:${props => props.theme.size.font3};
-    @media screen and (max-width:1050px) {
-        margin-bottom:80px;
-    }
+   
     @media screen and (max-width:650px) {
         padding:32px 5vw;
         font-size:${props => props.theme.size.font4};
@@ -84,7 +82,7 @@ flex-direction:column;
 }
 `
 const TextImg = styled.img`
-width: 200px; 
+width: 50px; 
 height:auto;
 margin: 0.5rem 0; 
 transform: translateX(-6px);

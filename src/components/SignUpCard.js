@@ -30,14 +30,7 @@ const SignUpCard = () => {
     const [addressList, setAddressList] = useState([])
     const [isSelectAddress, setIsSelectAddress] = useState(false);
     const [isSeePostCode, setIsSeePostCode] = useState(false);
-    useEffect(() => {
-        if (router.query) {
-            if (!router.query?.id) {
-                router.back();
-            }
-            setState(router.query)
-        }
-    }, [])
+
     const onCheckId = async () => {
         if (!$('.id').val()) {
             alert('아이디를 입력해주세요.');
@@ -158,11 +151,11 @@ const SignUpCard = () => {
                 alert('닉네임 중복확인을 해주세요.');
             } else if (!regExp('nickname', $('.nickname').val())) {
                 alert('닉네임 정규식을 지켜주세요.');
-            }else {
+            } else {
                 if (window.confirm('회원가입 하시겠습니까?')) {
                     const { data: response } = await axios.post('/api/adduser', {
                         id: $('.id').val() || state?.id,
-                        pw: router.query ? "111" : $('.pw').val(),
+                        pw: $('.pw').val(),
                         name: $('.name').val() || state?.name,
                         nickname: $('.nickname').val() || state?.nickname,
                         address: $('.address').val(),
@@ -170,8 +163,6 @@ const SignUpCard = () => {
                         zip_code: $('.zip_code').val(),
                         phone: $('.phone').val(),
                         user_level: 0,
-                        type_num:  router.query ? state.typeNum : typeNum,
-                        profile_img:  router.query ? state.profile_img : null
                     })
                     if (response.result > 0) {
                         alert('회원가입이 완료되었습니다.');
@@ -182,7 +173,7 @@ const SignUpCard = () => {
                 }
             }
         } catch (err) {
-            console.log(JSON.stringify(err))
+            console.log(err)
         }
 
 

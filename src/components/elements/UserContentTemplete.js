@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import styled from "styled-components";
 import $ from 'jquery'
 import { useRouter } from "next/router";
+import theme from "src/styles/theme";
 export const WrappersStyle = styled.div`
 position:relative;
 display:flex;
@@ -19,7 +20,24 @@ font-family:${props => props.theme.font.normal};
 }
 
 `
-
+export const twoOfThreeButtonStyle = {
+    height: '48px',
+    margin: '0 auto',
+    background: theme.color.background1,
+    color: `#fff`,
+    width: '100%',
+    maxWidth: '400px',
+    borderRadius: '10px',
+    minWidth: '250px',
+    fontSize: `${theme.size.font4}`,
+    fontWeight: 'bold',
+    '&:hover': {
+        background: theme.color.background1,
+    },
+    '&:active': {
+        background: theme.color.background1,
+    },
+}
 export const Wrappers = (props) => {
     let { className, style } = props;
     const router = useRouter();

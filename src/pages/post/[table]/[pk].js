@@ -172,7 +172,7 @@ const Post = (props) => {
         }
     }
     const fetchComments = async () => {
-        const { data: response } = await axios.get(`/api/getcommnets?pk=${params.pk || post_pk}&category=${categoryToNumber(params.table || post_table)}`);
+        const { data: response } = await axios.get(`/api/getcommnets?post_pk=${router.query?.pk}&post_table=${router.query?.table}`);
         setComments(response.data);
     }
 
@@ -183,13 +183,10 @@ const Post = (props) => {
 
         }
         const { data: response } = await axios.post('/api/addcomment', {
-            userPk: auth.pk,
-            userNick: auth.nickname,
-            pk: postPk,
             parentPk: parent_pk ?? 0,
-            title: post.title,
             note: $(`.comment-${parent_pk ?? 0}`).val(),
-            category: categoryToNumber(postTable)
+            post_table: router.query?.table,
+            post_pk: router.query?.pk,
         })
 
         if (response.result > 0) {
@@ -206,7 +203,6 @@ const Post = (props) => {
         const { data: response } = await axios.post('/api/updatecomment', {
             pk: pk,
             note: $(`.update-comment-${pk ?? 0}`).val(),
-            category: categoryToNumber(postTable)
         })
 
         if (response.result > 0) {
