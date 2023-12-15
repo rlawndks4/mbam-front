@@ -35,6 +35,18 @@ font-family:${props => props.theme.font.normal};
     margin-top:4rem;
 }
 `
+const MerchandiseContainer = styled.div`
+width: 100%;
+display: flex;
+flex-wrap:wrap;
+column-gap: 60px;
+grid-row-gap: 10px;
+row-gap: 30px;
+@media (max-width: 1350px) {
+  column-gap: 4.2vw;
+}
+
+`
 const TopContainer = styled.div`
 display: flex;
 width: 100%;
@@ -69,11 +81,12 @@ cursor:pointer;
 `
 const CommunityWrappers = styled.div`
 width:250px;
-display: flex;
+display: ${props => props.display == 'none' ? 'flex' : 'none'};
 flex-direction: column;
 row-gap: 1rem;
 @media screen and (max-width:1050px) { 
-    display: none;
+    width:100%;
+    display: ${props => props.display == 'none' ? 'none' : 'flex'};
 }
 `
 const CommunityContainer = styled.div`
@@ -102,21 +115,17 @@ justify-content: space-between;
 `
 const ShopOptionWrappers = styled.div`
 width:218px;
-display: flex;
+display: ${props => props.display == 'none' ? 'flex' : 'none'};
 flex-direction: column;
 background: ${theme.color.background4};
 padding: 1rem;
 row-gap: 0.5rem;
 border-radius: 0.5rem;
 @media screen and (max-width:1050px) { 
-    display: none;
+    display: ${props => props.display == 'none' ? 'none' : 'flex'};
 }
 `
-const ShopOptionContainer = styled.div`
-`
-const ShopOption = styled.div`
 
-`
 const NextArrow = ({ onClick }) => {
     return (
         <div className="nextArrow" onClick={onClick}>
@@ -228,7 +237,7 @@ const Home = () => {
                     :
                     <>
                         <RowContent style={{ columnGap: '1rem', alignItems: 'flex-start' }}>
-                            <ShopOptionWrappers>
+                            <ShopOptionWrappers display={'none'}>
                                 <Font3 style={{ fontWeight: 'bold' }}>지역별샵</Font3>
                                 {cityList && cityList.map((item, idx) => (
                                     <>
@@ -263,8 +272,55 @@ const Home = () => {
                                     ))}
                                 </ThemeCardContainer>
                                 <Typography style={{ fontWeight: 'bold' }}>실시간 샵 검색 확인</Typography>
+
+                                <Typography style={{ fontWeight: 'bold', margin: '2rem auto 1rem auto' }}>프리미엄 업체</Typography>
+                                <MerchandiseContainer>
+                                    {homeContent?.premium_shop && homeContent?.premium_shop.map((item, idx) => (
+                                        <>
+                                            <Merchandise
+                                                router={router}
+                                                item={item}
+                                            />
+                                        </>
+                                    ))}
+                                </MerchandiseContainer>
+                                <Typography style={{ fontWeight: 'bold', margin: '2rem auto 1rem auto' }}>신규 업체</Typography>
+                                <MerchandiseContainer>
+                                    {homeContent?.shop && homeContent?.shop.map((item, idx) => (
+                                        <>
+                                            <Merchandise
+                                                router={router}
+                                                item={item}
+                                            />
+                                        </>
+                                    ))}
+                                </MerchandiseContainer>
+                                <CommunityWrappers display={'flex'}>
+                                    {communityList.map((community) => (
+                                        <>
+                                            <CommunityContainer>
+                                                <CommunityHeader>{community.label}</CommunityHeader>
+                                                <Col style={{ padding: '0.5rem', rowGap: '0.25rem' }}>
+                                                    {homeContent[community.table] && homeContent[community.table].map((itm) => (
+                                                        <>
+                                                            <CommunityContent onClick={() => {
+                                                                router.push(`/post/${community.table}/${itm?.pk}`)
+                                                            }}>
+                                                                <div>{itm?.title?.length > 12 ? `${itm?.title.slice(0, 12)}...` : itm?.title}</div>
+                                                                <div style={{ color: '#aaa' }}>{dateFormat(itm?.date)}</div>
+                                                            </CommunityContent>
+                                                        </>
+                                                    ))}
+                                                </Col>
+
+                                            </CommunityContainer>
+                                        </>
+                                    ))}
+                                </CommunityWrappers>
+
                             </Col>
-                            <CommunityWrappers>
+
+                            <CommunityWrappers display={'none'}>
                                 {communityList.map((community) => (
                                     <>
                                         <CommunityContainer>

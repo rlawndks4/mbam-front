@@ -133,6 +133,7 @@ position: relative;
   display: none;
 }
 `
+
 const ShowMobile = styled.div`
 display: none;
 @media screen and (max-width:1050px) { 
@@ -151,7 +152,16 @@ const ColumnMenuContainer = styled.div`
         padding:0 5vw 4rem 5vw;
         row-gap: 0.1rem;
 }
-        `
+`
+const TextLogo = styled.img`
+height: 2rem ;
+margin-top: 0.5rem; 
+margin-left: 0.2rem;
+@media (max-width:1050px){
+  height: 2.5rem ;
+  margin:0;
+}
+`
 const Headers = () => {
   const authList = [
     {
@@ -356,13 +366,15 @@ const Headers = () => {
 
         <HeaderMenuContainer>{/* pc */}
           <div style={{ display: 'flex', cursor: 'pointer' }}>
-            <img src={logoSrc} alt="홈으로" style={{ height: '3rem', cursor: 'pointer' }} onClick={() => { router.push('/') }} />
-            <img src={logoTextColorImg} alt="홈으로" style={{ height: '2rem', marginTop: '0.5rem', marginLeft: '0.2rem' }} onClick={() => { router.push('/') }} />
+            <NoneShowMobile>
+              <img src={logoSrc} alt="홈으로" style={{ height: '3rem', cursor: 'pointer' }} onClick={() => { router.push('/') }} />
+            </NoneShowMobile>
+            <TextLogo src={logoTextColorImg} alt="홈으로" onClick={() => { router.push('/') }} />
           </div>
-          <CardContent style={{ textAlign: 'center', display: 'flex', alignItems: 'center' }}>
-            <Icon icon='ion:navigate' style={{ color: theme.color.red, margin: 'auto 0.5rem auto auto' }} />
+          <RowContent style={{ textAlign: 'center', display: 'flex', alignItems: 'center' }}>
+            <Icon icon='ion:navigate' style={{ color: theme.color.red, margin: 'auto 0 auto auto' }} />
             <Font4 style={{ margin: 'auto auto auto 0.5rem' }}>{myAddress}</Font4>
-          </CardContent>
+          </RowContent>
           <NoneShowMobile>
             {/* <AiOutlineBell onClick={onClickBell} style={{ width: '2rem', height: '1.5rem', cursor: 'pointer' }} />
             <AiOutlineSearch onClick={changeSearchModal} style={{ width: '2rem', height: '1.5rem', cursor: 'pointer' }} /> */}
@@ -382,8 +394,8 @@ const Headers = () => {
               </IconButton>
             </RowContent>
           </NoneShowMobile>
-          <ShowMobile>
-            <IconButton onClick={() => {
+          <ShowMobile style={{ columnGap: '0.5rem' }}>
+            <IconButton sx={{ padding: '0' }} onClick={() => {
               setDialogOpenObj({
                 ...dialogOpenObj,
                 ['search']: true
@@ -391,7 +403,7 @@ const Headers = () => {
             }}>
               <Icon icon='ion:search' />
             </IconButton>
-            <IconButton onClick={() => {
+            <IconButton sx={{ padding: '0' }} onClick={() => {
               setSideMenuOpen(true);
             }}>
               <Icon icon='ion:menu' style={{ fontSize: '1.8rem' }} />
