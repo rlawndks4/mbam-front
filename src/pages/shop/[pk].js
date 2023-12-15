@@ -194,7 +194,7 @@ const Shop = () => {
     }
     return (
         <>
-            <Wrappers className="post-container">
+            <Wrappers className="post-container" style={{ maxWidth: '900px' }}>
 
                 <Grid item xs={12} md={12}>
                     <Card>
@@ -298,7 +298,7 @@ const Shop = () => {
                                             </Grid>
                                         </>}
 
-                                    <Grid item xs={12} md={6} >
+                                    <Grid item xs={12} md={12} >
                                         <Card>
                                             <ReactQuill
                                                 value={data?.shop?.note ?? `<body></body>`}
@@ -309,7 +309,7 @@ const Shop = () => {
                                             />
                                         </Card>
                                     </Grid>
-                                    <Grid item xs={12} md={6} >
+                                    <Grid item xs={12} md={12} >
                                         <Card>
                                             <CardContent style={{ display: 'flex', flexDirection: 'column' }}>
                                                 <Title>코스 및 가격 안내</Title>
