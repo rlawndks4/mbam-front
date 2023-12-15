@@ -52,7 +52,7 @@ const Wrappers = styled.footer`
     @media screen and (max-width:650px) {
         padding:32px 5vw;
         font-size:${props => props.theme.size.font4};
-
+        margin-bottom: 4rem;
     }
 `
 const Post = styled.div`

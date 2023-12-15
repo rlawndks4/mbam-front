@@ -23,7 +23,7 @@ const Container = styled.aside`
 const MenuContainer = styled.nav`
 width: 100%;
 max-width: 76.8rem;
-height: 5rem;
+height: 4rem;
 display: -webkit-flex;
 display: flex;
 margin: 0 auto;
@@ -106,7 +106,17 @@ const BottomMenu = () => {
                                 <MenuContainer>
                                     {zBottomMenu.map((item, index) => (
                                         <>
-                                            <OneMenuContainer onClick={() => { router.push(item.link) }} style={{ color: `${colorList[index]}` }} key={index}>
+                                            <OneMenuContainer onClick={() => { router.push(item.link) }}
+                                                style={{
+                                                    color: `${colorList[index]}`,
+                                                    ...(index == 2 ? {
+                                                        transform: `translateY(-1rem)`,
+                                                        background: theme.color.background5,
+                                                        height: 'auto',
+                                                        borderRadius: '50%'
+                                                    } : {}),
+                                                }}
+                                                key={index}>
                                                 {colorList[index] == theme.color.background0 ? item.activeIcon : item.icon}
                                                 <OneMenuName style={{ color: `${colorList[index]}` }} >
                                                     {item.name}

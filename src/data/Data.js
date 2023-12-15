@@ -26,11 +26,11 @@ export const localization = {
     locale: 'ko',
 }
 export const zBottomMenu = [
-    { name: `마사지밤 ▼`, link: '/', icon: <img src={logoSrc} className='menu-icon' alt="#" style={{ width: 'auto' }} />, activeIcon: <img src={logoSrc} className='menu-icon' alt="#" style={{ width: 'auto' }} />, className: 'master-dropdown-btn', allowList: ['/'] },
-    { name: '내주변', link: '/shop-list?is_around=1', icon: <Icon icon='mdi:map-marker-check-outline' className='menu-icon' />, activeIcon: <Icon icon='mdi:map-marker-check-outline' color={theme.color.background1} className='menu-icon' />, className: '', allowList: ['/shop-list?is_around=1'], is_location_href: true },
-    { name: '커뮤니티', link: '/community-list/freeboard', icon: <Icon icon='clarity:chat-bubble-line' className='menu-icon' />, activeIcon: <Icon icon='clarity:chat-bubble-line' color={theme.color.background1} className='menu-icon' />, className: '', allowList: ['/community-list'] },
-    { name: '제휴문의', link: '/add-shop', icon: <Icon icon='mdi:comment-question-outline' className='menu-icon' />, activeIcon: <Icon icon='mdi:comment-question-outline' color={theme.color.background1} className='menu-icon' />, className: '', allowList: ['/add-shop'] },
-    { name: '고객센터', link: '/add-community/request', icon: <Icon icon='ph:siren' className='menu-icon' />, activeIcon: <Icon icon='ph:siren' color={theme.color.background1} className='menu-icon' />, className: 'service-dropdown-btn', allowList: ['/add-community/request'] },
+    { name: `홈`, link: '/', icon: <Icon icon='octicon:home-16' className='menu-icon' />, activeIcon: <Icon icon='octicon:home-16' color={theme.color.background1} className='menu-icon' />, className: 'master-dropdown-btn', allowList: ['/'] },
+    { name: '지역', link: '/shop-list/', icon: <Icon icon='uil:map-marker' className='menu-icon' />, activeIcon: <Icon icon='uil:map-marker' color={theme.color.background1} className='menu-icon' />, className: '', allowList: ['/shop-list?is_around=1'], is_location_href: true },
+    { name: '내주변', link: '/shop-list/?is_around=1', icon: <Icon icon='ion:navigate' className='menu-icon' />, activeIcon: <Icon icon='ion:navigate' color={theme.color.background1} className='menu-icon' />, className: '', allowList: ['/community-list'] },
+    { name: '이벤트', link: '/community-list/event/', icon: <Icon icon='ic:outline-diamond' className='menu-icon' />, activeIcon: <Icon icon='ic:outline-diamond' color={theme.color.background1} className='menu-icon' />, className: '', allowList: ['/add-shop'] },
+    { name: '내정보', link: '/mypage/', icon: <Icon icon='gravity-ui:person' className='menu-icon' />, activeIcon: <Icon icon='gravity-ui:person' color={theme.color.background1} className='menu-icon' />, className: 'service-dropdown-btn', allowList: ['/add-community/request'] },
 ];
 
 export const axiosInstance = axios.create({

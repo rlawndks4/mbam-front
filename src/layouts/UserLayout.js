@@ -24,6 +24,7 @@ const UserLayout = (props) => {
                         <>
                             {children}
                         </>}
+                    <BottomMenu />
                     <ScrollToTopButton />
                     <Footer />
                 </>}
