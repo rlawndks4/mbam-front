@@ -19,7 +19,6 @@ flex-wrap:wrap;
 column-gap: 60px;
 grid-row-gap: 10px;
 row-gap: 30px;
-margin:2rem auto;
 @media (max-width: 1350px) {
   column-gap: 4.2vw;
 }
@@ -270,13 +269,32 @@ const ShopList = () => {
                                 })}
                             </RowContent>
                         </OptionContainer>
+                        <Typography style={{ fontWeight: 'bold', margin: '2rem auto 1rem auto' }}>프리미엄 업체</Typography>
                         <MerchandiseContainer>
                             {shops && shops.map((item, idx) => (
                                 <>
-                                    <Merchandise
-                                        router={router}
-                                        item={item}
-                                    />
+                                    {item?.is_premium == 1 &&
+                                        <>
+                                            <Merchandise
+                                                router={router}
+                                                item={item}
+                                            />
+                                        </>}
+                                </>
+                            ))}
+                        </MerchandiseContainer>
+                        <Typography style={{ fontWeight: 'bold', margin: '2rem auto 1rem auto' }}>신규 업체</Typography>
+
+                        <MerchandiseContainer>
+                            {shops && shops.map((item, idx) => (
+                                <>
+                                    {item?.is_premium == 0 &&
+                                        <>
+                                            <Merchandise
+                                                router={router}
+                                                item={item}
+                                            />
+                                        </>}
                                 </>
                             ))}
                         </MerchandiseContainer>
