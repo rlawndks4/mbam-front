@@ -20,6 +20,7 @@ import theme from 'src/styles/theme';
 import { useRouter } from 'next/router';
 import UserLayout from 'src/layouts/UserLayout';
 import { dateFormat } from 'src/functions/utils';
+import { Typography } from '@mui/material';
 
 const WrappersStyle = styled.div`
 position:relative;
@@ -165,7 +166,6 @@ const Home = () => {
         async function fetchPost() {
             setLoading(true)
             const { data: response } = await axios.get('/api/gethomecontent')
-            console.log(response?.data)
             setSetting(response?.data?.banner ?? {})
             let banner_list = [];
             let banner_link_list = [];
@@ -247,7 +247,7 @@ const Home = () => {
                                     </>
                                 ))}
                             </ShopOptionWrappers>
-                            <Col>
+                            <Col style={{ rowGap: '1rem' }}>
                                 <ThemeCardContainer>
                                     {themeList && themeList.map((item, idx) => (
                                         <>
@@ -262,6 +262,7 @@ const Home = () => {
                                         </>
                                     ))}
                                 </ThemeCardContainer>
+                                <Typography style={{ fontWeight: 'bold' }}>실시간 샵 검색 확인</Typography>
                             </Col>
                             <CommunityWrappers>
                                 {communityList.map((community) => (

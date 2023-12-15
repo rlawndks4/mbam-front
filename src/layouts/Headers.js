@@ -323,7 +323,6 @@ const Headers = () => {
         handleClose={handleDialogClose}
         root_path={'shop-list?keyword='}
       />
-      {console.log(router.asPath)}
       <Header style={{ display: `${display}` }} className='header'>
         {popupList.length > 0 && (router.asPath == '/' || router.asPath == '/home/') ?
           <>
@@ -367,16 +366,21 @@ const Headers = () => {
           <NoneShowMobile>
             {/* <AiOutlineBell onClick={onClickBell} style={{ width: '2rem', height: '1.5rem', cursor: 'pointer' }} />
             <AiOutlineSearch onClick={changeSearchModal} style={{ width: '2rem', height: '1.5rem', cursor: 'pointer' }} /> */}
-            {auth?.pk > 0 ?
-              <>
-                <Button variant='outlined' size='small' onClick={onLogout} style={{ marginRight: '8px', width: '90px' }}>로그아웃</Button>
-                <Button variant='outlined' size='small' onClick={() => router.push('/mypage')} style={{ width: '90px' }}>마이페이지</Button>
-              </>
-              :
-              <>
-                <Button variant='outlined' size='small' onClick={() => router.push('/login')} style={{ marginRight: '8px', width: '90px' }}>로그인</Button>
-                <Button variant='outlined' size='small' onClick={() => router.push('/signup')} style={{ width: '90px' }}>회원가입</Button>
-              </>}
+            <RowContent>
+              <IconButton onClick={() => {
+                setDialogOpenObj({
+                  ...dialogOpenObj,
+                  ['search']: true
+                })
+              }}>
+                <Icon icon='ion:search' />
+              </IconButton>
+              <IconButton onClick={() => {
+                setSideMenuOpen(true);
+              }}>
+                <Icon icon='ion:menu' style={{ fontSize: '1.8rem' }} />
+              </IconButton>
+            </RowContent>
           </NoneShowMobile>
           <ShowMobile>
             <IconButton onClick={() => {

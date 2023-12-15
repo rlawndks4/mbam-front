@@ -6,7 +6,7 @@ import theme from "src/styles/theme";
 import styled from "styled-components";
 import { commarNumber, getLocation, makeMaxPage, range } from "src/functions/utils";
 import Loading from "src/components/Loading";
-import { Button, Card, CardContent, Grid, IconButton } from "@mui/material";
+import { Button, Card, CardContent, Grid, IconButton, Typography } from "@mui/material";
 import { Icon } from "@iconify/react";
 import ContentTable from "src/components/ContentTable";
 import MBottomContent from "src/components/elements/MBottomContent";
@@ -27,6 +27,7 @@ import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import NaverMap from "src/components/NaverMap";
 import CommentComponent from "src/components/CommentComponent";
+import { Col } from "src/components/elements/ManagerTemplete";
 const CallButton = styled.a`
 
 background:${props => props.theme.color.background1};
@@ -275,7 +276,29 @@ const Shop = () => {
                                             </CardContent>
                                         </Card>
                                     </Grid>
-                                    <Grid item xs={12} md={6}>
+                                    {data?.shop_manager && data?.shop_manager?.length > 0 &&
+                                        <>
+                                            <Grid item xs={12} md={12}>
+                                                <Card>
+                                                    <CardContent>
+                                                        <Typography style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>출근부</Typography>
+                                                        <RowContent style={{ overflow: 'auto', columnGap: '0.5rem' }}>
+                                                            {data?.shop_manager && data?.shop_manager.map((itm) => (
+                                                                <>
+                                                                    <Col style={{ rowGap: '0.25rem' }}>
+                                                                        <div style={{ fontSize: theme.size.font3 }}>{itm?.name}</div>
+                                                                        <img src={itm?.img_src} style={{ height: '100px', width: 'auto' }} />
+                                                                        <div style={{ fontSize: theme.size.font5 }}>{itm?.comment}</div>
+                                                                    </Col>
+                                                                </>
+                                                            ))}
+                                                        </RowContent>
+                                                    </CardContent>
+                                                </Card>
+                                            </Grid>
+                                        </>}
+
+                                    <Grid item xs={12} md={6} >
                                         <Card>
                                             <ReactQuill
                                                 value={data?.shop?.note ?? `<body></body>`}
@@ -286,7 +309,7 @@ const Shop = () => {
                                             />
                                         </Card>
                                     </Grid>
-                                    <Grid item xs={12} md={6}>
+                                    <Grid item xs={12} md={6} >
                                         <Card>
                                             <CardContent style={{ display: 'flex', flexDirection: 'column' }}>
                                                 <Title>코스 및 가격 안내</Title>
@@ -327,13 +350,11 @@ const Shop = () => {
                                                         { lat: data?.shop?.lat, lng: data?.shop?.lng, }
                                                     ]}
                                                 />
-                                                <img src={data?.shop?.price_img} alt={data?.shop?.price_img_alt} style={{ width: '100%', height: 'auto', marginTop: '1rem' }} />
                                             </CardContent>
                                         </Card>
                                     </Grid>
                                 </Grid>
                                 <CommentComponent addComment={addComment} data={comments} fetchComments={fetchComments} updateComment={updateComment} auth={auth} />
-
                             </>
                             :
                             <>

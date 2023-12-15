@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Wrappers } from "src/components/elements/UserContentTemplete";
+import { RowContent, Wrappers } from "src/components/elements/UserContentTemplete";
 import { backUrl } from "src/data/Data";
 import theme from "src/styles/theme";
 import styled from "styled-components";
@@ -9,7 +9,7 @@ import Loading from "src/components/Loading";
 import { Icon } from "@iconify/react"
 import { motion } from "framer-motion"
 import { Font2, Font3, Font4, Font5, Font6, Row } from "src/components/elements/ManagerTemplete";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { Button, FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import UserLayout from "src/layouts/UserLayout";
 import { useRouter } from "next/router";
 const MerchandiseContainer = styled.div`
@@ -51,6 +51,7 @@ box-shadow: 4px 12px 30px 6px rgba(0, 0, 0, 0.09);
 padding:1rem;
 display:flex;
 flex-direction:column;
+row-gap: 0.5rem;
 `
 const convertText = (text) => {
     if (!text) {
@@ -146,7 +147,6 @@ const ShopList = () => {
         let obj = router.query
         if (city == 0 || !city) {
             if (!router.query?.city) {
-                console.log(123)
                 delete obj['city'];
                 delete obj['sub_city'];
                 setSubCity(0);
@@ -220,62 +220,55 @@ const ShopList = () => {
                     :
                     <>
                         <OptionContainer>
-                            <FormControl>
-                                <InputLabel>테마선택</InputLabel>
-                                <Select
-                                    label='테마선택'
-                                    value={theme}
-                                    onChange={e => {
+                            <Typography variant="subtitle2" style={{ fontWeight: 'bold' }}>지역별 선택</Typography>
+                            <RowContent style={{ gap: '0.5rem', flexWrap: 'wrap' }}>
+                                <Button size="small" variant={!city ? 'contained' : 'outlined'} onClick={() => {
+                                    let obj = searchObj;
+                                    delete obj['city'];
+                                    getShops(obj)
+                                }}>전체</Button>
+                                {cityList.map((item, idx) => {
+                                    return <Button size="small" variant={city == item?.pk ? 'contained' : 'outlined'} onClick={() => {
+                                        let obj = searchObj;
+                                        delete obj['sub_city'];
+                                        getShops({
+                                            ...obj,
+                                            city: item?.pk
+                                        })
+                                    }}>{item.name}</Button>
+                                })}
+                            </RowContent>
+                            <RowContent style={{ gap: '0.5rem', flexWrap: 'wrap' }}>
+                                <Button size="small" variant={!subCity ? 'contained' : 'text'} style={{ boxShadow: 'none' }} onClick={() => {
+                                    let obj = searchObj;
+                                    delete obj['sub_city'];
+                                    getShops(obj)
+                                }}>전체</Button>
+                                {subCityList.map((item, idx) => {
+                                    return <Button size="small" variant={subCity == item?.pk ? 'contained' : 'text'} style={{ boxShadow: 'none' }} onClick={() => {
                                         getShops({
                                             ...searchObj,
-                                            theme: e.target.value
+                                            sub_city: item?.pk
                                         })
-                                    }}
-                                >
-                                    <MenuItem value={0}>전체</MenuItem>
-                                    {themeList.map((item, idx) => {
-                                        return <MenuItem value={item.pk}>{item.name}</MenuItem>
-                                    })}
-                                </Select>
-                            </FormControl>
-                            <div style={{ display: 'flex', width: '100%', marginTop: '1rem', justifyContent: 'space-between' }}>
-                                <FormControl sx={{ width: '48%', maxWidth: '600px' }}>
-                                    <InputLabel>도시선택</InputLabel>
-                                    <Select
-                                        label='도시선택'
-                                        value={city}
-                                        onChange={e => {
-                                            getShops({
-                                                ...searchObj,
-                                                city: e.target.value
-                                            })
-                                        }}
-                                    >
-                                        <MenuItem value={0}>전체</MenuItem>
-                                        {cityList.map((item, idx) => {
-                                            return <MenuItem value={item.pk}>{item.name}</MenuItem>
-                                        })}
-                                    </Select>
-                                </FormControl>
-                                <FormControl sx={{ width: '48%', maxWidth: '600px' }}>
-                                    <InputLabel>구선택</InputLabel>
-                                    <Select
-                                        label='구선택'
-                                        value={subCity}
-                                        onChange={e => {
-                                            getShops({
-                                                ...searchObj,
-                                                sub_city: e.target.value
-                                            })
-                                        }}
-                                    >
-                                        <MenuItem value={0}>전체</MenuItem>
-                                        {subCityList.map((item, idx) => {
-                                            return <MenuItem value={item.pk}>{item.name}</MenuItem>
-                                        })}
-                                    </Select>
-                                </FormControl>
-                            </div>
+                                    }}>{item.name}</Button>
+                                })}
+                            </RowContent>
+                            <Typography variant="subtitle2" style={{ fontWeight: 'bold' }}>테마별 선택</Typography>
+                            <RowContent style={{ gap: '0.5rem', flexWrap: 'wrap' }}>
+                                <Button size="small" variant={!theme ? 'contained' : 'outlined'} onClick={() => {
+                                    let obj = searchObj;
+                                    delete obj['theme'];
+                                    getShops(obj)
+                                }}>전체</Button>
+                                {themeList.map((item, idx) => {
+                                    return <Button size="small" variant={theme == item?.pk ? 'contained' : 'outlined'} onClick={() => {
+                                        getShops({
+                                            ...searchObj,
+                                            theme: item?.pk
+                                        })
+                                    }}>{item.name}</Button>
+                                })}
+                            </RowContent>
                         </OptionContainer>
                         <MerchandiseContainer>
                             {shops && shops.map((item, idx) => (
