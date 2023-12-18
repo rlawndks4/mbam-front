@@ -17,7 +17,7 @@ const logoTextColorImg = '/assets/images/test/logo_test_color.png'
 import { useRouter } from 'next/router';
 import { Button, CardContent, Drawer, IconButton, Typography } from '@mui/material';
 import { Icon } from '@iconify/react';
-import { Font4 } from 'src/components/elements/ManagerTemplete';
+import { Font3, Font4 } from 'src/components/elements/ManagerTemplete';
 import DialogSearch from 'src/components/DialogSearch';
 const Header = styled.header`
 position:fixed;
@@ -158,7 +158,7 @@ height: 2rem ;
 margin-top: 0.5rem; 
 margin-left: 0.2rem;
 @media (max-width:1050px){
-  height: 2.5rem ;
+  height: 3rem ;
   margin:0;
 }
 `
@@ -371,9 +371,9 @@ const Headers = () => {
             </NoneShowMobile>
             <TextLogo src={logoTextColorImg} alt="홈으로" onClick={() => { router.push('/') }} />
           </div>
-          <RowContent style={{ textAlign: 'center', display: 'flex', alignItems: 'center' }}>
+          <RowContent style={{ textAlign: 'center', display: 'flex', alignItems: 'center', position: 'absolute' }}>
             <Icon icon='ion:navigate' style={{ color: theme.color.red, margin: 'auto 0 auto auto' }} />
-            <Font4 style={{ margin: 'auto auto auto 0.5rem' }}>{myAddress}</Font4>
+            <Font3 style={{ margin: 'auto auto auto 0.5rem', fontWeight: 'bold' }}>{myAddress}</Font3>
           </RowContent>
           <NoneShowMobile>
             {/* <AiOutlineBell onClick={onClickBell} style={{ width: '2rem', height: '1.5rem', cursor: 'pointer' }} />

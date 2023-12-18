@@ -4,7 +4,7 @@ import { RowContent, Wrappers } from "src/components/elements/UserContentTemplet
 import { backUrl } from "src/data/Data";
 import theme from "src/styles/theme";
 import styled from "styled-components";
-import { commarNumber, getLocation } from "src/functions/utils";
+import { commarNumber, getLocation, makeMinPrice } from "src/functions/utils";
 import Loading from "src/components/Loading";
 import { Icon } from "@iconify/react"
 import { motion } from "framer-motion"
@@ -31,13 +31,13 @@ height: 50%;
 margin:0 auto;
 border-top-right-radius:10px;
 border-top-left-radius:10px;
-
 `
 const MerchandiseExplain = styled.div`
 width: 90%;
 height: 45%;
 margin: auto auto 0 auto;
 display:flex;
+row-gap: 0.3rem;
 flex-direction:column;
 @media (max-width: 1350px) {
   font-size:${theme.size.font4};
@@ -62,6 +62,7 @@ export const Merchandise = (props) => {
 
     const { item, router } = props;
     const [shop, setShop] = useState({});
+    console.log(item)
     useEffect(() => {
         setShop(item)
     }, [])
@@ -81,17 +82,16 @@ export const Merchandise = (props) => {
             >
                 <MerchandiseImg src={item?.img_src} alt={item?.img_src_alt} />
                 <MerchandiseExplain>
-                    <Font5 style={{ display: 'flex', alignItems: 'center', margin: '0 0 auto 0' }}>
+                    <Font5 style={{ display: 'flex', alignItems: 'center' }}>
                         <div>댓글 {item?.comment_count} | 리뷰 {item?.review_count}</div>
                     </Font5>
-                    <Font4 style={{ margin: 'auto 0' }}>{item?.name}</Font4>
-                    <Font5 style={{ display: 'flex', alignItems: 'center', margin: 'auto 0' }}>
+                    <Font4>{item?.name}</Font4>
+                    <Font5 style={{ display: 'flex', alignItems: 'center' }}>
                         <h3 style={{ margin: '0' }}>{item?.theme_name}</h3>
                     </Font5>
-                    <Font5 style={{ display: 'flex', alignItems: 'center', margin: 'auto 0' }}>
-                        <div>{item?.city_name} {item?.sub_city_name}</div>
+                    <Font5 style={{ display: 'flex', alignItems: 'center' }}>
+                        <div>{item?.city_name} {item?.sub_city_name} {item?.dong}</div>
                     </Font5>
-
                     {item?.distance ?
                         <>
                             <Font5 style={{ display: 'flex', alignItems: 'center', margin: 'auto 0' }}>
@@ -103,6 +103,13 @@ export const Merchandise = (props) => {
                         </>
                         :
                         <>
+                        </>}
+                    {item?.manager_count > 0 &&
+                        <>
+                            <Font4 style={{ display: 'flex', alignItems: 'center', fontWeight: 'bold', justifyContent: 'space-between', color: 'red' }}>
+                                <div>출근부</div>
+                                <div>{makeMinPrice(item?.price_list)}</div>
+                            </Font4>
                         </>}
                 </MerchandiseExplain>
             </motion.a>

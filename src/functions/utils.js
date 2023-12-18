@@ -207,6 +207,15 @@ export const makeDiscountPrice = (num, percent) => {
     let result = num * (100 - percent) / 100;
     return result;
 }
+export const makeMinPrice = (list = []) => {
+    let min_price = 100000;
+    for (var i = 0; i < list.length; i++) {
+        if (list[i]?.price < min_price && list[i]?.price) {
+            min_price = parseInt(list[i]?.price);
+        }
+    }
+    return commarNumber(min_price);
+}
 export const makeQueryObj = (query_) => {
     let obj = {};
     if (!query_ || query_[0] != '?') {

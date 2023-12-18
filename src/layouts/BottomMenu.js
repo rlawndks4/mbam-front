@@ -113,7 +113,9 @@ const BottomMenu = () => {
                                                         transform: `translateY(-1rem)`,
                                                         background: theme.color.background5,
                                                         height: 'auto',
-                                                        borderRadius: '50%'
+                                                        borderRadius: '50%',
+                                                        width: '64px',
+                                                        height: '56px'
                                                     } : {}),
                                                 }}
                                                 key={index}>
@@ -134,9 +136,6 @@ const BottomMenu = () => {
                 <>
                 </>
             }
-
-
-
         </>
     )
 }
