@@ -7,18 +7,18 @@ import axios from 'axios'
 import { backUrl, zBottomMenu } from '../data/Data';
 import { MdNavigateBefore } from 'react-icons/md';
 import theme from '../styles/theme';
-import { IoMdArrowBack } from 'react-icons/io';
 import $ from 'jquery';
-import { getLocation, onClickExternalLink, returnMoment } from '../functions/utils';
+import { dateFormat, dateFormatReverse, getLocation, onClickExternalLink, returnMoment } from '../functions/utils';
 import { IoMdClose } from 'react-icons/io'
 import { IoCloseCircleOutline } from 'react-icons/io5';
 import { RowContent, TextButton } from '../components/elements/UserContentTemplete';
 const logoTextColorImg = '/assets/images/test/logo_test_color.png'
 import { useRouter } from 'next/router';
-import { Button, CardContent, Drawer, IconButton, Typography } from '@mui/material';
+import { Button, CardContent, Dialog, DialogContent, DialogContentText, DialogTitle, Drawer, IconButton, Typography } from '@mui/material';
 import { Icon } from '@iconify/react';
 import { Font3, Font4 } from 'src/components/elements/ManagerTemplete';
 import DialogSearch from 'src/components/DialogSearch';
+import toast from 'react-hot-toast';
 const Header = styled.header`
 position:fixed;
 height:6rem;
@@ -153,14 +153,63 @@ const ColumnMenuContainer = styled.div`
         row-gap: 0.1rem;
 }
 `
+const ColumnMenuContainer2 = styled.div`
+        width: 400px;
+        height:100vh;
+        overflow-y:auto;
+        display:flex;
+        flex-direction:column;
+        @media (max-width:800px){
+          width: 70vw;
+        row-gap: 0.1rem;
+}
+`
+const BorderBottomText = styled.div`
+padding: 0.2rem;
+border-bottom: 1px solid #ccc;
+display: flex;
+align-items: center;
+column-gap: 0.5rem;
+`
+const ColorButton = styled.div`
+padding: 0.2rem 0.4rem;
+border-radius: 0.4rem;
+color: #fff;
+`
 const TextLogo = styled.img`
-height: 2rem ;
+height: 4rem ;
 margin-top: 0.5rem; 
 margin-left: 0.2rem;
 @media (max-width:1050px){
   height: 3rem ;
   margin:0;
 }
+`
+const AddressContainer = styled.div`
+text-align: center;
+display: flex;
+align-items: center;
+position: absolute;
+width: auto;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+`
+const ShopManagerButton = styled.div`
+position: fixed;
+top:40%;
+left: 0;
+z-index: 9;
+background: #444;
+color: #fff;
+padding: 1rem 0.4rem;
+font-size: 14px;
+border-top-right-radius: 0.2rem;
+border-bottom-right-radius: 0.2rem;
+cursor: pointer;
+display: flex;
+flex-direction: column;
+row-gap: 0.5rem;
 `
 const Headers = () => {
   const authList = [
@@ -209,6 +258,11 @@ const Headers = () => {
   const [myAddress, setMyAddress] = useState("");
   const [auth, setAuth] = useState({});
   const [sideMenuOpen, setSideMenuOpen] = useState(false);
+  const [sideMenuType, setSideMenuType] = useState('');
+  const [shopList, setShopList] = useState([]);
+  const [jumpHistoryTable, setJumpHistoryTable] = useState([]);
+  const [historyOpen, setHistoryOpen] = useState(false);
+
   const [dialogOpenObj, setDialogOpenObj] = useState({
     search: false
   })
@@ -270,6 +324,7 @@ const Headers = () => {
     setPopupList(response?.data?.popup ?? []);
     setThemeList(response?.data?.theme);
     setCityList(response?.data?.city ?? [])
+    setShopList(response?.data?.shop ?? [])
   }
 
   useEffect(() => {
@@ -296,9 +351,6 @@ const Headers = () => {
     setPopupList(popup_list);
   }
 
-
-
-
   const onLogout = async () => {
     if (window.confirm("정말 로그아웃 하시겠습니까?")) {
       if (window && window.flutter_inappwebview) {
@@ -316,8 +368,11 @@ const Headers = () => {
       }
     }
   }
-  const onClickServiceCenter = (num) => {
-    router.push(`/servicecenter/${num}`);
+  const getJumpHistory = async (pk) => {
+    setSideMenuOpen(false);
+    const { data: response } = await axios.get(`/api/items?table=jump&shop_pk=${pk}&order=pk`);
+    setJumpHistoryTable(response?.data ?? [])
+    setHistoryOpen(true);
   }
   const handleDialogClose = () => {
     let obj = { ...dialogOpenObj };
@@ -326,13 +381,65 @@ const Headers = () => {
     }
     setDialogOpenObj(obj);
   }
+  const processJump = async (pk) => {
+    if (window.confirm('점프를 실행하시겠습니까?')) {
+      const { data: response } = await axios.post(`/api/jump`, {
+        pk: pk,
+      })
+      if (response?.result > 0) {
+        toast.success('점프를 성공하였습니다.');
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000)
+      }
+    }
+
+  }
   return (
     <>
+      <Dialog
+        open={historyOpen}
+        onClose={() => {
+          setHistoryOpen(false);
+        }}
+      >
+        <DialogTitle style={{ background: theme.color.background0, color: '#fff' }}>{`당일 점프기록`}</DialogTitle>
+        <DialogContent style={{ width: '90vw', maxWidth: '500px', marginTop: '1rem' }}>
+          <DialogContentText>
+          </DialogContentText>
+          {jumpHistoryTable && jumpHistoryTable.map((item, idx) => (
+            <>
+              <div style={{ display: 'flex', columnGap: '0.2rem' }}>
+                <div>{idx + 1}.</div>
+                <div>{item?.date}</div>
+                <div></div>
+                <div></div>
+              </div>
+
+            </>
+          ))}
+        </DialogContent>
+      </Dialog>
       <DialogSearch
         open={dialogOpenObj.search}
         handleClose={handleDialogClose}
         root_path={'shop-list?keyword='}
       />
+      {auth?.pk > 0 ?
+        <>
+          <ShopManagerButton onClick={() => {
+            setSideMenuType('shop_manager');
+            setSideMenuOpen(true);
+          }}>
+            <div>업</div>
+            <div>체</div>
+            <div>관</div>
+            <div>리</div>
+          </ShopManagerButton>
+        </>
+        :
+        <>
+        </>}
       <Header style={{ display: `${display}` }} className='header'>
         {popupList.length > 0 && (router.asPath == '/' || router.asPath == '/home/') ?
           <>
@@ -363,18 +470,16 @@ const Headers = () => {
           :
           <>
           </>}
-
         <HeaderMenuContainer>{/* pc */}
-          <div style={{ display: 'flex', cursor: 'pointer' }}>
+          <div style={{ display: 'flex', cursor: 'pointer' }} onClick={() => { router.push('/') }} >
             <NoneShowMobile>
-              <img src={logoSrc} alt="홈으로" style={{ height: '3rem', cursor: 'pointer' }} onClick={() => { router.push('/') }} />
             </NoneShowMobile>
             <TextLogo src={logoTextColorImg} alt="홈으로" onClick={() => { router.push('/') }} />
           </div>
-          <RowContent style={{ textAlign: 'center', display: 'flex', alignItems: 'center', position: 'absolute' }}>
-            <Icon icon='ion:navigate' style={{ color: theme.color.red, margin: 'auto 0 auto auto' }} />
+          <AddressContainer>
+            <Icon icon='ion:navigate' style={{ color: theme.color.background0, margin: 'auto 0 auto auto' }} />
             <Font3 style={{ margin: 'auto auto auto 0.5rem', fontWeight: 'bold' }}>{myAddress}</Font3>
-          </RowContent>
+          </AddressContainer>
           <NoneShowMobile>
             {/* <AiOutlineBell onClick={onClickBell} style={{ width: '2rem', height: '1.5rem', cursor: 'pointer' }} />
             <AiOutlineSearch onClick={changeSearchModal} style={{ width: '2rem', height: '1.5rem', cursor: 'pointer' }} /> */}
@@ -388,6 +493,7 @@ const Headers = () => {
                 <Icon icon='ion:search' />
               </IconButton>
               <IconButton onClick={() => {
+                setSideMenuType('menu')
                 setSideMenuOpen(true);
               }}>
                 <Icon icon='ion:menu' style={{ fontSize: '1.8rem' }} />
@@ -404,6 +510,7 @@ const Headers = () => {
               <Icon icon='ion:search' />
             </IconButton>
             <IconButton sx={{ padding: '0' }} onClick={() => {
+              setSideMenuType('menu')
               setSideMenuOpen(true);
             }}>
               <Icon icon='ion:menu' style={{ fontSize: '1.8rem' }} />
@@ -412,78 +519,129 @@ const Headers = () => {
         </HeaderMenuContainer>
       </Header>
       <Drawer
-        anchor={'right'}
+        anchor={sideMenuType == 'menu' ? 'right' : 'left'}
         open={sideMenuOpen}
         onClose={() => {
           setSideMenuOpen(false);
         }}
+        PaperProps={{
+          style: {
+            top: `${sideMenuType == 'shop_manager' ? '40%' : ''}`
+          }
+        }}
         style={{
+          top: '12px'
         }}
       >
-        <ColumnMenuContainer>
-          {auth?.pk > 0 ?
-            <>
-              <ColumnMenuTitle style={{ borderBottom: '1px solid #ccc', paddingBlock: '1rem' }}>{auth?.nickname}님, 환영합니다.</ColumnMenuTitle>
-            </>
-            :
-            <>
-              <ColumnMenuTitle style={{ borderBottom: '1px solid #ccc', paddingBlock: '1rem' }}>로그인을 해주세요.</ColumnMenuTitle>
-            </>}
-          {auth?.pk > 0 ?
-            <>
-              {authList.map((item, idx) => (
+        {sideMenuType == 'menu' &&
+          <>
+            <ColumnMenuContainer>
+              {auth?.pk > 0 ?
                 <>
-                  <RowContent style={{ alignItems: 'center', cursor: 'pointer' }} onClick={() => {
-                    router.push(`${item.link_key}`);
-                    setSideMenuOpen(false);
-                  }}>
-                    <Icon icon={item.icon} style={{ color: theme.color.background1 }} />
-                    <Typography style={{ padding: '0.3rem', }} variant="subtitle2">{item.name}</Typography>
-                  </RowContent>
+                  <ColumnMenuTitle style={{ borderBottom: '1px solid #ccc', paddingBlock: '1rem' }}>{auth?.nickname}님, 환영합니다.</ColumnMenuTitle>
+                </>
+                :
+                <>
+                  <ColumnMenuTitle style={{ borderBottom: '1px solid #ccc', paddingBlock: '1rem' }}>로그인을 해주세요.</ColumnMenuTitle>
+                </>}
+              {auth?.pk > 0 ?
+                <>
+                  {authList.map((item, idx) => (
+                    <>
+                      <RowContent style={{ alignItems: 'center', cursor: 'pointer' }} onClick={() => {
+                        router.push(`${item.link_key}`);
+                        setSideMenuOpen(false);
+                      }}>
+                        <Icon icon={item.icon} style={{ color: theme.color.background1 }} />
+                        <Typography style={{ padding: '0.3rem', }} variant="subtitle2">{item.name}</Typography>
+                      </RowContent>
 
-                </>
-              ))}
-              <RowContent style={{ alignItems: 'center', cursor: 'pointer' }} onClick={() => {
-                onLogout();
-                setSideMenuOpen(false);
-              }}>
-                <Icon icon={'ri:logout-circle-r-line'} style={{ color: theme.color.background1 }} />
-                <Typography style={{ padding: '0.3rem', }} variant="subtitle2">로그아웃</Typography>
-              </RowContent>
-            </>
-            :
-            <>
-              {noneAuthList.map((item, idx) => (
-                <>
+                    </>
+                  ))}
                   <RowContent style={{ alignItems: 'center', cursor: 'pointer' }} onClick={() => {
-                    router.push(`${item.link_key}`);
+                    onLogout();
                     setSideMenuOpen(false);
                   }}>
-                    <Icon icon={item.icon} style={{ color: theme.color.background1 }} />
-                    <Typography style={{ padding: '0.3rem', }} variant="subtitle2">{item.name}</Typography>
+                    <Icon icon={'ri:logout-circle-r-line'} style={{ color: theme.color.background1 }} />
+                    <Typography style={{ padding: '0.3rem', }} variant="subtitle2">로그아웃</Typography>
                   </RowContent>
                 </>
+                :
+                <>
+                  {noneAuthList.map((item, idx) => (
+                    <>
+                      <RowContent style={{ alignItems: 'center', cursor: 'pointer' }} onClick={() => {
+                        router.push(`${item.link_key}`);
+                        setSideMenuOpen(false);
+                      }}>
+                        <Icon icon={item.icon} style={{ color: theme.color.background1 }} />
+                        <Typography style={{ padding: '0.3rem', }} variant="subtitle2">{item.name}</Typography>
+                      </RowContent>
+                    </>
+                  ))}
+                </>}
+              <ColumnMenuTitle>지역별샵</ColumnMenuTitle>
+              {cityList && cityList.map(item => (
+                <>
+                  <Typography onClick={() => {
+                    router.push(`/shop-list?city=${item?.pk}`)
+                    setSideMenuOpen(false);
+                  }} style={{ padding: '0.3rem', cursor: 'pointer' }} variant="subtitle2">{item.name}</Typography>
+                </>
               ))}
-            </>}
-          <ColumnMenuTitle>지역별샵</ColumnMenuTitle>
-          {cityList && cityList.map(item => (
-            <>
-              <Typography onClick={() => {
-                router.push(`/shop-list?city=${item?.pk}`)
-                setSideMenuOpen(false);
-              }} style={{ padding: '0.3rem', cursor: 'pointer' }} variant="subtitle2">{item.name}</Typography>
-            </>
-          ))}
-          <ColumnMenuTitle>테마별삽</ColumnMenuTitle>
-          {themeList && themeList.map(item => (
-            <>
-              <Typography onClick={() => {
-                router.push(`/shop-list?theme=${item?.pk}`)
-                setSideMenuOpen(false);
-              }} style={{ padding: '0.3rem', cursor: 'pointer' }} variant="subtitle2">{item.name}</Typography>
-            </>
-          ))}
-        </ColumnMenuContainer>
+              <ColumnMenuTitle>테마별삽</ColumnMenuTitle>
+              {themeList && themeList.map(item => (
+                <>
+                  <Typography onClick={() => {
+                    router.push(`/shop-list?theme=${item?.pk}`)
+                    setSideMenuOpen(false);
+                  }} style={{ padding: '0.3rem', cursor: 'pointer' }} variant="subtitle2">{item.name}</Typography>
+                </>
+              ))}
+            </ColumnMenuContainer>
+          </>}
+        {sideMenuType == 'shop_manager' &&
+          <>
+            <ColumnMenuContainer2>
+              <div style={{ background: theme.color.background0, padding: '0.5rem', color: '#fff' }}>업체관리</div>
+
+              {shopList && shopList.map((item, idx) => (
+                <>
+                  <BorderBottomText>
+                    <div>{item?.name}</div>
+                  </BorderBottomText>
+                  <BorderBottomText>
+                    <div>제휴만료일</div>
+                    <div>{item?.end_date}</div>
+                    <ColorButton style={{ background: '#4D4DFF' }}>
+                      {dateFormatReverse(item?.end_date, true)}
+                    </ColorButton>
+                  </BorderBottomText>
+                  <BorderBottomText>
+                    <ColorButton style={{ background: '#006cb7' }} onClick={() => {
+                      processJump(item?.pk)
+                    }}>업체점프({item?.daily_jump_count - item?.use_jump_count})</ColorButton>
+                    <ColorButton style={{ background: '#87CEEB' }} onClick={() => {
+                      router.push(`/my-shop/jump/${item?.pk}`)
+                      setSideMenuOpen(false);
+                    }}>자동점프설정</ColorButton>
+                  </BorderBottomText>
+                  <BorderBottomText>
+                    <ColorButton style={{ background: '#6CA0DC' }} onClick={() => {
+                      getJumpHistory(item?.pk)
+                    }}>점프기록</ColorButton>
+                  </BorderBottomText>
+                  <BorderBottomText>
+                    <ColorButton style={{ background: '#3E8EDE' }}>출근부관리</ColorButton>
+                  </BorderBottomText>
+                  <BorderBottomText>
+                    <ColorButton style={{ background: '#4169E1' }}>1:1문의</ColorButton>
+                  </BorderBottomText>
+                </>
+              ))}
+            </ColumnMenuContainer2>
+          </>}
+
       </Drawer>
     </>
   )

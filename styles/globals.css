@@ -48,9 +48,6 @@ body::-webkit-scrollbar-thumb {
   display: block !important;
 }
 
-.board-container {
-  width: 100%;
-}
 
 .emoji {
   background: transparent;
@@ -106,6 +103,10 @@ body::-webkit-scrollbar-thumb {
 }
 #ALLAT_MOBILE_PAY{
   height: 100vh !important;
+}
+.banner-img-2{
+  width: 700px;
+  height: 350px;
 }
 .banner-img{
   width: 1150px;
@@ -323,6 +324,10 @@ margin: 18px auto;
   .banner-img{
       width: 100vw;
       height: 50vw;
+  }
+  .banner-img-2{
+    width: 90vw;
+    height: 45vw;
   }
   .slick-dots {
       bottom: 1vw !important;

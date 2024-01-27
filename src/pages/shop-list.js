@@ -60,9 +60,8 @@ const convertText = (text) => {
 }
 export const Merchandise = (props) => {
 
-    const { item, router } = props;
+    const { item, router, is_home } = props;
     const [shop, setShop] = useState({});
-    console.log(item)
     useEffect(() => {
         setShop(item)
     }, [])
@@ -76,7 +75,8 @@ export const Merchandise = (props) => {
                 style={{
                     background: '#fff',
                     textDecoration: 'none',
-                    color: '#000'
+                    color: '#000',
+                    width: `${(is_home && window.innerWidth > 1050) ? '220px' : ''}`
                 }}
                 className='merchandise-content'
             >
@@ -104,7 +104,7 @@ export const Merchandise = (props) => {
                         :
                         <>
                         </>}
-                    {item?.manager_count > 0 &&
+                    {item?.managers?.length > 0 &&
                         <>
                             <Font4 style={{ display: 'flex', alignItems: 'center', fontWeight: 'bold', justifyContent: 'space-between', color: 'red' }}>
                                 <div>출근부</div>

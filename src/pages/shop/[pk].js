@@ -96,6 +96,16 @@ width:45%;
 const Row = styled.div`
 display:flex;
 `
+
+const ManagerImg = styled.img`
+ height: 100px;
+ width: auto;
+`
+const ManagerContainer = styled.div`
+overflow: auto;
+display: -webkit-box;
+column-gap: 0.5rem;
+`
 const Shop = () => {
     const router = useRouter();
     const viewerRef = useRef();
@@ -282,17 +292,18 @@ const Shop = () => {
                                                 <Card>
                                                     <CardContent>
                                                         <Typography style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>출근부</Typography>
-                                                        <RowContent style={{ overflow: 'auto', columnGap: '0.5rem' }}>
+                                                        <ManagerContainer className="none-scroll">
                                                             {data?.shop_manager && data?.shop_manager.map((itm) => (
                                                                 <>
                                                                     <Col style={{ rowGap: '0.25rem' }}>
                                                                         <div style={{ fontSize: theme.size.font3 }}>{itm?.name}</div>
-                                                                        <img src={itm?.img_src} style={{ height: '100px', width: 'auto' }} />
+                                                                        <ManagerImg src={itm?.img_src} />
                                                                         <div style={{ fontSize: theme.size.font5 }}>{itm?.comment}</div>
+                                                                        <div style={{ fontSize: theme.size.font5 }}>{itm?.work_time}</div>
                                                                     </Col>
                                                                 </>
                                                             ))}
-                                                        </RowContent>
+                                                        </ManagerContainer>
                                                     </CardContent>
                                                 </Card>
                                             </Grid>

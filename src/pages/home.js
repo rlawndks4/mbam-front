@@ -7,20 +7,14 @@ import { backUrl } from 'src/data/Data';
 import { Wrappers, RowContent } from 'src/components/elements/UserContentTemplete';
 import Loading from 'src/components/Loading';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-const playStoreSrc = 'assets/images/test/google-play.jpg'
 import { Merchandise } from './shop-list';
 import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
-const homeTaiImg = '/assets/images/banner/hometai.jpg'
-const koreanImg = '/assets/images/banner/korean.jpg'
-const shop1Img = '/assets/images/banner/1shop.jpg'
-const locationGoToImg = '/assets/images/test/loacation_go_to.png'
-const requestGif = '/assets/images/banner/request.gif'
 import { Col, Font3, Font4, Font5, Row } from 'src/components/elements/ManagerTemplete';
 import theme from 'src/styles/theme';
 import { useRouter } from 'next/router';
 import UserLayout from 'src/layouts/UserLayout';
 import { dateFormat } from 'src/functions/utils';
-import { Typography } from '@mui/material';
+import { Chip, Tab, Tabs, Typography } from '@mui/material';
 
 const WrappersStyle = styled.div`
 position:relative;
@@ -36,14 +30,22 @@ font-family:${props => props.theme.font.normal};
 }
 `
 const MerchandiseContainer = styled.div`
-width: 100%;
 display: flex;
 flex-wrap:wrap;
-column-gap: 60px;
+column-gap: 20px;
 grid-row-gap: 10px;
 row-gap: 30px;
-@media (max-width: 1350px) {
+width: 700px;
+@media (max-width: 1050px) {
   column-gap: 4.2vw;
+  width: 100%;
+}
+
+`
+const ShopBannerContainer = styled.div`
+width: 700px;
+@media (max-width: 1050px) {
+  width: 90vw;
 }
 
 `
@@ -92,7 +94,6 @@ row-gap: 1rem;
 const CommunityContainer = styled.div`
 display: flex;
 flex-direction: column;
-border: 1px solid 1px;
 border-radius: 0.5rem;
 min-height: 150px;
 border: 1px solid #ccc;
@@ -114,7 +115,7 @@ justify-content: space-between;
 
 `
 const ShopOptionWrappers = styled.div`
-width:218px;
+width:250px;
 display: ${props => props.display == 'none' ? 'flex' : 'none'};
 flex-direction: column;
 background: ${theme.color.background4};
@@ -125,7 +126,23 @@ border-radius: 0.5rem;
     display: ${props => props.display == 'none' ? 'none' : 'flex'};
 }
 `
-
+const RealTimeContainer = styled.div`
+width: 668px;
+border-radius: 0.5rem;
+border: 1px solid #ccc;
+padding: 16px;
+@media (max-width: 1050px) {
+  width: calc(90vw - 32px);
+}
+`
+const HotPlaceContainer = styled.div`
+width: 700px;
+border-radius: 0.5rem;
+border: 1px solid #ccc;
+@media (max-width: 1050px) {
+  width: 90vw;
+}
+`
 const NextArrow = ({ onClick }) => {
     return (
         <div className="nextArrow" onClick={onClick}>
@@ -148,10 +165,11 @@ const Home = () => {
     const [homeContent, setHomeContent] = useState({});
     const [banners, setBanners] = useState([]);
     const [bannerLinks, setBannerLinks] = useState([]);
+    const [shopBanners, setShopBanners] = useState([]);
+    const [shopBannerLinks, setShopBannerLinks] = useState([]);
     const [cityList, setCityList] = useState([])
     const [themeList, setThemeList] = useState([])
-    const [shopList, setShopList] = useState([])
-    const [setting, setSetting] = useState({});
+    const [hotPlaceTab, setHotPlaceTab] = useState(0);
     const communityList = [
         { label: '공지사항', table: 'notice' },
         { label: '공식블로그', table: 'blog' },
@@ -170,12 +188,19 @@ const Home = () => {
         nextArrow: <NextArrow onClick />,
         prevArrow: <PrevArrow onClick />,
     };
-
+    const shop_banner_settings = {
+        infinite: true,
+        speed: 500,
+        autoplay: true,
+        autoplaySpeed: 2500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        dots: false,
+    };
     useEffect(() => {
         async function fetchPost() {
             setLoading(true)
             const { data: response } = await axios.get('/api/gethomecontent')
-            setSetting(response?.data?.banner ?? {})
             let banner_list = [];
             let banner_link_list = [];
             for (var i = 1; i <= 5; i++) {
@@ -185,11 +210,22 @@ const Home = () => {
 
                 }
             }
+            let shop_banner_list = [];
+            let shop_banner_link_list = [];
+            for (var i = 1; i <= 10; i++) {
+                if (response?.data?.banner[`shop_banner_img_${i}`]) {
+                    await shop_banner_list.push(`${response?.data?.banner[`shop_banner_img_${i}`]}`);
+                    await shop_banner_link_list.push(`${response?.data?.banner[`shop_banner_link_${i}`]}`);
+
+                }
+            }
+            console.log(shop_banner_list)
             setHomeContent(response?.data);
             setCityList(response?.data?.city ?? []);
             setBanners(banner_list);
             setBannerLinks(banner_link_list);
-            setShopList(response?.data?.shop ?? []);
+            setShopBanners(shop_banner_list);
+            setShopBannerLinks(shop_banner_link_list);
             setThemeList(response?.data?.theme ?? []);
             setLoading(false);
         }
@@ -271,26 +307,82 @@ const Home = () => {
                                         </>
                                     ))}
                                 </ThemeCardContainer>
+                                <ShopBannerContainer>
+                                    <Slider {...shop_banner_settings} className='pointer'>
+                                        {shopBanners.length > 0 && shopBanners.map((item, idx) => (
+                                            <>
+                                                <LazyLoadImage
+                                                    alt={"#"}
+                                                    effect="blur"
+                                                    src={item}
+                                                    className="banner-img-2"
+                                                    onClick={() => {
+                                                        window.location.href = shopBannerLinks[idx]
+                                                    }}
+                                                />
+                                            </>
+                                        ))}
+                                    </Slider>
+                                </ShopBannerContainer>
                                 <Typography style={{ fontWeight: 'bold' }}>실시간 샵 검색 확인</Typography>
-
+                                <RealTimeContainer>
+                                    <RowContent style={{ overflow: 'auto', display: '-webkit-box' }} className='none-scroll'>
+                                        {homeContent?.real_time_shop && homeContent?.real_time_shop.map((item, idx) => (
+                                            <>
+                                                <RowContent style={{ width: 'auto', columnGap: '0.2rem', marginRight: '0.5rem', alignItems: 'center' }}>
+                                                    <Chip label={idx + 1} />
+                                                    <Typography variant='subtitle2'>{item?.city_name}</Typography>
+                                                    <Typography variant='subtitle2'>{item?.sub_city_name}</Typography>
+                                                    <Typography variant='subtitle2'>{item?.name}</Typography>
+                                                </RowContent>
+                                            </>
+                                        ))}
+                                    </RowContent>
+                                </RealTimeContainer>
+                                <HotPlaceContainer style={{}}>
+                                    <CommunityHeader>실시간 핫플레이스 샵</CommunityHeader>
+                                    <Tabs value={hotPlaceTab} aria-label="basic tabs example" style={{ width: '100%' }}>
+                                        <Tab label="1~10위" onClick={() => { setHotPlaceTab(0) }} value={0} style={{ width: '50%' }} />
+                                        <Tab label="11~20위" onClick={() => { setHotPlaceTab(1) }} value={1} style={{ width: '50%' }} />
+                                    </Tabs>
+                                    <Col style={{ padding: '0.5rem', rowGap: '0.25rem' }}>
+                                        {homeContent?.hop_place_shop && homeContent?.hop_place_shop.map((item, idx) => (
+                                            <>
+                                                {(idx >= hotPlaceTab * 10 && idx <= (hotPlaceTab + 1) * 10) &&
+                                                    <>
+                                                        <CommunityContent style={{ justifyContent: 'flex-start', columnGap: '0.2rem', fontSize: '16px' }} onClick={() => {
+                                                            router.push(`/shop/${item?.pk}`)
+                                                        }}>
+                                                            <div>{idx + 1}</div>
+                                                            <div>{item?.city_name}</div>
+                                                            <div>{item?.sub_city_name}</div>
+                                                            <div>{item?.name}</div>
+                                                        </CommunityContent>
+                                                    </>}
+                                            </>
+                                        ))}
+                                    </Col>
+                                </HotPlaceContainer>
                                 <Typography style={{ fontWeight: 'bold', margin: '2rem auto 1rem auto' }}>프리미엄 업체</Typography>
                                 <MerchandiseContainer>
-                                    {homeContent?.premium_shop && homeContent?.premium_shop.map((item, idx) => (
+                                    {homeContent?.shop && homeContent?.shop.filter(el => el?.is_premium == 1).map((item, idx) => (
                                         <>
                                             <Merchandise
                                                 router={router}
                                                 item={item}
+                                                is_home={true}
                                             />
                                         </>
                                     ))}
                                 </MerchandiseContainer>
                                 <Typography style={{ fontWeight: 'bold', margin: '2rem auto 1rem auto' }}>신규 업체</Typography>
                                 <MerchandiseContainer>
-                                    {homeContent?.shop && homeContent?.shop.map((item, idx) => (
+                                    {homeContent?.shop && homeContent?.shop.filter(el => el?.is_premium == 0).map((item, idx) => (
                                         <>
                                             <Merchandise
                                                 router={router}
                                                 item={item}
+                                                is_home={true}
                                             />
                                         </>
                                     ))}

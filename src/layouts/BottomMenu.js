@@ -111,8 +111,9 @@ const BottomMenu = () => {
                                                     color: `${colorList[index]}`,
                                                     ...(index == 2 ? {
                                                         transform: `translateY(-1rem)`,
-                                                        background: theme.color.background5,
+                                                        background: theme.color.background0,
                                                         height: 'auto',
+                                                        color: '#fff',
                                                         borderRadius: '50%',
                                                         width: '64px',
                                                         height: '56px'
@@ -120,7 +121,7 @@ const BottomMenu = () => {
                                                 }}
                                                 key={index}>
                                                 {colorList[index] == theme.color.background0 ? item.activeIcon : item.icon}
-                                                <OneMenuName style={{ color: `${colorList[index]}` }} >
+                                                <OneMenuName style={{ color: `${index == 2 ? '#fff' : colorList[index]}` }} >
                                                     {item.name}
                                                 </OneMenuName>
                                             </OneMenuContainer>

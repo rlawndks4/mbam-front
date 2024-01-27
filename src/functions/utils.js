@@ -126,6 +126,7 @@ export const returnMoment = (num, date) => {//num 0: 오늘, num -1: 어제 , da
     }
 
 }
+
 export const getIframeLinkByLink = (str) => {
     let ans = "";
     for (var i = 0; i < str.length; i++) {
@@ -301,6 +302,19 @@ export const dateFormat = (date, is_minus) => {//두날짜의 시간차
         } else {
             return date.substring(0, 10);
         }
+    }
+}
+export const dateFormatReverse = (date, is_minus) => {//두날짜의 시간차
+    if (!date) {
+        return "---";
+    }
+    let f_d = new Date(date).getTime();
+    let s_d = new Date(returnMoment()).getTime();;
+    let hour = (f_d - s_d) / (1000 * 3600);
+    let minute = (f_d - s_d) / (1000 * 60);
+    let day = (f_d - s_d) / (1000 * 3600 * 24);
+    if (is_minus) {
+        return `${parseInt(day)}일후`;
     }
 }
 export function getLocation() {
