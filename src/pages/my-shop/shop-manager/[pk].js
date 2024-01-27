@@ -33,14 +33,27 @@ const ManagerEdit = () => {
     }
     const onSave = async () => {
         if (window.confirm('저장하시겠습니까?')) {
-
+            const { data: response } = await axios.post(`/api/shop-manager`, {
+                manager_list: JSON.stringify(data),
+                pk: router.query?.pk
+            })
+            if (response?.result > 0) {
+                toast.success('성공적으로 저장하였습니다.');
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 1000)
+            }
         }
     }
-    const addFile = (e, idx) => {
+    const addFile = async (e, idx) => {
         if (e.target.files[0]) {
             let list = [...data];
-            list[idx].file = e.target.files[0]
+            let formData = new FormData();
+            await formData.append('note', e.target.files[0]);
+            const { data: response } = await axios.post('/api/addimageitems', formData);
+            list[idx].img_src = response?.data[0]?.filename;
             setData(list)
+
             //setUrl(URL.createObjectURL(e.target.files[0]))
         }
     }
@@ -59,9 +72,9 @@ const ManagerEdit = () => {
                         <Col style={{ rowGap: '0.5rem', marginTop: '2rem' }}>
                             <ImageContainer for={`file${idx}`} style={{ display: 'flex', margin: 'auto' }}>
 
-                                {(item?.file || item?.img_src) ?
+                                {(item?.img_src) ?
                                     <>
-                                        <img src={item?.file ? URL.createObjectURL(item?.file) : item?.img_src} alt="#"
+                                        <img src={item?.img_src} alt="#"
                                             style={{
                                                 width: 'auto', height: '150px',
                                                 margin: 'auto'
