@@ -639,7 +639,9 @@ const Headers = () => {
                     }}>출근부관리</ColorButton>
                   </BorderBottomText>
                   <BorderBottomText>
-                    <ColorButton style={{ background: '#4169E1' }}>1:1문의</ColorButton>
+                    <a href={`tel:${item?.phone}`} style={{ textDecoration: 'none' }}>
+                      <ColorButton style={{ background: '#4169E1' }}>1:1문의</ColorButton>
+                    </a>
                   </BorderBottomText>
                 </>
               ))}
