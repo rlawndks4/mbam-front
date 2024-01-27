@@ -633,7 +633,10 @@ const Headers = () => {
                     }}>점프기록</ColorButton>
                   </BorderBottomText>
                   <BorderBottomText>
-                    <ColorButton style={{ background: '#3E8EDE' }}>출근부관리</ColorButton>
+                    <ColorButton style={{ background: '#3E8EDE' }} onClick={() => {
+                      router.push(`/my-shop/shop-manager/${item?.pk}`)
+                      setSideMenuOpen(false);
+                    }}>출근부관리</ColorButton>
                   </BorderBottomText>
                   <BorderBottomText>
                     <ColorButton style={{ background: '#4169E1' }}>1:1문의</ColorButton>
