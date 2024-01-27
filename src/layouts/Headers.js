@@ -175,6 +175,7 @@ const ColorButton = styled.div`
 padding: 0.2rem 0.4rem;
 border-radius: 0.4rem;
 color: #fff;
+cursor: pointer;
 `
 const TextLogo = styled.img`
 height: 4rem ;
