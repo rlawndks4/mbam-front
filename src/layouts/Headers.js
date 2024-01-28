@@ -155,7 +155,7 @@ const ColumnMenuContainer = styled.div`
 `
 const ColumnMenuContainer2 = styled.div`
         width: 400px;
-        height:100vh;
+        height:60vh;
         overflow-y:auto;
         display:flex;
         flex-direction:column;
