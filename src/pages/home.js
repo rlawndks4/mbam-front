@@ -147,6 +147,7 @@ border: 1px solid #ccc;
 const LeftImg = styled.img`
 width: 232px;
 margin-bottom: 1rem;
+cursor: pointer;
 `
 const NextArrow = ({ onClick }) => {
     return (
@@ -352,7 +353,9 @@ const Home = () => {
                     <>
                         <RowContent style={{ columnGap: '1rem', alignItems: 'flex-start' }}>
                             <Col>
-                                <LeftImg src={homeContent?.banner?.home_left_img} style={{ width: '232px', marginBottom: '1rem' }} />
+                                <LeftImg src={homeContent?.banner?.home_left_img} style={{ width: '232px', marginBottom: '1rem' }} onClick={() => {
+                                    window.location.href = omeContent?.banner?.home_left_link
+                                }} />
                                 <ShopOptionWrappers display={'none'}>
                                     <Font3 style={{ fontWeight: 'bold' }}>지역별샵</Font3>
                                     {cityList && cityList.map((item, idx) => (
@@ -554,20 +557,25 @@ const Home = () => {
                                         </>
                                         :
                                         <>
-                                            <Col style={{ justifyContent: 'space-around', height: '100%', padding: '1rem', rowGap: '1rem' }}>
-                                                <TextField size='small' label='아이디' onChange={(e) => {
+                                            <Col style={{ justifyContent: 'space-around', height: '100%', padding: '1rem', rowGap: '0' }}>
+                                                <TextField size='small' label='아이디' style={{ marginBottom: '0.7rem' }} onChange={(e) => {
                                                     setLoginData({
                                                         ...loginData,
                                                         id: e.target.value
                                                     })
                                                 }} />
-                                                <TextField size='small' label='비밀번호' type='password' onChange={(e) => {
+                                                <TextField size='small' label='비밀번호' style={{ marginBottom: '0.7rem' }} type='password' onChange={(e) => {
                                                     setLoginData({
                                                         ...loginData,
                                                         pw: e.target.value
                                                     })
                                                 }} />
                                                 <Button onClick={onLogin} variant='contained'>로그인</Button>
+                                                <div style={{ marginLeft: 'auto', fontSize: '12px', textDecoration: 'underline', marginTop: '0.1rem', cursor: 'pointer' }}
+                                                    onClick={() => {
+                                                        router.push('/signup')
+                                                    }}
+                                                >회원가입</div>
                                             </Col>
                                         </>}
                                 </CommunityContainer>
