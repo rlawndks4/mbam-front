@@ -55,7 +55,7 @@ const LoginCard = () => {
                 });
             }
             await localStorage.setItem('auth', JSON.stringify(response.data));
-            window.location.href = '/mypage';
+            window.location.href = '/';
 
         }
     }
