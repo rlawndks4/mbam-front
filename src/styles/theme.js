@@ -50,8 +50,8 @@ const theme = {
     font1: '27px',
     font2: '25px',
     font2_5: '22px',
-    font3: '16px',
-    font4: '14px',
+    font3: '17px',
+    font4: '15px',
     font5: '12px',
     font6: '10px',
     font7: '8px',
@@ -68,7 +68,7 @@ const theme = {
     light: "SpoqaHanSansNeo-Light",
     regular: "SpoqaHanSansNeo-Regular",
     medium: "SpoqaHanSansNeo-Medium",
-    normal: "NanumSquareNeo-cBd"
+    normal: "NormalOtf"
   },
   boxShadow: "0px 12px 12px #00000029",
   borderRadius: "10px"

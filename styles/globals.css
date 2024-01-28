@@ -1,9 +1,25 @@
+@font-face {
+  font-family: 'BoldOtf';
+  src: url("../public/assets/fonts/Pretendard-Bold.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: 'NormalOtf';
+  src: url("../public/assets/fonts/Pretendard-Medium.ttf")  format('truetype');
+}
+
+@font-face {
+  font-family: 'LightOtf';
+  src: url("../public/assets/fonts/Pretendard-Light.ttf") format('truetype');
+}
+
 body {
   -ms-overflow-style: none;
   /* IE and Edge */
   scrollbar-width: none;
   /* Firefox */
   margin: 0;
+  font-family: NormalOtf !important;
 }
 
 body::-webkit-scrollbar {
@@ -351,8 +367,8 @@ margin: 18px auto;
 @media screen and (max-width:850px) {
   
   .merchandise-content {
-      width: 47.5%;
-      height: 65vw;
+      width: 90vw;
+      height: auto;
     }
 }
 @media screen and (max-width:700px) {

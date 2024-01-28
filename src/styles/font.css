@@ -1,0 +1,15 @@
+@font-face {
+    font-family: 'BoldOtf';
+    src: url("../../public/assets/fonts/Pretendard-Bold.ttf") format('truetype');
+  }
+  
+  @font-face {
+    font-family: 'NormalOtf';
+    src: url("../../public/assets/fonts/Pretendard-Medium.ttf")  format('truetype');
+  }
+  
+  @font-face {
+    font-family: 'LightOtf';
+    src: url("../../public/assets/fonts/Pretendard-Light.ttf") format('truetype');
+  }
+  

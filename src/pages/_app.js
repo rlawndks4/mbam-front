@@ -15,7 +15,8 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { Toaster } from 'react-hot-toast';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-
+import mui_theme from 'src/styles/mui-theme';
+import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 const App = (props) => {
   const { Component, pageProps, head_data = {} } = props;
   const getLayout = Component.getLayout ?? ((page) => page);
@@ -74,10 +75,12 @@ const App = (props) => {
         ></Script>
       </Head>
       <ReduxProvider store={store}>
-        <ThemeProvider theme={theme}>
-          {getLayout(<Component {...pageProps} />)}
-          <Toaster position={'right-top'} toastOptions={{ className: 'react-hot-toast' }} />
-        </ThemeProvider>
+        <MuiThemeProvider theme={mui_theme}>
+          <ThemeProvider theme={theme}>
+            {getLayout(<Component {...pageProps} />)}
+            <Toaster position={'right-top'} toastOptions={{ className: 'react-hot-toast' }} />
+          </ThemeProvider>
+        </MuiThemeProvider>
       </ReduxProvider>
     </>
   );

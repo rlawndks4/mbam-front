@@ -60,7 +60,7 @@ padding:1rem 0;
 text-align: center;
 color: #fff;
 font-weight: bold;
-font-size: ${theme.size.font4};
+font-size: 16px;
 cursor: pointer;
 `
 const ThemeCardContainer = styled.div`
@@ -300,9 +300,9 @@ const Home = () => {
                                                 <ThemeCard src={item?.img_src || '/assets/images/test/logo.png'} idx={idx} onClick={() => {
                                                     router.push(`/shop-list?theme=${item?.pk}`)
                                                 }} />
-                                                <Font5 style={{ fontWeight: 'bold', cursor: 'pointer' }} onClick={() => {
+                                                <Font4 style={{ fontWeight: 'bold', cursor: 'pointer' }} onClick={() => {
                                                     router.push(`/shop-list?theme=${item?.pk}`)
-                                                }}>{item?.name}</Font5>
+                                                }}>{item?.name}</Font4>
                                             </Col>
                                         </>
                                     ))}
@@ -324,13 +324,17 @@ const Home = () => {
                                         ))}
                                     </Slider>
                                 </ShopBannerContainer>
-                                <Typography style={{ fontWeight: 'bold' }}>실시간 샵 검색 확인</Typography>
+                                <Typography variant='h6' style={{ fontWeight: 'bold' }}>실시간 샵 검색 확인</Typography>
                                 <RealTimeContainer>
                                     <RowContent style={{ overflow: 'auto', display: '-webkit-box' }} className='none-scroll'>
                                         {homeContent?.real_time_shop && homeContent?.real_time_shop.map((item, idx) => (
                                             <>
-                                                <RowContent style={{ width: 'auto', columnGap: '0.2rem', marginRight: '0.5rem', alignItems: 'center' }}>
-                                                    <Chip label={idx + 1} />
+                                                <RowContent style={{ width: 'auto', columnGap: '0.2rem', marginRight: '0.5rem', alignItems: 'center', cursor: 'pointer' }}
+                                                    onClick={() => {
+                                                        router.push(`/shop/${item?.pk}`)
+                                                    }}
+                                                >
+                                                    <Chip label={idx + 1} style={{ background: '#1976d2', color: '#fff' }} />
                                                     <Typography variant='subtitle2'>{item?.city_name}</Typography>
                                                     <Typography variant='subtitle2'>{item?.sub_city_name}</Typography>
                                                     <Typography variant='subtitle2'>{item?.name}</Typography>
@@ -340,20 +344,23 @@ const Home = () => {
                                     </RowContent>
                                 </RealTimeContainer>
                                 <HotPlaceContainer style={{}}>
-                                    <CommunityHeader>실시간 핫플레이스 샵</CommunityHeader>
+
+                                    <CommunityHeader>
+                                        <Typography variant='h6' style={{ fontWeight: 'bold' }}>실시간 핫플레이스 샵</Typography>
+                                    </CommunityHeader>
                                     <Tabs value={hotPlaceTab} aria-label="basic tabs example" style={{ width: '100%' }}>
                                         <Tab label="1~10위" onClick={() => { setHotPlaceTab(0) }} value={0} style={{ width: '50%' }} />
                                         <Tab label="11~20위" onClick={() => { setHotPlaceTab(1) }} value={1} style={{ width: '50%' }} />
                                     </Tabs>
-                                    <Col style={{ padding: '0.5rem', rowGap: '0.25rem' }}>
+                                    <Col style={{ padding: '0.5rem', rowGap: '1rem' }}>
                                         {homeContent?.hop_place_shop && homeContent?.hop_place_shop.map((item, idx) => (
                                             <>
-                                                {(idx >= hotPlaceTab * 10 && idx <= (hotPlaceTab + 1) * 10) &&
+                                                {(idx >= hotPlaceTab * 10 && idx < (hotPlaceTab + 1) * 10) &&
                                                     <>
-                                                        <CommunityContent style={{ justifyContent: 'flex-start', columnGap: '0.2rem', fontSize: '16px' }} onClick={() => {
+                                                        <CommunityContent style={{ justifyContent: 'flex-start', columnGap: '0.2rem', fontSize: '16px', alignItems: 'center' }} onClick={() => {
                                                             router.push(`/shop/${item?.pk}`)
                                                         }}>
-                                                            <div>{idx + 1}</div>
+                                                            <div style={{ fontSize: '20px', marginRight: '0.5rem' }}>{idx + 1}</div>
                                                             <div>{item?.city_name}</div>
                                                             <div>{item?.sub_city_name}</div>
                                                             <div>{item?.name}</div>
@@ -363,7 +370,8 @@ const Home = () => {
                                         ))}
                                     </Col>
                                 </HotPlaceContainer>
-                                <Typography style={{ fontWeight: 'bold', margin: '2rem auto 1rem auto' }}>프리미엄 업체</Typography>
+                                <Typography variant="h6" style={{ fontWeight: 'bold', margin: '2rem auto 0 auto !important' }} sx={{ margin: '2rem auto 0 auto' }}>프리미엄 제휴업체</Typography>
+                                <Typography variant="body1" style={{ margin: '-1rem auto 1rem auto', color: '#ccc' }}>마사지밤에서 인정한 프리미엄 업체</Typography>
                                 <MerchandiseContainer>
                                     {homeContent?.shop && homeContent?.shop.filter(el => el?.is_premium == 1).map((item, idx) => (
                                         <>
@@ -375,7 +383,9 @@ const Home = () => {
                                         </>
                                     ))}
                                 </MerchandiseContainer>
-                                <Typography style={{ fontWeight: 'bold', margin: '2rem auto 1rem auto' }}>신규 업체</Typography>
+                                <Typography variant="h6" style={{ fontWeight: 'bold', margin: '2rem auto 0 auto !important' }} sx={{ margin: '2rem auto 0 auto' }}>신규 제휴업체</Typography>
+                                <Typography variant="body1" style={{ margin: '-1rem auto 1rem auto', color: '#ccc' }}>마사지밤과 새롭게 제휴한 신규업체</Typography>
+
                                 <MerchandiseContainer>
                                     {homeContent?.shop && homeContent?.shop.filter(el => el?.is_premium == 0).map((item, idx) => (
                                         <>
