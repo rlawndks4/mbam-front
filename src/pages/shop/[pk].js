@@ -333,7 +333,7 @@ const Shop = () => {
                                                             <div style={{ fontWeight: 'bold' }}>{item?.course}</div>
                                                             <div style={{ display: 'flex', marginLeft: 'auto' }}>
                                                                 <Col style={{ alignItems: 'end' }}>
-                                                                    <div style={{ marginLeft: '0.5rem', color: '#f63440' }}>{item?.sale_price && (item?.sale_price != item?.price) ? commarNumber(item?.sale_price) : commarNumber(item?.price)}원</div>
+                                                                    <div style={{ marginLeft: '0.5rem', color: theme.color.background0 }}>{item?.sale_price && (item?.sale_price != item?.price) ? commarNumber(item?.sale_price) : commarNumber(item?.price)}원</div>
 
                                                                     <div style={{
                                                                         textDecoration: `${item?.sale_price && (item?.sale_price != item?.price) ? 'line-through' : ''}`,
@@ -344,7 +344,7 @@ const Shop = () => {
                                                             </div>
                                                             {item?.sale_price && (item?.sale_price != item?.price) &&
                                                                 <>
-                                                                    <ColorButton style={{ background: '#f63440', marginLeft: '0.5rem', padding: '0.6rem 0.4rem' }}>{((item?.price - item?.sale_price) / item?.price * 100).toFixed(0)}%</ColorButton>
+                                                                    <ColorButton style={{ background: theme.color.background0, marginLeft: '0.5rem', padding: '0.6rem 0.4rem' }}>{((item?.price - item?.sale_price) / item?.price * 100).toFixed(0)}%</ColorButton>
 
                                                                 </>}
                                                         </MenuContent>
