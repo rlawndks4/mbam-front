@@ -72,6 +72,14 @@ column-gap: 0.75rem;
     column-gap: 1.2vw;
 }
 `
+const SearchContainer = styled.div`
+display: flex;
+flex-wrap: wrap;
+column-gap: 0.75rem;
+@media screen and (max-width:1050px) { 
+    display: none;
+}
+`
 const ThemeCard = styled.img`
 width: 125px;
 height:125px;
@@ -148,6 +156,9 @@ const LeftImg = styled.img`
 width: 232px;
 margin-bottom: 1rem;
 cursor: pointer;
+@media (max-width: 1050px) {
+ display: none;
+}
 `
 const NextArrow = ({ onClick }) => {
     return (
@@ -351,9 +362,9 @@ const Home = () => {
                     </>
                     :
                     <>
-                        <RowContent style={{ columnGap: '1rem', alignItems: 'flex-start' }}>
+                        <RowContent style={{ rowGap: '1rem', alignItems: 'flex-start' }}>
                             <Col>
-                                <LeftImg src={homeContent?.banner?.home_left_img} style={{ width: '232px', marginBottom: '1rem' }} onClick={() => {
+                                <LeftImg src={homeContent?.banner?.home_left_img} style={{ width: '232px' }} onClick={() => {
                                     window.location.href = omeContent?.banner?.home_left_link
                                 }} />
                                 <ShopOptionWrappers display={'none'}>
@@ -377,7 +388,7 @@ const Home = () => {
                                 </ShopOptionWrappers>
                             </Col>
                             <Col style={{ rowGap: '1rem' }}>
-                                <ThemeCardContainer>
+                                <SearchContainer>
                                     <TextField
                                         id='size-small'
                                         onChange={(e) => {
@@ -408,7 +419,7 @@ const Home = () => {
                                             )
                                         }}
                                     />
-                                </ThemeCardContainer>
+                                </SearchContainer>
                                 <ThemeCardContainer>
                                     {themeList && themeList.map((item, idx) => (
                                         <>

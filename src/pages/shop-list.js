@@ -151,7 +151,15 @@ export const Merchandise = (props) => {
                         {/* <Font5 style={{ display: 'flex', alignItems: 'center' }}>
                         <div>댓글 {item?.comment_count} | 리뷰 {item?.review_count}</div>
                     </Font5> */}
-                        <Font3 style={{ fontWeight: 'bold' }}>{item?.name.length > 9 ? `${item?.name.substring(0, 9)}...` : item?.name}</Font3>
+                        {item?.name.length > 9 ?
+                            <>
+                                <Font4 style={{ fontWeight: 'bold' }}>{item?.name}</Font4>
+                            </>
+                            :
+                            <>
+                                <Font3 style={{ fontWeight: 'bold' }}>{item?.name}</Font3>
+
+                            </>}
                         <Font4 style={{ display: 'flex', alignItems: 'center' }}>
                             {item?.sub_city_name} {item?.theme_name}
                         </Font4>
