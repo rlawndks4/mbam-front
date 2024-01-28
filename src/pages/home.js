@@ -14,7 +14,8 @@ import theme from 'src/styles/theme';
 import { useRouter } from 'next/router';
 import UserLayout from 'src/layouts/UserLayout';
 import { dateFormat } from 'src/functions/utils';
-import { Chip, Tab, Tabs, Typography } from '@mui/material';
+import { Avatar, Button, Chip, IconButton, Input, InputAdornment, Tab, Tabs, TextField, Typography } from '@mui/material';
+import { Icon } from '@iconify/react';
 
 const WrappersStyle = styled.div`
 position:relative;
@@ -115,7 +116,7 @@ justify-content: space-between;
 
 `
 const ShopOptionWrappers = styled.div`
-width:250px;
+width:200px;
 display: ${props => props.display == 'none' ? 'flex' : 'none'};
 flex-direction: column;
 background: ${theme.color.background4};
@@ -142,6 +143,10 @@ border: 1px solid #ccc;
 @media (max-width: 1050px) {
   width: 90vw;
 }
+`
+const LeftImg = styled.img`
+width: 232px;
+margin-bottom: 1rem;
 `
 const NextArrow = ({ onClick }) => {
     return (
@@ -170,6 +175,12 @@ const Home = () => {
     const [cityList, setCityList] = useState([])
     const [themeList, setThemeList] = useState([])
     const [hotPlaceTab, setHotPlaceTab] = useState(0);
+    const [keyword, setKeyword] = useState('');
+    const [auth, setAuth] = useState({});
+    const [loginData, setLoginData] = useState({
+        id: '',
+        pw: ''
+    })
     const communityList = [
         { label: '공지사항', table: 'notice' },
         { label: '공식블로그', table: 'blog' },
@@ -197,7 +208,37 @@ const Home = () => {
         slidesToScroll: 1,
         dots: false,
     };
+    const text_banner_settings = {
+        infinite: true,
+        speed: 500,
+        autoplay: true,
+        autoplaySpeed: 2500,
+        slidesToShow: 2,
+        slidesToScroll: 1,
+        dots: false,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                }
+            },
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 1.2,
+                    slidesToScroll: 1,
+                }
+            },
+        ]
+    };
     useEffect(() => {
+        async function myAuth() {
+            const { data: response } = await axios.get(`/api/auth`);
+            setAuth(response);
+        }
+        myAuth();
         async function fetchPost() {
             setLoading(true)
             const { data: response } = await axios.get('/api/gethomecontent')
@@ -232,7 +273,44 @@ const Home = () => {
         fetchPost();
 
     }, [])
+    const onLogin = async () => {
+        const { data: response } = await axios.post('/api/loginbyid', {
+            id: loginData.id,
+            pw: loginData.pw,
+        })
+        alert(response.message);
+        if (response.result > 0) {
+            let params = {
+                'login_type': 0,
+                'id': loginData.id,
+            }
+            if (window && window.flutter_inappwebview) {
+                await window.flutter_inappwebview.callHandler('native_app_login', JSON.stringify(params)).then(async function (result) {
+                    //result = "{'code':100, 'message':'success', 'data':{'login_type':1, 'id': 1000000}}"
+                    // JSON.parse(result)
+                    let obj = JSON.parse(result);
+                });
+            }
+            await localStorage.setItem('auth', JSON.stringify(response.data));
+            window.location.reload();
 
+        }
+    }
+    const onLogout = async () => {
+        if (window && window.flutter_inappwebview) {
+            var params = { 'login_type': JSON.parse(localStorage.getItem('auth'))?.type };
+            window.flutter_inappwebview.callHandler('native_app_logout', JSON.stringify(params)).then(async function (result) {
+                //result = "{'code':100, 'message':'success', 'data':{'login_type':1, 'id': 1000000}}"
+            });
+        }
+        const { data: response } = await axios.post('/api/logout');
+        if (response.result > 0) {
+            localStorage.removeItem('auth');
+            window.location.reload();
+        } else {
+            alert('error');
+        }
+    }
     return (
         <>
             <WrappersStyle style={{ maxWidth: '1150px' }}>
@@ -266,33 +344,68 @@ const Home = () => {
 
                     </>}
             </WrappersStyle>
-            <Wrappers className='wrappers' style={{ marginTop: '2rem', maxWidth: '1150px' }}>
+            <Wrappers className='wrappers' style={{ marginTop: '2rem', maxWidth: '1180px' }}>
                 {loading ?
                     <>
                     </>
                     :
                     <>
                         <RowContent style={{ columnGap: '1rem', alignItems: 'flex-start' }}>
-                            <ShopOptionWrappers display={'none'}>
-                                <Font3 style={{ fontWeight: 'bold' }}>지역별샵</Font3>
-                                {cityList && cityList.map((item, idx) => (
-                                    <>
-                                        <Font4 style={{ cursor: 'pointer' }} onClick={() => {
-                                            router.push(`/shop-list?city=${item?.pk}`)
-                                        }}>{item?.name}</Font4>
+                            <Col>
+                                <LeftImg src={homeContent?.banner?.home_left_img} style={{ width: '232px', marginBottom: '1rem' }} />
+                                <ShopOptionWrappers display={'none'}>
+                                    <Font3 style={{ fontWeight: 'bold' }}>지역별샵</Font3>
+                                    {cityList && cityList.map((item, idx) => (
+                                        <>
+                                            <Font4 style={{ cursor: 'pointer' }} onClick={() => {
+                                                router.push(`/shop-list?city=${item?.pk}`)
+                                            }}>{item?.name}</Font4>
 
-                                    </>
-                                ))}
-                                <Font3 style={{ fontWeight: 'bold', marginTop: '1rem' }}>테마별샵</Font3>
-                                {themeList && themeList.map((item, idx) => (
-                                    <>
-                                        <Font4 style={{ cursor: 'pointer' }} onClick={() => {
-                                            router.push(`/shop-list?theme=${item?.pk}`)
-                                        }}>{item?.name}</Font4>
-                                    </>
-                                ))}
-                            </ShopOptionWrappers>
+                                        </>
+                                    ))}
+                                    <Font3 style={{ fontWeight: 'bold', marginTop: '1rem' }}>테마별샵</Font3>
+                                    {themeList && themeList.map((item, idx) => (
+                                        <>
+                                            <Font4 style={{ cursor: 'pointer' }} onClick={() => {
+                                                router.push(`/shop-list?theme=${item?.pk}`)
+                                            }}>{item?.name}</Font4>
+                                        </>
+                                    ))}
+                                </ShopOptionWrappers>
+                            </Col>
                             <Col style={{ rowGap: '1rem' }}>
+                                <ThemeCardContainer>
+                                    <TextField
+                                        id='size-small'
+                                        onChange={(e) => {
+                                            setKeyword(e.target.value)
+                                        }}
+                                        placeholder='지역명, 전철역, 업소명'
+                                        value={keyword}
+                                        sx={{ width: '100%', margin: '0 auto', maxWidth: '700px' }}
+                                        onKeyPress={(e) => {
+                                            if (e.key == 'Enter') {
+                                                router.push(`/shop-list?keyword=${keyword}`)
+                                            }
+                                        }}
+                                        InputProps={{
+                                            endAdornment: (
+                                                <InputAdornment position='end'>
+                                                    <IconButton
+                                                        edge='end'
+                                                        onClick={() => {
+                                                            router.push(`/shop-list?keyword=${keyword}`)
+                                                            setKeyword('')
+                                                        }}
+                                                        aria-label='toggle password visibility'
+                                                    >
+                                                        <Icon icon={'tabler:search'} />
+                                                    </IconButton>
+                                                </InputAdornment>
+                                            )
+                                        }}
+                                    />
+                                </ThemeCardContainer>
                                 <ThemeCardContainer>
                                     {themeList && themeList.map((item, idx) => (
                                         <>
@@ -326,10 +439,10 @@ const Home = () => {
                                 </ShopBannerContainer>
                                 <Typography variant='h6' style={{ fontWeight: 'bold' }}>실시간 샵 검색 확인</Typography>
                                 <RealTimeContainer>
-                                    <RowContent style={{ overflow: 'auto', display: '-webkit-box' }} className='none-scroll'>
+                                    <Slider {...text_banner_settings} className='pointer'>
                                         {homeContent?.real_time_shop && homeContent?.real_time_shop.map((item, idx) => (
                                             <>
-                                                <RowContent style={{ width: 'auto', columnGap: '0.2rem', marginRight: '0.5rem', alignItems: 'center', cursor: 'pointer' }}
+                                                <RowContent style={{ width: 'auto', columnGap: '0.2rem', marginRight: '0.5rem', alignItems: 'center', cursor: 'pointer', wordBreak: 'unset' }}
                                                     onClick={() => {
                                                         router.push(`/shop/${item?.pk}`)
                                                     }}
@@ -341,7 +454,7 @@ const Home = () => {
                                                 </RowContent>
                                             </>
                                         ))}
-                                    </RowContent>
+                                    </Slider>
                                 </RealTimeContainer>
                                 <HotPlaceContainer style={{}}>
 
@@ -423,6 +536,41 @@ const Home = () => {
                             </Col>
 
                             <CommunityWrappers display={'none'}>
+                                <CommunityContainer>
+                                    {auth?.pk > 0 ?
+                                        <>
+                                            <Col style={{ justifyContent: 'space-around', height: '100%', padding: '0.5rem', rowGap: '1rem', alignItems: 'center' }}>
+                                                <Avatar />
+                                                <div>
+                                                    {auth?.nickname}
+                                                </div>
+                                                <div style={{ display: 'flex', columnGap: '0.5rem' }}>
+                                                    <Button onClick={() => {
+                                                        router.push('/mypage')
+                                                    }} variant='contained'>마이페이지</Button>
+                                                    <Button onClick={onLogout} variant='outlined'>로그아웃</Button>
+                                                </div>
+                                            </Col>
+                                        </>
+                                        :
+                                        <>
+                                            <Col style={{ justifyContent: 'space-around', height: '100%', padding: '1rem', rowGap: '1rem' }}>
+                                                <TextField size='small' label='아이디' onChange={(e) => {
+                                                    setLoginData({
+                                                        ...loginData,
+                                                        id: e.target.value
+                                                    })
+                                                }} />
+                                                <TextField size='small' label='비밀번호' type='password' onChange={(e) => {
+                                                    setLoginData({
+                                                        ...loginData,
+                                                        pw: e.target.value
+                                                    })
+                                                }} />
+                                                <Button onClick={onLogin} variant='contained'>로그인</Button>
+                                            </Col>
+                                        </>}
+                                </CommunityContainer>
                                 {communityList.map((community) => (
                                     <>
                                         <CommunityContainer>
