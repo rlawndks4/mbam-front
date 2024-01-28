@@ -160,6 +160,13 @@ cursor: pointer;
  display: none;
 }
 `
+const NoneShowCol = styled.div`
+display: flex;
+flex-direction: column;
+@media (max-width: 1050px) {
+ display: none;
+}
+`
 const NextArrow = ({ onClick }) => {
     return (
         <div className="nextArrow" onClick={onClick}>
@@ -346,8 +353,8 @@ const Home = () => {
                     </>
                     :
                     <>
-                        <RowContent style={{ rowGap: '1rem', alignItems: 'flex-start' }}>
-                            <Col>
+                        <RowContent style={{ rowGap: '1rem', alignItems: 'flex-start', columnGap: '1rem' }}>
+                            <NoneShowCol>
                                 <LeftImg src={homeContent?.banner?.home_left_img} style={{ width: '232px' }} onClick={() => {
                                     window.location.href = omeContent?.banner?.home_left_link
                                 }} />
@@ -370,7 +377,7 @@ const Home = () => {
                                         </>
                                     ))}
                                 </ShopOptionWrappers>
-                            </Col>
+                            </NoneShowCol>
                             <Col style={{ rowGap: '1rem' }}>
                                 <SearchContainer>
                                     <TextField
@@ -435,20 +442,20 @@ const Home = () => {
                                         ))}
                                     </Slider>
                                 </ShopBannerContainer>
-                                <Typography variant='h6' style={{ fontWeight: 'bold' }}>실시간 샵 검색 확인</Typography>
+                                <Typography variant='h6' style={{ fontWeight: 'bold', margin: 'auto' }}>실시간 샵 검색 확인</Typography>
                                 <RealTimeContainer>
                                     <Slider {...text_banner_settings} className='pointer'>
                                         {homeContent?.real_time_shop && homeContent?.real_time_shop.map((item, idx) => (
                                             <>
-                                                <RowContent style={{ width: 'auto', columnGap: '0.2rem', marginRight: '0.5rem', alignItems: 'center', cursor: 'pointer', wordBreak: 'unset' }}
+                                                <RowContent style={{ width: 'auto', columnGap: '0.2rem', alignItems: 'center', cursor: 'pointer', marginLeft: '0.2rem', wordBreak: 'unset' }}
                                                     onClick={() => {
                                                         router.push(`/shop/${item?.pk}`)
                                                     }}
                                                 >
                                                     <Chip label={idx + 1} style={{ background: '#1976d2', color: '#fff' }} />
-                                                    <Typography variant='subtitle2'>{item?.city_name}</Typography>
-                                                    <Typography variant='subtitle2'>{item?.sub_city_name}</Typography>
-                                                    <Typography variant='subtitle2'>{item?.name}</Typography>
+                                                    <Typography variant='subtitle2' style={{ fontSize: '1.1rem' }}>{item?.city_name}</Typography>
+                                                    <Typography variant='subtitle2' style={{ fontSize: '1.1rem' }}>{item?.sub_city_name}</Typography>
+                                                    <Typography variant='subtitle2' style={{ fontSize: '1.1rem' }}>{item?.name}</Typography>
                                                 </RowContent>
                                             </>
                                         ))}
@@ -457,7 +464,7 @@ const Home = () => {
                                 <HotPlaceContainer style={{}}>
 
                                     <CommunityHeader>
-                                        <Typography variant='h6' style={{ fontWeight: 'bold' }}>실시간 핫플레이스 샵</Typography>
+                                        <Typography variant='h6' style={{ fontWeight: 'bold', margin: 'auto', textAlign: 'center' }}>실시간 핫플레이스 샵</Typography>
                                     </CommunityHeader>
                                     <Tabs value={hotPlaceTab} aria-label="basic tabs example" style={{ width: '100%' }}>
                                         <Tab label="1~10위" onClick={() => { setHotPlaceTab(0) }} value={0} style={{ width: '50%' }} />

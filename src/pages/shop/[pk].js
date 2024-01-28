@@ -209,15 +209,15 @@ const Shop = () => {
                 <Grid item xs={12} md={12}>
                     <Card>
                         <CardContent style={{ textAlign: 'center', display: 'flex', alignItems: 'center' }}>
-                            <Icon icon='material-symbols:location-on' style={{ color: theme.color.red, margin: 'auto 0.5rem auto auto' }} />
+                            <Icon icon='material-symbols:location-on' style={{ color: theme.color.background0, margin: 'auto 0.5rem auto auto' }} />
                             <div style={{ margin: 'auto auto auto 0.5rem' }}>내위치: {myAddress}</div>
                         </CardContent>
                     </Card>
                 </Grid>
                 <Grid item xs={12} md={12} sx={{ mt: "1rem" }}>
-                    <Card>
+                    <Card style={{ background: theme.color.background0 }}>
                         <CardContent style={{ textAlign: 'center' }}>
-                            <div>{data?.shop?.name}</div>
+                            <Typography variant="h6" style={{ fontWeight: 'bold', color: '#fff' }}>{data?.shop?.name}</Typography>
                         </CardContent>
                     </Card>
                 </Grid>

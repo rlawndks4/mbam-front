@@ -599,11 +599,11 @@ const Headers = () => {
               {shopList && shopList.map((item, idx) => (
                 <>
                   <BorderBottomText>
-                    <div>{item?.name}</div>
+                    <div style={{ fontWeight: 'bold' }}>{item?.name}</div>
                   </BorderBottomText>
                   <BorderBottomText>
-                    <div>제휴만료일</div>
-                    <div>{item?.end_date}</div>
+                    <div style={{ color: theme.color.background0 }}>제휴만료일</div>
+                    <div style={{ fontWeight: 'bold' }}>{item?.end_date}</div>
                     <ColorButton style={{ background: '#4D4DFF' }}>
                       {dateFormatReverse(item?.end_date, true)}
                     </ColorButton>
