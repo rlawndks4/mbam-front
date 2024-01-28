@@ -224,16 +224,6 @@ const Headers = () => {
       link_key: '/add-shop',
       icon: 'eos-icons:pull-request',
     },
-    {
-      name: '제휴업체관리',
-      link_key: '/my-shop/list',
-      icon: 'fluent-mdl2:manager-self-service',
-    },
-    {
-      name: '상점',
-      link_key: '/store/list',
-      icon: 'ic:sharp-store',
-    },
   ]
   const noneAuthList = [
     {

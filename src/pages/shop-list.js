@@ -196,9 +196,6 @@ export const Merchandise = (props) => {
                                 size="small"
                                 startIcon={<Icon icon={'solar:letter-bold'} style={{ fontSize: '0.8rem' }} />}
                                 style={{ fontSize: '10px', background: '#f1416c' }}
-                                onClick={() => {
-                                    setManagerOpen(true);
-                                }}
                             >
                                 문자보내기
                             </Button>
@@ -309,7 +306,7 @@ const ShopList = () => {
         if (obj?.is_around) {
             let locate = await getLocation();
             for (var i = 0; i < shops.length; i++) {
-                let x = (Math.cos(locate?.latitude) * 6400 * 2 * 3.14 / 360) * Math.abs(locate?.longitude - shops[i].lng)
+                let x = (Math.cos(locate?.latitude) * 6400 * 2 * 3.14 / 360) * Math.abs(locate?.longitude - shops[i]?.lng ?? 0)
                 let y = 111 * Math.abs(locate?.latitude - shops[i].lat)
                 let d = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2))
                 shops[i]['distance'] = d

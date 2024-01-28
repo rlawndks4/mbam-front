@@ -21,6 +21,12 @@ font-family:${props => props.theme.font.normal};
 }
 
 `
+export const ColorButton = styled.div`
+padding: 0.2rem 0.4rem;
+border-radius: 0.4rem;
+color: #fff;
+cursor: pointer;
+`
 export const twoOfThreeButtonStyle = {
     height: '48px',
     margin: '0 auto',

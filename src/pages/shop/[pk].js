@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { Wrappers, ViewerContainer, SelectType, twoOfThreeButtonStyle } from "src/components/elements/UserContentTemplete";
+import { Wrappers, ViewerContainer, SelectType, twoOfThreeButtonStyle, ColorButton } from "src/components/elements/UserContentTemplete";
 import { backUrl } from "src/data/Data";
 import theme from "src/styles/theme";
 import styled from "styled-components";
@@ -59,17 +59,17 @@ font-size:1rem;
 position:relative;
 `
 const MenuHeader = styled.div`
-border-bottom: 1px solid #000;
-background:${theme.color.font5};
+border-top: 1px solid #dbdbdb;
+border-bottom: 1px solid #dbdbdb;
+background:#f8f9fb;
 padding:0.5rem;
 font-size:${theme.size.font3};
 text-align:center;
 `
 const MenuContent = styled.div`
 display:flex;
-justify-content:space-between;
-padding:0.5rem;
-border-bottom: 1px solid #000;
+padding:1rem 0.5rem;
+border-bottom: 1px solid #dbdbdb;
 font-size:${theme.size.font4};
 `
 const Title = styled.div`
@@ -323,22 +323,30 @@ const Shop = () => {
                                     <Grid item xs={12} md={12} >
                                         <Card>
                                             <CardContent style={{ display: 'flex', flexDirection: 'column' }}>
-                                                <Title>코스 및 가격 안내</Title>
+                                                <Typography variant="h6" style={{ fontWeight: 'bold' }} sx={{ margin: '0 auto 1rem auto' }}>코스 및 가격 안내</Typography>
+
                                                 {data?.shop?.price_list && data?.shop?.price_list.map((item, idx) => {
                                                     if (!item?.price && !item?.sale_price) {
                                                         return <MenuHeader>{item?.course}</MenuHeader>
                                                     } else {
                                                         return <MenuContent>
-                                                            <div>{item?.course}</div>
-                                                            <div style={{ display: 'flex' }}>
-                                                                <div style={{
-                                                                    textDecoration: `${item?.sale_price && (item?.sale_price != item?.price) ? 'line-through' : ''}`,
-                                                                    textDecorationColor: theme.color.red,
-                                                                    color: `${item?.sale_price && (item?.sale_price != item?.price) ? theme.color.red : ''}`,
-                                                                }}>{commarNumber(item?.price)}</div>
-                                                                <div style={{ marginLeft: '0.5rem' }}>{item?.sale_price && (item?.sale_price != item?.price) ? commarNumber(item?.sale_price) : ''}</div>
-                                                                <div>원</div>
+                                                            <div style={{ fontWeight: 'bold' }}>{item?.course}</div>
+                                                            <div style={{ display: 'flex', marginLeft: 'auto' }}>
+                                                                <Col style={{ alignItems: 'end' }}>
+                                                                    <div style={{ marginLeft: '0.5rem', color: '#f63440' }}>{item?.sale_price && (item?.sale_price != item?.price) ? commarNumber(item?.sale_price) : commarNumber(item?.price)}원</div>
+
+                                                                    <div style={{
+                                                                        textDecoration: `${item?.sale_price && (item?.sale_price != item?.price) ? 'line-through' : ''}`,
+                                                                        textDecorationColor: '#ccc',
+                                                                        color: '#ccc'
+                                                                    }}>{item?.sale_price && (item?.sale_price != item?.price) ? commarNumber(item?.price) + '원' : ''}</div>
+                                                                </Col>
                                                             </div>
+                                                            {item?.sale_price && (item?.sale_price != item?.price) &&
+                                                                <>
+                                                                    <ColorButton style={{ background: '#f63440', marginLeft: '0.5rem', padding: '0.6rem 0.4rem' }}>{((item?.price - item?.sale_price) / item?.price * 100).toFixed(0)}%</ColorButton>
+
+                                                                </>}
                                                         </MenuContent>
                                                     }
                                                 })}
@@ -464,7 +472,24 @@ const Shop = () => {
                 }
                 {/* <Logo src={logo} style={{left:`${percent-1}.7%`}}/> */}
             </Wrappers>
-            <div style={{ position: 'fixed', right: '1rem', bottom: '12rem', display: 'flex', alignItems: 'center' }}>
+            <BottomContainer>
+                <a href={`sms:${data?.shop?.phone}${navigator.userAgent.includes('Android') ? '?' : '&'}body=마사지밤에서 보고 연락 드립니다.`}>
+                    <Button
+                        style={{ background: 'transparent', color: '#fff', height: '100%' }}
+                    >
+                        <Icon icon={'solar:letter-bold'} style={{ fontSize: '1.5rem' }} />
+                    </Button>
+                </a>
+                <a href={`tel:${data?.shop?.phone}`}>
+                    <Button
+                        startIcon={<Icon icon={'bi:telephone-fill'} style={{ fontSize: '1.5rem', }} />}
+                        style={{ background: 'transparent', width: '80vw', color: '#fff', padding: '0.5rem 0', fontSize: '1.2rem' }}
+                    >
+                        전화걸기
+                    </Button>
+                </a>
+            </BottomContainer>
+            {/* <div style={{ position: 'fixed', right: '1rem', bottom: '12rem', display: 'flex', alignItems: 'center' }}>
                 <CallButton href={`tel:${data?.shop?.phone}`}  >
                     <AiTwotonePhone />
                 </CallButton>
@@ -473,9 +498,22 @@ const Shop = () => {
                 <CallButton href={`sms:${data?.shop?.phone}${navigator.userAgent.includes('Android') ? '?' : '&'}body=마사지밤에서 보고 연락 드립니다.`} >
                     <AiTwotoneMessage />
                 </CallButton>
-            </div>
+            </div> */}
+
         </>
     )
 }
+
+const BottomContainer = styled.div`
+position: fixed;
+bottom: 65px;
+display: none;
+background: ${theme.color.background0};
+color: #fff;
+width: 100vw;
+@media screen and (max-width:750px) { 
+    display: flex;
+}
+`
 Shop.getLayout = (page) => <UserLayout>{page}</UserLayout>;
 export default Shop;

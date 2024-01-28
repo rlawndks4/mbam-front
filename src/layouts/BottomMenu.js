@@ -110,13 +110,13 @@ const BottomMenu = () => {
                                                 style={{
                                                     color: `${colorList[index]}`,
                                                     ...(index == 2 ? {
-                                                        transform: `translateY(-1rem)`,
+                                                        transform: `translateY(0.1rem)`,
                                                         background: theme.color.background0,
                                                         height: 'auto',
                                                         color: '#fff',
                                                         borderRadius: '50%',
-                                                        width: '64px',
-                                                        height: '56px'
+                                                        width: '49px',
+                                                        height: '49px'
                                                     } : {}),
                                                 }}
                                                 key={index}>
