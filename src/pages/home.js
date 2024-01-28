@@ -582,7 +582,7 @@ const Home = () => {
                                                     })
                                                 }} />
                                                 <Button onClick={onLogin} variant='contained'>로그인</Button>
-                                                <div style={{ marginLeft: 'auto', fontSize: '12px', textDecoration: 'underline', marginTop: '0.2rem', cursor: 'pointer' }}
+                                                <div style={{ marginLeft: 'auto', fontSize: '12px', textDecoration: 'underline', marginTop: '0.5rem', cursor: 'pointer' }}
                                                     onClick={() => {
                                                         router.push('/signup')
                                                     }}
