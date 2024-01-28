@@ -353,7 +353,7 @@ const Headers = () => {
       const { data: response } = await axios.post('/api/logout');
       if (response.result > 0) {
         localStorage.removeItem('auth');
-        window.location.href = '/login';
+        window.location.href = '/';
       } else {
         alert('error');
       }
