@@ -75,7 +75,6 @@ column-gap: 0.75rem;
 const SearchContainer = styled.div`
 display: flex;
 flex-wrap: wrap;
-column-gap: 0.75rem;
 @media screen and (max-width:1050px) { 
     display: none;
 }
@@ -91,7 +90,7 @@ cursor:pointer;
 }
 `
 const CommunityWrappers = styled.div`
-width:250px;
+width:330px;
 display: ${props => props.display == 'none' ? 'flex' : 'none'};
 flex-direction: column;
 row-gap: 1rem;
@@ -387,12 +386,13 @@ const Home = () => {
                                         }}
                                         placeholder='지역명, 전철역, 업소명'
                                         value={keyword}
-                                        sx={{ width: '100%', margin: '0 auto', maxWidth: '700px' }}
+                                        sx={{ width: '100%', margin: '0 auto', maxWidth: '680px' }}
                                         onKeyPress={(e) => {
                                             if (e.key == 'Enter') {
                                                 router.push(`/shop-list?keyword=${keyword}`)
                                             }
                                         }}
+
                                         InputProps={{
                                             endAdornment: (
                                                 <InputAdornment position='end'>
