@@ -356,7 +356,7 @@ const Home = () => {
                         <RowContent style={{ rowGap: '1rem', alignItems: 'flex-start', columnGap: '1rem' }}>
                             <NoneShowCol>
                                 <LeftImg src={homeContent?.banner?.home_left_img} style={{ width: '232px' }} onClick={() => {
-                                    window.location.href = omeContent?.banner?.home_left_link
+                                    window.location.href = homeContent?.banner?.home_left_link
                                 }} />
                                 <ShopOptionWrappers display={'none'}>
                                     <Font3 style={{ fontWeight: 'bold' }}>지역별샵</Font3>
