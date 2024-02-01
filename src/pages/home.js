@@ -67,7 +67,8 @@ cursor: pointer;
 const ThemeCardContainer = styled.div`
 display: flex;
 flex-wrap: wrap;
-column-gap: 0.75rem;
+column-gap: 1.1rem;
+row-gap: 1rem;
 @media screen and (max-width:1050px) { 
     column-gap: 1.2vw;
 }
@@ -214,8 +215,8 @@ const Home = () => {
         slidesToShow: 1,
         slidesToScroll: 1,
         dots: true,
-        nextArrow: <NextArrow onClick />,
-        prevArrow: <PrevArrow onClick />,
+        nextArrow: <div />,
+        prevArrow: <div />,
     };
     const shop_banner_settings = {
         infinite: true,
@@ -377,7 +378,7 @@ const Home = () => {
                                     ))}
                                 </ShopOptionWrappers>
                             </NoneShowCol>
-                            <Col style={{ rowGap: '1rem' }}>
+                            <Col style={{ rowGap: '1rem', maxWidth: '700px' }}>
                                 <SearchContainer>
                                     <TextField
                                         id='size-small'
@@ -418,7 +419,7 @@ const Home = () => {
                                                 <ThemeCard src={item?.img_src || '/assets/images/test/logo.png'} idx={idx} onClick={() => {
                                                     router.push(`/shop-list?theme=${item?.pk}`)
                                                 }} />
-                                                <Font4 style={{ fontWeight: 'bold', cursor: 'pointer' }} onClick={() => {
+                                                <Font4 style={{ fontWeight: 'bold', cursor: 'pointer', marginTop: '0.5rem' }} onClick={() => {
                                                     router.push(`/shop-list?theme=${item?.pk}`)
                                                 }}>{item?.name}</Font4>
                                             </Col>
