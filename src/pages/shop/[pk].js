@@ -397,6 +397,11 @@ const Shop = () => {
                                                         { lat: data?.shop?.lat, lng: data?.shop?.lng, }
                                                     ]}
                                                 />
+                                                <TopLabel
+                                                    src={'/assets/images/badge/play.jpg'}
+                                                    title={'마사지 건마 1인샵 출장마사지'}
+                                                />
+                                                <img src={data?.shop?.price_img} alt={data?.shop?.price_img_alt} style={{ width: '100%', height: 'auto', marginTop: '1rem' }} />
                                             </CardContent>
                                         </Card>
                                     </Grid>
