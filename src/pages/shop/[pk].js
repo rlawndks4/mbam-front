@@ -402,6 +402,9 @@ const Shop = () => {
                                                     title={'마사지 건마 1인샵 출장마사지'}
                                                 />
                                                 <img src={data?.shop?.price_img} alt={data?.shop?.price_img_alt} style={{ width: '100%', height: 'auto', marginTop: '1rem' }} />
+                                                <div style={{ fontSize: '0.8rem', marginTop: '0.5rem', color: '#aaa' }}>
+                                                    본 정보는 이 게시물에 등록된 업체에서 제공한 자료이며, 마사지밤은 내용에 대한 오류와 사용자가 이를 신뢰하여 취한 조치에 대해 책임을 지지 않습니다. 또한 누구든 본 정보를 마사지밤 동의 없이 재배포 할 수 없습니다. Copyright 2022. 쿠비스. All Rights Reserved.
+                                                </div>
                                             </CardContent>
                                         </Card>
                                     </Grid>
