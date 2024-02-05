@@ -103,7 +103,6 @@ export const Merchandise = (props) => {
 
     const { item, router, is_home } = props;
     const [managerOpen, setManagerOpen] = useState(false);
-    console.log(item)
     return (
         <>
             {/* <Dialog

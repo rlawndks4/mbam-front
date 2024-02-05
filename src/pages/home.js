@@ -443,7 +443,7 @@ const Home = () => {
                                         ))}
                                     </Slider>
                                 </ShopBannerContainer>
-                                <Typography variant='h6' style={{ fontWeight: 'bold', margin: 'auto' }}>실시간 샵 검색 확인</Typography>
+                                <Typography variant='h1' style={{ fontWeight: 'bold', margin: 'auto', textAlign: 'center', fontSize: '20px' }}>마사지 스웨디시 타이마사지 건마 1인샵 홈타이 출장마사지 1위 마사지 사이트 【마사지밤】</Typography>
                                 <RealTimeContainer>
                                     <Slider {...text_banner_settings} className='pointer'>
                                         {homeContent?.real_time_shop && homeContent?.real_time_shop.map((item, idx) => (

@@ -34,14 +34,20 @@ const App = (props) => {
       let shop_id = -1;
       let post_id = -1;
       let post_table = -1;
+      let city_id = -1;
       let route_list = router.asPath.split('/');
       if (route_list[1] == 'shop') {
         shop_id = route_list[2];
       } else if (route_list[1] == 'post') {
         post_id = route_list[3];
         post_table = route_list[2];
+      } else if (route_list[1] == 'shop-list') {
+        let obj = router.query;
+        if (obj?.city) {
+          city_id = obj?.city;
+        }
       }
-      const { data: response } = await axios.get(`/api/setting?shop_id=${shop_id}&post_table=${post_table}&post_id=${post_id}`);
+      const { data: response } = await axios.get(`/api/setting?shop_id=${shop_id}&post_table=${post_table}&post_id=${post_id}&city_id=${city_id}`);
       setHeadData(response?.data);
     }
   }
@@ -92,18 +98,26 @@ App.getInitialProps = async (context) => {
     let head_data = {}
     const host = ctx?.req?.headers?.host ? ctx?.req?.headers.host.split(':')[0] : '';
     let uri = ctx?.req?.headers['x-invoke-path'] ?? "";
+    let query = ctx?.req?.headers['x-invoke-query'] ?? "";
     let shop_id = -1;
     let post_id = -1;
     let post_table = "";
+    let city_id = -1;
     let route_list = uri.split('/');
     if (route_list[1] == 'shop') {
       shop_id = route_list[2]
     } else if (route_list[1] == 'post') {
       post_id = route_list[3];
       post_table = route_list[2];
+    } else if (route_list[1] == 'shop-list') {
+      let obj = decodeURI(query).replaceAll('%3A', ':');
+      obj = JSON.parse(obj);
+      if (obj?.city) {
+        city_id = obj?.city;
+      }
     }
     if (host) {
-      const url = `${process.env.BACK_URL}/api/setting?shop_id=${shop_id}&post_table=${post_table}&post_id=${post_id}`;
+      const url = `${process.env.BACK_URL}/api/setting?shop_id=${shop_id}&post_table=${post_table}&post_id=${post_id}&city_id=${city_id}`;
       const res = await fetch(url);
       head_data = await res.json();
       let dns_data = head_data?.data

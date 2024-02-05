@@ -6,7 +6,7 @@ import theme from "src/styles/theme";
 import styled from "styled-components";
 import { commarNumber, getLocation, makeMaxPage, range } from "src/functions/utils";
 import Loading from "src/components/Loading";
-import { Button, Card, CardContent, Grid, IconButton, Typography } from "@mui/material";
+import { Button, Card, CardContent, Divider, Drawer, Grid, IconButton, Typography } from "@mui/material";
 import { Icon } from "@iconify/react";
 import ContentTable from "src/components/ContentTable";
 import MBottomContent from "src/components/elements/MBottomContent";
@@ -72,10 +72,6 @@ padding:1rem 0.5rem;
 border-bottom: 1px solid #dbdbdb;
 font-size:${theme.size.font4};
 `
-const Title = styled.div`
-margin:0 0 0.5rem 0;
-
-`
 const RowContent = styled.div`
 display:flex;
 width:100%;
@@ -106,6 +102,24 @@ overflow: auto;
 display: -webkit-box;
 column-gap: 0.5rem;
 `
+const ImgIcon = styled.img`
+height: 16px;
+padding:4px;
+background: ${theme.color.background0};
+border-radius: 4px;
+`
+const TopLabelRow = styled.div`
+display: flex;
+align-items: center;
+column-gap: 0.25rem;
+`
+const TopLabel = (props) => {
+    const { src, title } = props;
+    return <TopLabelRow>
+        <ImgIcon src={src} />
+        <Typography style={{ fontWeight: 'bold' }}>{title}</Typography>
+    </TopLabelRow>
+}
 const Shop = () => {
     const router = useRouter();
     const viewerRef = useRef();
@@ -245,15 +259,30 @@ const Shop = () => {
                                                     <Content>
                                                         <div style={{ fontSize: theme.size.font2_5 }}>{data?.shop?.name}</div>
                                                         <h1 style={{ fontSize: theme.size.font3, marginTop: '1rem', color: theme.color.font3 }}>{data?.shop?.sub_name}</h1>
-                                                        <Row style={{ alignItems: 'center', justifyContent: 'space-between', marginTop: '0.5rem' }}>
+                                                        <TopLabel
+                                                            src={'/assets/images/badge/calendar.jpg'}
+                                                            title={'업소정보'}
+                                                        />
+                                                        <Divider style={{ margin: '0.75rem 0' }} />
+                                                        <Row style={{ alignItems: 'center', columnGap: '0.5rem' }}>
+                                                            <div>상세주소</div>
                                                             <div>{data?.shop?.address}</div>
-
-                                                            <IconButton onClick={shareCopy}>
+                                                            {/* <IconButton onClick={shareCopy}>
                                                                 <Icon icon="fluent:copy-16-regular" />
                                                             </IconButton>
-                                                            <input type="text" style={{ display: 'none' }} id='share-link' value={data?.shop?.address ?? ""} />
+                                                            <input type="text" style={{ display: 'none' }} id='share-link' value={data?.shop?.address ?? ""} /> */}
                                                         </Row>
-                                                        <Row style={{ alignItems: 'center', justifyContent: 'space-between' }}>
+                                                        <Divider style={{ margin: '0.75rem 0' }} />
+                                                        <Row style={{ alignItems: 'center', columnGap: '0.5rem' }}>
+                                                            <div>영업시간</div>
+                                                            <div>{data?.shop?.work_time}</div>
+                                                        </Row>
+                                                        <Divider style={{ margin: '0.75rem 0' }} />
+                                                        <Row style={{ alignItems: 'center', columnGap: '0.5rem' }}>
+                                                            <div>연락처</div>
+                                                            <div>{data?.shop?.phone}</div>
+                                                        </Row>
+                                                        {/* <Row style={{ alignItems: 'center', justifyContent: 'space-between' }}>
                                                             <div>{data?.shop?.phone}</div>
                                                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                                                 <a href={`tel:${data?.shop?.phone}`}>
@@ -268,29 +297,33 @@ const Shop = () => {
                                                                 </a>
                                                             </div>
                                                         </Row>
-                                                        <Row style={{ flexWrap: 'wrap', marginTop: '0.5rem' }}>
-                                                            {data?.shop?.option_list && (data?.shop?.option_list ?? []).map((item, idx) => (
-                                                                <>
-                                                                    <Row style={{ width: '50%', marginTop: '0.5rem', alignItems: 'center' }}>
-                                                                        <img src={item?.img_src} style={{ width: '16px', height: '16px' }} />
-                                                                        <div style={{ marginLeft: '0.5rem' }}>{item?.name}</div>
-                                                                    </Row>
-                                                                </>
-                                                            ))}
-                                                        </Row>
                                                         <Row style={{ fontSize: theme.size.font4, marginTop: '1rem', color: theme.color.font3 }}>
                                                             {data?.shop?.hash}
-                                                        </Row>
+                                                        </Row> */}
                                                     </Content>
                                                 </RowContent>
                                             </CardContent>
                                         </Card>
                                     </Grid>
-                                    {data?.shop_manager && data?.shop_manager?.length > 0 &&
-                                        <>
-                                            <Grid item xs={12} md={12}>
-                                                <Card>
-                                                    <CardContent>
+                                    <Grid item xs={12} md={12}>
+                                        <Card>
+                                            <CardContent>
+                                                <TopLabel
+                                                    src={'/assets/images/badge/menu.jpg'}
+                                                    title={'편의사항 및 옵션'}
+                                                />
+                                                <Row style={{ flexWrap: 'wrap', marginTop: '0.5rem', marginBottom: '2rem' }}>
+                                                    {data?.shop?.option_list && (data?.shop?.option_list ?? []).map((item, idx) => (
+                                                        <>
+                                                            <Row style={{ width: '50%', marginTop: '0.5rem', alignItems: 'center' }}>
+                                                                <img src={item?.img_src} style={{ width: '16px', height: '16px' }} />
+                                                                <div style={{ marginLeft: '0.5rem' }}>{item?.name}</div>
+                                                            </Row>
+                                                        </>
+                                                    ))}
+                                                </Row>
+                                                {data?.shop_manager && data?.shop_manager?.length > 0 &&
+                                                    <>
                                                         <Typography style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>출근부</Typography>
                                                         <ManagerContainer className="none-scroll">
                                                             {data?.shop_manager && data?.shop_manager.map((itm) => (
@@ -304,25 +337,24 @@ const Shop = () => {
                                                                 </>
                                                             ))}
                                                         </ManagerContainer>
-                                                    </CardContent>
-                                                </Card>
-                                            </Grid>
-                                        </>}
-
-                                    <Grid item xs={12} md={12} >
-                                        <Card>
-                                            <ReactQuill
-                                                value={data?.shop?.note ?? `<body></body>`}
-                                                readOnly={true}
-                                                theme={"bubble"}
-                                                bounds={'.app'}
-                                                ref={viewerRef}
-                                            />
+                                                    </>}
+                                            </CardContent>
                                         </Card>
                                     </Grid>
                                     <Grid item xs={12} md={12} >
                                         <Card>
                                             <CardContent style={{ display: 'flex', flexDirection: 'column' }}>
+                                                <TopLabel
+                                                    src={'/assets/images/badge/menu.jpg'}
+                                                    title={'회원가 혜택안내 및 안내사항'}
+                                                />
+                                                <ReactQuill
+                                                    value={data?.shop?.price_note ?? `<body></body>`}
+                                                    readOnly={true}
+                                                    theme={"bubble"}
+                                                    bounds={'.app'}
+                                                    ref={priceViewerRef}
+                                                />
                                                 <Typography variant="h6" style={{ fontWeight: 'bold' }} sx={{ margin: '0 auto 1rem auto' }}>코스 및 가격 안내</Typography>
 
                                                 {data?.shop?.price_list && data?.shop?.price_list.map((item, idx) => {
@@ -350,16 +382,12 @@ const Shop = () => {
                                                         </MenuContent>
                                                     }
                                                 })}
-
                                             </CardContent>
-                                            <ReactQuill
-                                                value={data?.shop?.price_note ?? `<body></body>`}
-                                                readOnly={true}
-                                                theme={"bubble"}
-                                                bounds={'.app'}
-                                                ref={priceViewerRef}
-                                            />
                                             <CardContent>
+                                                <TopLabel
+                                                    src={'/assets/images/badge/map.jpg'}
+                                                    title={'위치안내'}
+                                                />
                                                 <NaverMap
                                                     center={{
                                                         lat: data?.shop?.lat,
@@ -372,6 +400,18 @@ const Shop = () => {
                                             </CardContent>
                                         </Card>
                                     </Grid>
+                                    <Grid item xs={12} md={12} >
+                                        <Card>
+                                            <ReactQuill
+                                                value={data?.shop?.note ?? `<body></body>`}
+                                                readOnly={true}
+                                                theme={"bubble"}
+                                                bounds={'.app'}
+                                                ref={viewerRef}
+                                            />
+                                        </Card>
+                                    </Grid>
+
                                 </Grid>
                                 <CommentComponent addComment={addComment} data={comments} fetchComments={fetchComments} updateComment={updateComment} auth={auth} />
                             </>
