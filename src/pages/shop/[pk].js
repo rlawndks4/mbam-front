@@ -407,6 +407,7 @@ const Shop = () => {
                                                     src={'/assets/images/badge/map.jpg'}
                                                     title={'위치안내'}
                                                 />
+                                                <div style={{ marginTop: '0.5rem' }} />
                                                 <NaverMap
                                                     center={{
                                                         lat: data?.shop?.lat,
@@ -416,6 +417,7 @@ const Shop = () => {
                                                         { lat: data?.shop?.lat, lng: data?.shop?.lng, }
                                                     ]}
                                                 />
+                                                <div style={{ marginTop: '0.5rem' }} />
                                                 <TopLabel
                                                     src={'/assets/images/badge/play.jpg'}
                                                     title={'마사지 건마 1인샵 출장마사지'}

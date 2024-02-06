@@ -4,15 +4,9 @@ import { useEffect } from 'react';
 import styled from 'styled-components';
 
 const NaverMap = (props) => {
-  const { markers, center, dnsData, style } = props;
-  const [lat, setLat] = useState(37.74913611)
-  const [lng, setLng] = useState(128.8784972)
+  const { markers, center, style } = props;
   const mapRef = useRef(null)
   useEffect(() => {
-    if (!dnsData) {
-      return;
-    }
-
     const location = new naver.maps.LatLng(center?.lat, center?.lng);
     //지도 그리기
     const map = (mapRef.current = new naver.maps.Map('map', {
@@ -33,9 +27,8 @@ const NaverMap = (props) => {
         y: markers[0]?.lat,
       }, //마커 좌표
     }
-
     mapRef.current = new naver.maps.Marker(markerOptions);
-  }, [center, markers, dnsData]);
+  }, [center, markers]);
 
   return <MapBox id="map" style={{ ...style }}></MapBox>;
 }

@@ -75,12 +75,13 @@ const App = (props) => {
             "url": "https://msgbam.com/"
           }}
         </Script>
-        <Script
-          strategy='beforeInteractive'
-          type="text/javascript"
-          src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=c2folziafh`}
-        ></Script>
+
       </Head>
+      <Script
+        strategy='beforeInteractive'
+        type="text/javascript"
+        src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=c2folziafh`}
+      ></Script>
       <ReduxProvider store={store}>
         <MuiThemeProvider theme={mui_theme}>
           <ThemeProvider theme={theme}>
