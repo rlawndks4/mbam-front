@@ -113,6 +113,10 @@ display: flex;
 align-items: center;
 column-gap: 0.25rem;
 `
+const SnsBadge = styled.img`
+height: 32px;
+border-radius: 8px;
+`
 const TopLabel = (props) => {
     const { src, title } = props;
     return <TopLabelRow>
@@ -260,7 +264,7 @@ const Shop = () => {
                                                         <div style={{ fontSize: theme.size.font2_5 }}>{data?.shop?.name}</div>
                                                         <h1 style={{ fontSize: theme.size.font3, marginTop: '1rem', color: theme.color.font3 }}>{data?.shop?.sub_name}</h1>
                                                         <TopLabel
-                                                            src={'/assets/images/badge/calendar.jpg'}
+                                                            src={'/assets/images/badge/earth.jpg'}
                                                             title={'업소정보'}
                                                         />
                                                         <Divider style={{ margin: '0.75rem 0' }} />
@@ -281,6 +285,18 @@ const Shop = () => {
                                                         <Row style={{ alignItems: 'center', columnGap: '0.5rem' }}>
                                                             <div>연락처</div>
                                                             <div>{data?.shop?.phone}</div>
+                                                        </Row>
+                                                        <Divider style={{ margin: '0.75rem 0' }} />
+                                                        <Row style={{ alignItems: 'center', columnGap: '0.5rem' }}>
+                                                            <SnsBadge src={'/assets/images/icon/kakao.png'} />
+                                                            <div>카카오톡</div>
+                                                            <div style={{ marginLeft: 'auto' }}>{data?.shop?.kakao}</div>
+                                                        </Row>
+                                                        <Divider style={{ margin: '0.75rem 0' }} />
+                                                        <Row style={{ alignItems: 'center', columnGap: '0.5rem' }}>
+                                                            <SnsBadge src={'/assets/images/icon/line.png'} />
+                                                            <div>라인</div>
+                                                            <div style={{ marginLeft: 'auto' }}>{data?.shop?.line}</div>
                                                         </Row>
                                                         {/* <Row style={{ alignItems: 'center', justifyContent: 'space-between' }}>
                                                             <div>{data?.shop?.phone}</div>
@@ -324,8 +340,11 @@ const Shop = () => {
                                                 </Row>
                                                 {data?.shop_manager && data?.shop_manager?.length > 0 &&
                                                     <>
-                                                        <Typography style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>출근부</Typography>
-                                                        <ManagerContainer className="none-scroll">
+                                                        <TopLabel
+                                                            src={'/assets/images/badge/calendar.jpg'}
+                                                            title={'출근부'}
+                                                        />
+                                                        <ManagerContainer className="none-scroll" style={{ marginTop: '0.5rem' }}>
                                                             {data?.shop_manager && data?.shop_manager.map((itm) => (
                                                                 <>
                                                                     <Col style={{ rowGap: '0.25rem' }}>
@@ -345,7 +364,7 @@ const Shop = () => {
                                         <Card>
                                             <CardContent style={{ display: 'flex', flexDirection: 'column' }}>
                                                 <TopLabel
-                                                    src={'/assets/images/badge/menu.jpg'}
+                                                    src={'/assets/images/badge/info.jpg'}
                                                     title={'회원가 혜택안내 및 안내사항'}
                                                 />
                                                 <ReactQuill

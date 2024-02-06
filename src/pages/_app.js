@@ -77,7 +77,8 @@ const App = (props) => {
         </Script>
         <Script
           strategy='beforeInteractive'
-          src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=3fbdbua1qd`}
+          type="text/javascript"
+          src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=c2folziafh`}
         ></Script>
       </Head>
       <ReduxProvider store={store}>
