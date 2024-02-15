@@ -361,7 +361,7 @@ const Headers = () => {
   }
   const getJumpHistory = async (pk) => {
     setSideMenuOpen(false);
-    const { data: response } = await axios.get(`/api/items?table=jump&shop_pk=${pk}&order=pk`);
+    const { data: response } = await axios.get(`/api/items?table=jump&shop_pk=${pk}&order=pk&start_date=${returnMoment().substring(0, 10)}&end_date=${returnMoment().substring(0, 10)}`);
     setJumpHistoryTable(response?.data ?? [])
     setHistoryOpen(true);
   }
@@ -395,20 +395,20 @@ const Headers = () => {
         }}
       >
         <DialogTitle style={{ background: theme.color.background0, color: '#fff' }}>{`당일 점프기록`}</DialogTitle>
-        <DialogContent style={{ width: '90vw', maxWidth: '500px', marginTop: '1rem' }}>
+        <DialogContent style={{ maxWidth: '500px', marginTop: '1rem', padding: '1rem' }}>
           <DialogContentText>
-          </DialogContentText>
-          {jumpHistoryTable && jumpHistoryTable.map((item, idx) => (
-            <>
-              <div style={{ display: 'flex', columnGap: '0.2rem' }}>
-                <div>{idx + 1}.</div>
-                <div>{item?.date}</div>
-                <div></div>
-                <div></div>
-              </div>
+            {jumpHistoryTable && jumpHistoryTable.map((item, idx) => (
+              <>
+                <div style={{ display: 'flex', columnGap: '0.2rem' }}>
+                  <div>{idx + 1}.</div>
+                  <div>{item?.date}</div>
+                  <div></div>
+                  <div></div>
+                </div>
 
-            </>
-          ))}
+              </>
+            ))}
+          </DialogContentText>
         </DialogContent>
       </Dialog>
       <DialogSearch

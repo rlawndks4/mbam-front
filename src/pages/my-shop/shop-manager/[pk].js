@@ -1,4 +1,4 @@
-import { Input, TextField, Button } from "@mui/material";
+import { Input, TextField, Button, IconButton } from "@mui/material";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import { AiFillFileImage } from "react-icons/ai";
 import { Col, ImageContainer } from "src/components/elements/ManagerTemplete";
 import theme from "src/styles/theme";
+import { Icon } from "@iconify/react";
 
 const ManagerEdit = () => {
 
@@ -69,54 +70,70 @@ const ManagerEdit = () => {
                 }}>저장하기</Button>
                 {data && data?.map((item, idx) => (
                     <>
-                        <Col style={{ rowGap: '0.5rem', marginTop: '2rem' }}>
-                            <ImageContainer for={`file${idx}`} style={{ display: 'flex', margin: 'auto' }}>
+                        {item?.is_delete != 1 &&
+                            <>
+                                <Col style={{ rowGap: '0.5rem', marginTop: '2rem' }}>
+                                    <ImageContainer for={`file${idx}`} style={{ display: 'flex', margin: 'auto' }}>
 
-                                {(item?.img_src) ?
-                                    <>
-                                        <img src={item?.img_src} alt="#"
-                                            style={{
-                                                width: 'auto', height: '150px',
-                                                margin: 'auto'
-                                            }} />
-                                    </>
-                                    :
-                                    <>
-                                        <AiFillFileImage style={{ margin: 'auto', fontSize: '4rem', color: `${theme.color.manager.font3}` }} />
-                                    </>}
+                                        {(item?.img_src) ?
+                                            <>
+                                                <img src={item?.img_src} alt="#"
+                                                    style={{
+                                                        width: 'auto', height: '150px',
+                                                        margin: 'auto'
+                                                    }} />
+                                            </>
+                                            :
+                                            <>
+                                                <AiFillFileImage style={{ margin: 'auto', fontSize: '4rem', color: `${theme.color.manager.font3}` }} />
+                                            </>}
 
-                            </ImageContainer>
-                            <div>
-                                <input type="file" id={`file${idx}`} onChange={(e) => addFile(e, idx)} style={{ display: 'none' }} />
-                            </div>
-                            <TextField size="small"
-                                value={item?.name}
-                                label='이름'
-                                style={{ maxWidth: '500px', margin: 'auto', width: '90%' }} onChange={(e) => {
-                                    let list = [...data];
-                                    list[idx].name = e.target.value;
-                                    setData(list)
-                                }} />
-                            <TextField size="small"
-                                value={item?.comment}
-                                label='설명'
-                                style={{ maxWidth: '500px', margin: 'auto', width: '90%' }} onChange={(e) => {
-                                    let list = [...data];
-                                    list[idx].comment = e.target.value;
-                                    setData(list)
-                                }} />
-                            <TextField size="small"
-                                value={item?.work_time}
-                                label='근무시간'
-                                style={{ maxWidth: '500px', margin: 'auto', width: '90%' }} onChange={(e) => {
-                                    let list = [...data];
-                                    list[idx].work_time = e.target.value;
-                                    setData(list)
-                                }} />
-                            <div style={{ width: '90%', margin: 'auto', color: `${item?.status == 1 ? theme.color.background0 : 'red'}`, fontWeight: 'bold' }}>{item?.status == 1 ? '관리자 승인 완료' : '관리자 승인 대기'}</div>
-                        </Col>
+                                    </ImageContainer>
+                                    <div>
+                                        <input type="file" id={`file${idx}`} onChange={(e) => addFile(e, idx)} style={{ display: 'none' }} />
+                                    </div>
+                                    <TextField size="small"
+                                        value={item?.name}
+                                        label='이름'
+                                        style={{ maxWidth: '500px', margin: 'auto', width: '90%' }} onChange={(e) => {
+                                            let list = [...data];
+                                            list[idx].name = e.target.value;
+                                            setData(list)
+                                        }} />
+                                    <TextField size="small"
+                                        value={item?.comment}
+                                        label='설명'
+                                        style={{ maxWidth: '500px', margin: 'auto', width: '90%' }} onChange={(e) => {
+                                            let list = [...data];
+                                            list[idx].comment = e.target.value;
+                                            setData(list)
+                                        }} />
+                                    <TextField size="small"
+                                        value={item?.work_time}
+                                        label='근무시간'
+                                        style={{ maxWidth: '500px', margin: 'auto', width: '90%' }} onChange={(e) => {
+                                            let list = [...data];
+                                            list[idx].work_time = e.target.value;
+                                            setData(list)
+                                        }} />
+
+                                    <div style={{ width: '90%', margin: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <div style={{ color: `${item?.status == 1 ? theme.color.background0 : 'red'}`, fontWeight: 'bold' }}>{item?.status == 1 ? '관리자 승인 완료' : '관리자 승인 대기'}</div>
+                                        <IconButton onClick={() => {
+                                            let manager_list = [...data];
+                                            manager_list[idx].is_delete = 1;
+                                            setData(manager_list);
+                                        }}>
+                                            <Icon icon="fluent:delete-16-regular" />
+                                        </IconButton>
+                                    </div>
+                                </Col>
+                            </>}
                     </>
                 ))}
+                <Button variant="text" sx={{ ...twoOfThreeButtonStyle, marginTop: '2rem' }} onClick={() => {
+                    setData([...data, {}])
+                }}>+ 추가하기</Button>
             </Wrappers>
         </>
     )

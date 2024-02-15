@@ -169,11 +169,47 @@ const Post = (props) => {
             //alert(response.message);
         }
     }
+    const fetchComments = async () => {
+        const { data: response } = await axios.get(`/api/getcommnets?post_pk=${router.query?.pk}&post_table=request`);
+        setComments(response.data);
+    }
+    const addComment = async (parent_pk) => {
+        if (!$(`.comment-${parent_pk ?? 0}`).val()) {
+            alert('필수 값을 입력해 주세요.');
+            return;
 
+        }
+        const { data: response } = await axios.post('/api/addcomment', {
+            parentPk: parent_pk ?? 0,
+            note: $(`.comment-${parent_pk ?? 0}`).val(),
+            post_table: 'request',
+            post_pk: router.query?.pk,
+            post_title: post?.title
+        })
 
+        if (response.result > 0) {
+            $(`.comment-${parent_pk ?? 0}`).val("")
+            fetchComments();
+        } else {
+            alert(response.message)
+        }
+    }
+    const updateComment = async (pk) => {
+        if (!$(`.update-comment-${pk ?? 0}`).val()) {
+            alert('필수 값을 입력해 주세요.');
+        }
+        const { data: response } = await axios.post('/api/updatecomment', {
+            pk: pk,
+            note: $(`.update-comment-${pk ?? 0}`).val(),
+        })
 
-    useEffect(() => {
-    }, [viewerRef.current])
+        if (response.result > 0) {
+            $(`.update-comment-${pk ?? 0}`).val("")
+            fetchComments();
+        } else {
+            alert(response.message)
+        }
+    }
     return (
         <>
             <Wrappers className="post-container">
@@ -236,7 +272,7 @@ const Post = (props) => {
                         {/* <ZoomButton/> */}
 
                     </>}
-
+                <CommentComponent addComment={addComment} data={comments} fetchComments={fetchComments} updateComment={updateComment} auth={auth} />
                 {/* <Progress value={`${percent}`} max="100"></Progress> */}
                 {/* <Logo src={logo} style={{left:`${percent-1}.7%`}}/> */}
             </Wrappers>

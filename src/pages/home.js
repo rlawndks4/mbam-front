@@ -115,6 +115,7 @@ padding: 0.75rem 0.5rem;
 border-top-right-radius: 0.5rem;
 border-top-left-radius: 0.5rem;
 font-weight: 500;
+cursor: pointer;
 `
 const CommunityContent = styled.div`
 cursor: pointer;
@@ -166,6 +167,22 @@ flex-direction: column;
 @media (max-width: 1050px) {
  display: none;
 }
+`
+const ThemeText = styled.div`
+font-size:${theme.size.font4};
+@media screen and (max-width:650px) {
+font-size:${theme.size.font5};
+    
+}
+@media screen and (max-width:350px) {
+font-size:9px;
+}
+`
+const ThemeContent = styled.div`
+display: flex;
+flex-direction: column;
+align-items: center;
+
 `
 const NextArrow = ({ onClick }) => {
     return (
@@ -415,14 +432,14 @@ const Home = () => {
                                 <ThemeCardContainer>
                                     {themeList && themeList.map((item, idx) => (
                                         <>
-                                            <Col style={{ alignItems: 'center' }}>
+                                            <ThemeContent>
                                                 <ThemeCard src={item?.img_src || '/assets/images/test/logo.png'} idx={idx} onClick={() => {
                                                     router.push(`/shop-list?theme=${item?.pk}`)
                                                 }} />
-                                                <Font4 style={{ fontWeight: 'bold', cursor: 'pointer', marginTop: '0.5rem' }} onClick={() => {
+                                                <ThemeText style={{ fontWeight: 'bold', cursor: 'pointer', marginTop: '0.5rem' }} onClick={() => {
                                                     router.push(`/shop-list?theme=${item?.pk}`)
-                                                }}>{item?.name}</Font4>
-                                            </Col>
+                                                }}>{item?.name}</ThemeText>
+                                            </ThemeContent>
                                         </>
                                     ))}
                                 </ThemeCardContainer>
@@ -463,7 +480,6 @@ const Home = () => {
                                     </Slider>
                                 </RealTimeContainer>
                                 <HotPlaceContainer style={{}}>
-
                                     <CommunityHeader>
                                         <Typography variant='h6' style={{ fontWeight: 'bold', margin: 'auto', textAlign: 'center' }}>실시간 핫플레이스 샵</Typography>
                                     </CommunityHeader>
@@ -520,7 +536,9 @@ const Home = () => {
                                     {communityList.map((community) => (
                                         <>
                                             <CommunityContainer>
-                                                <CommunityHeader>{community.label}</CommunityHeader>
+                                                <CommunityHeader onClick={() => {
+                                                    router.push(`/community-list/${community.table}/`)
+                                                }}>{community.label}</CommunityHeader>
                                                 <Col style={{ padding: '0.5rem', rowGap: '0.25rem' }}>
                                                     {homeContent[community.table] && homeContent[community.table].map((itm) => (
                                                         <>
