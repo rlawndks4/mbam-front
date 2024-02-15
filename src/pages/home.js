@@ -174,7 +174,7 @@ font-size:${theme.size.font4};
 font-size:${theme.size.font5};
     
 }
-@media screen and (max-width:350px) {
+@media screen and (max-width:400px) {
 font-size:9px;
 }
 `
