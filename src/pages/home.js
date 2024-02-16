@@ -175,7 +175,7 @@ font-size:${theme.size.font5};
     
 }
 @media screen and (max-width:400px) {
-font-size:9px;
+font-size:10px;
 }
 `
 const ThemeContent = styled.div`
