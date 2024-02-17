@@ -21,7 +21,6 @@ const JumpAutoEdit = () => {
         let obj = {};
         obj['pk'] = router.query?.pk;
         const { data: auth_response } = await axios.get(`/api/auth`);
-        console.log(auth_response)
 
         const { data: response } = await axios.get(`/api/item?table=shop&pk=${router.query?.pk}`);
         if (auth_response?.pk != response?.data?.user_pk) {

@@ -140,9 +140,10 @@ const RealTimeContainer = styled.div`
 width: 668px;
 border-radius: 0.5rem;
 border: 1px solid #ccc;
-padding: 16px;
+padding: 1rem;
 @media (max-width: 1050px) {
-  width: calc(90vw - 32px);
+  width: calc(90vw - 16px);
+  padding: 0.5rem;
 }
 `
 const HotPlaceContainer = styled.div`
@@ -175,7 +176,7 @@ font-size:${theme.size.font5};
     
 }
 @media screen and (max-width:400px) {
-font-size:10px;
+font-size:11px;
 }
 `
 const ThemeContent = styled.div`
@@ -183,6 +184,22 @@ display: flex;
 flex-direction: column;
 align-items: center;
 
+`
+const TextSlideContent = styled.div`
+display: flex;
+ width: auto ;
+ column-gap: 0.2rem;
+ align-items: center ;
+ cursor: pointer;
+ margin-left: 0.2rem ;
+ word-break: unset;
+ font-size: 1.1rem;
+ @media screen and (max-width:600px) {
+font-size:14px;
+}
+ @media screen and (max-width:350px) {
+font-size:11px;
+}
 `
 const NextArrow = ({ onClick }) => {
     return (
@@ -465,16 +482,16 @@ const Home = () => {
                                     <Slider {...text_banner_settings} className='pointer'>
                                         {homeContent?.real_time_shop && homeContent?.real_time_shop.map((item, idx) => (
                                             <>
-                                                <RowContent style={{ width: 'auto', columnGap: '0.2rem', alignItems: 'center', cursor: 'pointer', marginLeft: '0.2rem', wordBreak: 'unset' }}
+                                                <TextSlideContent
                                                     onClick={() => {
                                                         router.push(`/shop/${item?.pk}`)
                                                     }}
                                                 >
                                                     <Chip label={idx + 1} style={{ background: '#1976d2', color: '#fff' }} />
-                                                    <Typography variant='subtitle2' style={{ fontSize: '1.1rem' }}>{item?.city_name}</Typography>
-                                                    <Typography variant='subtitle2' style={{ fontSize: '1.1rem' }}>{item?.sub_city_name}</Typography>
-                                                    <Typography variant='subtitle2' style={{ fontSize: '1.1rem' }}>{item?.name}</Typography>
-                                                </RowContent>
+                                                    <div variant='subtitle2'>{item?.city_name}</div>
+                                                    <div variant='subtitle2'>{item?.sub_city_name}</div>
+                                                    <div variant='subtitle2'>{item?.name}</div>
+                                                </TextSlideContent>
                                             </>
                                         ))}
                                     </Slider>
@@ -556,9 +573,7 @@ const Home = () => {
                                         </>
                                     ))}
                                 </CommunityWrappers>
-
                             </Col>
-
                             <CommunityWrappers display={'none'}>
                                 <CommunityContainer>
                                     {auth?.pk > 0 ?
@@ -600,6 +615,9 @@ const Home = () => {
                                             </Col>
                                         </>}
                                 </CommunityContainer>
+                                <Button onClick={() => {
+                                    router.push('/add-shop')
+                                }} variant='contained'>제휴문의</Button>
                                 {communityList.map((community) => (
                                     <>
                                         <CommunityContainer>

@@ -23,13 +23,11 @@ const ManagerEdit = () => {
 
     const getShop = async () => {
         const { data: auth_response } = await axios.get(`/api/auth`);
-        console.log(auth_response)
         let obj = {};
         obj['pk'] = router.query?.pk;
         obj['review_page'] = 1;
         obj['event_page'] = 1;
         const { data: response } = await axios.post(`/api/items?table=shop_manager&shop_pk=${router.query?.pk}`, obj);
-        console.log(response)
         setData(response?.data);
     }
     const onSave = async () => {

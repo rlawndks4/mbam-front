@@ -236,6 +236,11 @@ const Headers = () => {
       link_key: '/signup',
       icon: 'ic:sharp-person-add',
     },
+    {
+      name: '제휴문의',
+      link_key: '/add-shop',
+      icon: 'eos-icons:pull-request',
+    },
   ]
   const router = useRouter();
   const [display, setDisplay] = useState('flex');
