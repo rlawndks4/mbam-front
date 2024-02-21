@@ -141,6 +141,7 @@ display: none;
 }
 `
 const ColumnMenuContainer = styled.div`
+
         width: 400px;
         padding:0 2rem 4rem 2rem;
         height:100vh;
@@ -522,7 +523,8 @@ const Headers = () => {
         }}
         PaperProps={{
           style: {
-            top: `${sideMenuType == 'shop_manager' ? '40%' : ''}`
+            top: `${sideMenuType == 'shop_manager' ? '40%' : ''}`,
+            bottom: '0'
           }
         }}
         style={{
