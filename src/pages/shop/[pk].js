@@ -6,7 +6,7 @@ import theme from "src/styles/theme";
 import styled from "styled-components";
 import { commarNumber, getLocation, makeMaxPage, range } from "src/functions/utils";
 import Loading from "src/components/Loading";
-import { Button, Card, CardContent, Divider, Drawer, Grid, IconButton, Typography } from "@mui/material";
+import { Button, Card, CardContent, Dialog, DialogContent, Divider, Drawer, Grid, IconButton, Typography } from "@mui/material";
 import { Icon } from "@iconify/react";
 import ContentTable from "src/components/ContentTable";
 import MBottomContent from "src/components/elements/MBottomContent";
@@ -96,6 +96,11 @@ display:flex;
 const ManagerImg = styled.img`
  height: 100px;
  width: auto;
+ cursor: pointer;
+`
+const DialogManagerImg = styled.img`
+width: 80vw;
+max-width: 500px;
 `
 const ManagerContainer = styled.div`
 overflow: auto;
@@ -140,7 +145,7 @@ const Shop = () => {
     const [user, setUser] = useState({});
     const [comments, setComments] = useState([]);
     const [auth, setAuth] = useState({})
-
+    const [imgDialog, setImgDialog] = useState({})
     useEffect(() => {
         setAuth(JSON.parse(localStorage.getItem('auth')));
         getShop(1, 1);
@@ -222,6 +227,15 @@ const Shop = () => {
     }
     return (
         <>
+            <Dialog open={imgDialog?.open} onClose={() => {
+                setImgDialog({});
+            }}
+                onClick={() => {
+                    setImgDialog({});
+                }}
+            >
+                <DialogManagerImg src={imgDialog?.src} />
+            </Dialog>
             <Wrappers className="post-container" style={{ maxWidth: '900px' }}>
 
                 <Grid item xs={12} md={12}>
@@ -349,7 +363,12 @@ const Shop = () => {
                                                                 <>
                                                                     <Col style={{ rowGap: '0.25rem' }}>
                                                                         <div style={{ fontSize: theme.size.font3 }}>{itm?.name}</div>
-                                                                        <ManagerImg src={itm?.img_src} />
+                                                                        <ManagerImg src={itm?.img_src} onClick={() => {
+                                                                            setImgDialog({
+                                                                                open: true,
+                                                                                src: itm?.img_src
+                                                                            })
+                                                                        }} />
                                                                         <div style={{ fontSize: theme.size.font5 }}>{itm?.comment}</div>
                                                                         <div style={{ fontSize: theme.size.font5 }}>{itm?.work_time}</div>
                                                                     </Col>
