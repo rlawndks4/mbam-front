@@ -640,6 +640,7 @@ const Headers = () => {
                   </BorderBottomText>
                 </>
               ))}
+              <div style={{ marginBottom: '2rem' }} />
             </ColumnMenuContainer2>
           </>}
 
