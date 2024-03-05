@@ -106,12 +106,15 @@ const Footer = () => {
                         <Flex style={{ justifyContent: 'space-between', alignItems: 'center' }}>
                             <Flex style={{ margin: '0 auto 0 0' }}>
                                 <TextImg src={logoTextFooterImg} />
-                                <div>상호&nbsp;&nbsp;쿠비스</div>
-                                <div>사업자등록번호&nbsp;&nbsp;831-32-01272</div>
-                                <div>사업장소재지&nbsp;&nbsp;인천광역시 부평구 부일로9번길5</div>
+                                <div>웹사이트명&nbsp;&nbsp;마사지밤ㅣ마사지 스웨디시 타이마사지 건마 1인샵 홈타이 출장마사지 1위 마사지 사이트 【마사지밤】</div>
+                                <div>대표자명 &nbsp;&nbsp;마사지밤</div>
+                                <div>고객센터 &nbsp;&nbsp;010-7435-8788</div>
                                 <div style={{ marginTop: '1rem', maxWidth: '700px' }}>
-                                    마사지밤는 정보제공자로서 제휴회원의 컨텐츠 및 이와 관련된 거래에 대하여 어떠한 책임도 지지 않습니다.
-                                    본 사이트의 컨텐츠는 저작권법의 보호를 받는 바 무단 전재, 복사, 배포 등을 금합니다.
+                                    당사는 정보제공자로서 회원이 등록한 컨텐츠 및 이와 관련한 어떤 거래에 대해서 일체 책임을 지지 않습니다.
+                                    본 웹사이트에 게시된 모든 컨텐츠는 허락없이 무단으로 복제하거나 사용할 수 없으며 이를 어길 경우 저작권법에 의거하여 법적 책임을 물을 수 있습니다.
+                                </div>
+                                <div style={{ marginTop: '1rem', maxWidth: '700px' }}>
+                                    Copyright msgbam.com All rights reserved.
                                 </div>
                             </Flex>
                         </Flex>
