@@ -108,7 +108,7 @@ const Footer = () => {
                                 <TextImg src={logoTextFooterImg} />
                                 <div>웹사이트명&nbsp;&nbsp;마사지밤ㅣ마사지 스웨디시 타이마사지 건마 1인샵 홈타이 출장마사지 1위 마사지 사이트 【마사지밤】</div>
                                 <div>대표자명 &nbsp;&nbsp;마사지밤</div>
-                                <div>고객센터 &nbsp;&nbsp;010-7435-8788</div>
+                                <div>고객센터 &nbsp;&nbsp;050-8202-3294</div>
                                 <div style={{ marginTop: '1rem', maxWidth: '700px' }}>
                                     당사는 정보제공자로서 회원이 등록한 컨텐츠 및 이와 관련한 어떤 거래에 대해서 일체 책임을 지지 않습니다.
                                     본 웹사이트에 게시된 모든 컨텐츠는 허락없이 무단으로 복제하거나 사용할 수 없으며 이를 어길 경우 저작권법에 의거하여 법적 책임을 물을 수 있습니다.
